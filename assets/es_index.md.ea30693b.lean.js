@@ -1,0 +1,1 @@
+import{_ as e,o as a,c as t,Q as r}from"./chunks/framework.de6162a0.js";const f=JSON.parse('{"title":"ECMAScript 语法标准","description":"","frontmatter":{},"headers":[],"relativePath":"es/index.md","filePath":"es/index.md"}'),c={name:"es/index.md"},i=r("",4),s=[i];function o(l,n,p,_,d,h){return a(),t("div",null,s)}const S=e(c,[["render",o]]);export{f as __pageData,S as default};
