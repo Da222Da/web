@@ -1,0 +1,1 @@
+import{h as t}from"./hostMap-S1zMr32d.js";import{r,a,b as s,o as c}from"./index-C-8biVZc.js";const m={__name:"Project1",setup(n){const e=r();return e.value=t("//localhost:6001/"),(u,l)=>{const o=s("WujieVue");return c(),a(o,{width:"100%",height:"100%",name:"project1",url:e.value,sync:!0},null,8,["url"])}}};export{m as default};
