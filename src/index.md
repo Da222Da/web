@@ -40,8 +40,10 @@ const data = ref({
 		},
 	],
 })
-const height = computed(() => document.documentElement.scrollHeight - 64);
-const offsetLeft = computed(() => document.documentElement.clientWidth / 4);
+if(document) {
+	const height = computed(() => document.documentElement.scrollHeight - 64);
+	const offsetLeft = computed(() => document.documentElement.clientWidth / 4);
+}
 </script>
 
 <style>

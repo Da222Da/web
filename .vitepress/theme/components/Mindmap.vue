@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 	<div id="mindmap" :style="{ height: height + 'px' }"></div>
 </template>
 
@@ -67,4 +67,4 @@ function init() {
 	overflow: hidden;
 	overflow-x: auto;
 }
-</style>
+</style> -->
