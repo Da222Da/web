@@ -1,10 +1,14 @@
-<ElMindmap :data="data" height="450" :router="router" offsetLeft="20"  />
+---
+layout: home
+header: false
+---
+
+
+<ElMindmap :data="data" :height="height" :offsetLeft="offsetLeft"  />
 
 <script setup>
 import { onMounted, ref, computed } from "vue";
-import { useRouter } from 'vitepress';
-const router = useRouter();
-const CurrentPath = router.route.path;
+const commonOptions = { fillColor: '#549688', shape: 'ellipse', color: '#fff', paddingY: 5, paddingY: 10 }
 const data = ref({
 	data: {
 		text: "Web 互联网",
@@ -17,16 +21,30 @@ const data = ref({
 				{ data: { text: "Canvas 画布", hyperlink: "https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API/Tutorial" } },
 				{ data: { text: "SVG：可缩放矢量图形", hyperlink: "https://developer.mozilla.org/zh-CN/docs/Web/SVG" } },
 			]
-	 },
+	 	},
 		{ data: { text: "CSS 层叠样式表", hyperlink: "https://developer.mozilla.org/zh-CN/docs/Learn_web_development/Core/Styling_basics" } },
 		{ 
 			data: { text: "JavaScript 编程语言" },
 			children: [
-				{ data: { text: "语法约定", hyperlink: `${CurrentPath}js/es/` } },
-				{ data: { text: "组件化", hyperlink: `${CurrentPath}js/vue/` } },
-				{ data: { text: "工程化", hyperlink: `${CurrentPath}js/vite/` } },
+				{ data: { text: "ES 语法约定", link: `/docs/es/`, ...commonOptions } },
+				{ data: { text: "Vue 组件化", link: `/docs/vue/`, ...commonOptions } },
+				{ data: { text: "工程化" },
+					children: [
+						{ data: { text: "npm 包管理器", link: `/docs/npm/`, ...commonOptions } },
+						{ data: { text: "Vite 构建工具", link: `/docs/vite/`, ...commonOptions } },
+					]
+				},
 			]
 		},
 	],
 })
+const height = computed(() => document.documentElement.scrollHeight - 64);
+const offsetLeft = computed(() => document.documentElement.clientWidth / 4);
 </script>
+
+<style>
+.VPHome {
+	padding: 0 !important;
+}
+</style>
+

@@ -1,11 +1,11 @@
 import {
   __commonJS,
   __toESM
-} from "./chunk-UN725CXD.js";
+} from "./chunk-UXIASGQL.js";
 
-// node_modules/.pnpm/eventemitter3@4.0.7/node_modules/eventemitter3/index.js
+// node_modules/eventemitter3/index.js
 var require_eventemitter3 = __commonJS({
-  "node_modules/.pnpm/eventemitter3@4.0.7/node_modules/eventemitter3/index.js"(exports, module) {
+  "node_modules/eventemitter3/index.js"(exports, module) {
     "use strict";
     var has = Object.prototype.hasOwnProperty;
     var prefix = "~";
@@ -13,7 +13,8 @@ var require_eventemitter3 = __commonJS({
     }
     if (Object.create) {
       Events.prototype = /* @__PURE__ */ Object.create(null);
-      if (!new Events().__proto__) prefix = false;
+      if (!new Events().__proto__)
+        prefix = false;
     }
     function EE(fn, context, once) {
       this.fn = fn;
@@ -25,14 +26,19 @@ var require_eventemitter3 = __commonJS({
         throw new TypeError("The listener must be a function");
       }
       var listener = new EE(fn, context || emitter, once), evt = prefix ? prefix + event : event;
-      if (!emitter._events[evt]) emitter._events[evt] = listener, emitter._eventsCount++;
-      else if (!emitter._events[evt].fn) emitter._events[evt].push(listener);
-      else emitter._events[evt] = [emitter._events[evt], listener];
+      if (!emitter._events[evt])
+        emitter._events[evt] = listener, emitter._eventsCount++;
+      else if (!emitter._events[evt].fn)
+        emitter._events[evt].push(listener);
+      else
+        emitter._events[evt] = [emitter._events[evt], listener];
       return emitter;
     }
     function clearEvent(emitter, evt) {
-      if (--emitter._eventsCount === 0) emitter._events = new Events();
-      else delete emitter._events[evt];
+      if (--emitter._eventsCount === 0)
+        emitter._events = new Events();
+      else
+        delete emitter._events[evt];
     }
     function EventEmitter2() {
       this._events = new Events();
@@ -40,9 +46,11 @@ var require_eventemitter3 = __commonJS({
     }
     EventEmitter2.prototype.eventNames = function eventNames() {
       var names2 = [], events, name;
-      if (this._eventsCount === 0) return names2;
+      if (this._eventsCount === 0)
+        return names2;
       for (name in events = this._events) {
-        if (has.call(events, name)) names2.push(prefix ? name.slice(1) : name);
+        if (has.call(events, name))
+          names2.push(prefix ? name.slice(1) : name);
       }
       if (Object.getOwnPropertySymbols) {
         return names2.concat(Object.getOwnPropertySymbols(events));
@@ -51,8 +59,10 @@ var require_eventemitter3 = __commonJS({
     };
     EventEmitter2.prototype.listeners = function listeners(event) {
       var evt = prefix ? prefix + event : event, handlers = this._events[evt];
-      if (!handlers) return [];
-      if (handlers.fn) return [handlers.fn];
+      if (!handlers)
+        return [];
+      if (handlers.fn)
+        return [handlers.fn];
       for (var i = 0, l = handlers.length, ee = new Array(l); i < l; i++) {
         ee[i] = handlers[i].fn;
       }
@@ -60,16 +70,20 @@ var require_eventemitter3 = __commonJS({
     };
     EventEmitter2.prototype.listenerCount = function listenerCount(event) {
       var evt = prefix ? prefix + event : event, listeners = this._events[evt];
-      if (!listeners) return 0;
-      if (listeners.fn) return 1;
+      if (!listeners)
+        return 0;
+      if (listeners.fn)
+        return 1;
       return listeners.length;
     };
     EventEmitter2.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
       var evt = prefix ? prefix + event : event;
-      if (!this._events[evt]) return false;
+      if (!this._events[evt])
+        return false;
       var listeners = this._events[evt], len = arguments.length, args, i;
       if (listeners.fn) {
-        if (listeners.once) this.removeListener(event, listeners.fn, void 0, true);
+        if (listeners.once)
+          this.removeListener(event, listeners.fn, void 0, true);
         switch (len) {
           case 1:
             return listeners.fn.call(listeners.context), true;
@@ -91,7 +105,8 @@ var require_eventemitter3 = __commonJS({
       } else {
         var length2 = listeners.length, j;
         for (i = 0; i < length2; i++) {
-          if (listeners[i].once) this.removeListener(event, listeners[i].fn, void 0, true);
+          if (listeners[i].once)
+            this.removeListener(event, listeners[i].fn, void 0, true);
           switch (len) {
             case 1:
               listeners[i].fn.call(listeners[i].context);
@@ -106,9 +121,10 @@ var require_eventemitter3 = __commonJS({
               listeners[i].fn.call(listeners[i].context, a1, a2, a3);
               break;
             default:
-              if (!args) for (j = 1, args = new Array(len - 1); j < len; j++) {
-                args[j - 1] = arguments[j];
-              }
+              if (!args)
+                for (j = 1, args = new Array(len - 1); j < len; j++) {
+                  args[j - 1] = arguments[j];
+                }
               listeners[i].fn.apply(listeners[i].context, args);
           }
         }
@@ -123,7 +139,8 @@ var require_eventemitter3 = __commonJS({
     };
     EventEmitter2.prototype.removeListener = function removeListener(event, fn, context, once) {
       var evt = prefix ? prefix + event : event;
-      if (!this._events[evt]) return this;
+      if (!this._events[evt])
+        return this;
       if (!fn) {
         clearEvent(this, evt);
         return this;
@@ -139,8 +156,10 @@ var require_eventemitter3 = __commonJS({
             events.push(listeners[i]);
           }
         }
-        if (events.length) this._events[evt] = events.length === 1 ? events[0] : events;
-        else clearEvent(this, evt);
+        if (events.length)
+          this._events[evt] = events.length === 1 ? events[0] : events;
+        else
+          clearEvent(this, evt);
       }
       return this;
     };
@@ -148,7 +167,8 @@ var require_eventemitter3 = __commonJS({
       var evt;
       if (event) {
         evt = prefix ? prefix + event : event;
-        if (this._events[evt]) clearEvent(this, evt);
+        if (this._events[evt])
+          clearEvent(this, evt);
       } else {
         this._events = new Events();
         this._eventsCount = 0;
@@ -165,12 +185,11 @@ var require_eventemitter3 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/constants/constant.js
+// node_modules/simple-mind-map/src/constants/constant.js
 var CONSTANTS = {
   CHANGE_THEME: "changeTheme",
   CHANGE_LAYOUT: "changeLayout",
   SET_DATA: "setData",
-  TRANSFORM_TO_NORMAL_NODE: "transformAllNodesToNormalNode",
   MODE: {
     READONLY: "readonly",
     EDIT: "edit"
@@ -320,6 +339,7 @@ var nodeDataNoStylePropList = [
   "generalization",
   "richText",
   "resetRichText",
+  // 重新创建富文本内容，去掉原有样式
   "uid",
   "activeStyle",
   "associativeLineTargets",
@@ -336,7 +356,9 @@ var nodeDataNoStylePropList = [
   "customTop",
   "customTextWidth",
   "checkbox",
-  "dir"
+  "dir",
+  "needUpdate"
+  // 重新创建节点内容
 ];
 var ERROR_TYPES = {
   READ_CLIPBOARD_ERROR: "read_clipboard_error",
@@ -366,13 +388,21 @@ var cssContent = `
     stroke-width: 2;
   }
 
-  .smm-text-node-wrap {
+  .smm-text-node-wrap, .smm-expand-btn-text {
     user-select: none;
   }
 `;
 var noneRichTextNodeLineHeight = 1.2;
+var richTextSupportStyleList = [
+  "fontFamily",
+  "fontSize",
+  "fontWeight",
+  "fontStyle",
+  "textDecoration",
+  "color"
+];
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/core/view/View.js
+// node_modules/simple-mind-map/src/core/view/View.js
 var View = class {
   //  构造函数
   constructor(opt = {}) {
@@ -400,7 +430,8 @@ var View = class {
     });
     this.mindMap.event.on("mousedown", (e) => {
       const { isDisableDrag, mousedownEventPreventDefault } = this.mindMap.opt;
-      if (isDisableDrag) return;
+      if (isDisableDrag)
+        return;
       if (mousedownEventPreventDefault) {
         e.preventDefault();
       }
@@ -438,7 +469,8 @@ var View = class {
         return customHandleMousewheel(e);
       }
       if (mousewheelAction === CONSTANTS.MOUSE_WHEEL_ACTION.ZOOM || e.ctrlKey || e.metaKey) {
-        if (disableMouseWheelZoom) return;
+        if (disableMouseWheelZoom)
+          return;
         const { x: clientX, y: clientY } = this.mindMap.toPos(
           e.clientX,
           e.clientY
@@ -485,7 +517,8 @@ var View = class {
       }
     });
     this.mindMap.on("resize", () => {
-      if (!this.checkNeedMindMapInCanvas()) return;
+      if (!this.checkNeedMindMapInCanvas())
+        return;
       this.transform();
     });
   }
@@ -518,7 +551,8 @@ var View = class {
   }
   //  平移x,y方向
   translateXY(x2, y2) {
-    if (x2 === 0 && y2 === 0) return;
+    if (x2 === 0 && y2 === 0)
+      return;
     this.x += x2;
     this.y += y2;
     this.transform();
@@ -526,7 +560,8 @@ var View = class {
   }
   //  平移x方向
   translateX(step) {
-    if (step === 0) return;
+    if (step === 0)
+      return;
     this.x += step;
     this.transform();
     this.emitEvent("translate");
@@ -539,7 +574,8 @@ var View = class {
   }
   //  平移y方向
   translateY(step) {
-    if (step === 0) return;
+    if (step === 0)
+      return;
     this.y += step;
     this.transform();
     this.emitEvent("translate");
@@ -690,7 +726,8 @@ var View = class {
   }
   // 将思维导图限制在画布内
   limitMindMapInCanvas() {
-    if (!this.checkNeedMindMapInCanvas()) return;
+    if (!this.checkNeedMindMapInCanvas())
+      return;
     let { scale, left, top, right, bottom } = this.getPositionLimit();
     const centerXChange = (this.mindMap.width - this.mindMap.initWidth) / 2 * scale;
     const centerYChange = (this.mindMap.height - this.mindMap.initHeight) / 2 * scale;
@@ -752,7 +789,7 @@ var View = class {
 };
 var View_default = View;
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/core/event/Event.js
+// node_modules/simple-mind-map/src/core/event/Event.js
 var import_eventemitter3 = __toESM(require_eventemitter3());
 var Event = class extends import_eventemitter3.default {
   //  构造函数
@@ -883,10 +920,14 @@ var Event = class extends import_eventemitter3.default {
     e.stopPropagation();
     e.preventDefault();
     const dirs = [];
-    if (e.deltaY < 0) dirs.push(CONSTANTS.DIR.UP);
-    if (e.deltaY > 0) dirs.push(CONSTANTS.DIR.DOWN);
-    if (e.deltaX < 0) dirs.push(CONSTANTS.DIR.LEFT);
-    if (e.deltaX > 0) dirs.push(CONSTANTS.DIR.RIGHT);
+    if (e.deltaY < 0)
+      dirs.push(CONSTANTS.DIR.UP);
+    if (e.deltaY > 0)
+      dirs.push(CONSTANTS.DIR.DOWN);
+    if (e.deltaX < 0)
+      dirs.push(CONSTANTS.DIR.LEFT);
+    if (e.deltaX > 0)
+      dirs.push(CONSTANTS.DIR.RIGHT);
     let isTouchPad = false;
     const { customCheckIsTouchPad } = this.mindMap.opt;
     if (typeof customCheckIsTouchPad === "function") {
@@ -899,7 +940,8 @@ var Event = class extends import_eventemitter3.default {
   //  鼠标右键菜单事件
   onContextmenu(e) {
     e.preventDefault();
-    if (e.ctrlKey) return;
+    if (e.ctrlKey)
+      return;
     this.emit("contextmenu", e);
   }
   //  按键松开事件
@@ -917,7 +959,7 @@ var Event = class extends import_eventemitter3.default {
 };
 var Event_default = Event;
 
-// node_modules/.pnpm/deepmerge@1.5.2/node_modules/deepmerge/dist/es.js
+// node_modules/deepmerge/dist/es.js
 var isMergeableObject = function isMergeableObject2(value) {
   return isNonNullObject(value) && !isSpecial(value);
 };
@@ -994,7 +1036,7 @@ deepmerge.all = function deepmergeAll(array2, optionsArgument) {
 var deepmerge_1 = deepmerge;
 var es_default = deepmerge_1;
 
-// node_modules/.pnpm/uuid@9.0.1/node_modules/uuid/dist/esm-browser/rng.js
+// node_modules/uuid/dist/esm-browser/rng.js
 var getRandomValues;
 var rnds8 = new Uint8Array(16);
 function rng() {
@@ -1007,16 +1049,16 @@ function rng() {
   return getRandomValues(rnds8);
 }
 
-// node_modules/.pnpm/uuid@9.0.1/node_modules/uuid/dist/esm-browser/regex.js
+// node_modules/uuid/dist/esm-browser/regex.js
 var regex_default = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
 
-// node_modules/.pnpm/uuid@9.0.1/node_modules/uuid/dist/esm-browser/validate.js
+// node_modules/uuid/dist/esm-browser/validate.js
 function validate(uuid) {
   return typeof uuid === "string" && regex_default.test(uuid);
 }
 var validate_default = validate;
 
-// node_modules/.pnpm/uuid@9.0.1/node_modules/uuid/dist/esm-browser/stringify.js
+// node_modules/uuid/dist/esm-browser/stringify.js
 var byteToHex = [];
 for (let i = 0; i < 256; ++i) {
   byteToHex.push((i + 256).toString(16).slice(1));
@@ -1025,7 +1067,7 @@ function unsafeStringify(arr, offset = 0) {
   return byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + "-" + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + "-" + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + "-" + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + "-" + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]];
 }
 
-// node_modules/.pnpm/uuid@9.0.1/node_modules/uuid/dist/esm-browser/parse.js
+// node_modules/uuid/dist/esm-browser/parse.js
 function parse(uuid) {
   if (!validate_default(uuid)) {
     throw TypeError("Invalid UUID");
@@ -1052,7 +1094,7 @@ function parse(uuid) {
 }
 var parse_default = parse;
 
-// node_modules/.pnpm/uuid@9.0.1/node_modules/uuid/dist/esm-browser/v35.js
+// node_modules/uuid/dist/esm-browser/v35.js
 function stringToBytes(str) {
   str = unescape(encodeURIComponent(str));
   const bytes = [];
@@ -1099,7 +1141,7 @@ function v35(name, version, hashfunc) {
   return generateUUID;
 }
 
-// node_modules/.pnpm/uuid@9.0.1/node_modules/uuid/dist/esm-browser/md5.js
+// node_modules/uuid/dist/esm-browser/md5.js
 function md5(bytes) {
   if (typeof bytes === "string") {
     const msg = unescape(encodeURIComponent(bytes));
@@ -1243,16 +1285,16 @@ function md5ii(a, b, c, d, x2, s, t) {
 }
 var md5_default = md5;
 
-// node_modules/.pnpm/uuid@9.0.1/node_modules/uuid/dist/esm-browser/v3.js
+// node_modules/uuid/dist/esm-browser/v3.js
 var v3 = v35("v3", 48, md5_default);
 
-// node_modules/.pnpm/uuid@9.0.1/node_modules/uuid/dist/esm-browser/native.js
+// node_modules/uuid/dist/esm-browser/native.js
 var randomUUID = typeof crypto !== "undefined" && crypto.randomUUID && crypto.randomUUID.bind(crypto);
 var native_default = {
   randomUUID
 };
 
-// node_modules/.pnpm/uuid@9.0.1/node_modules/uuid/dist/esm-browser/v4.js
+// node_modules/uuid/dist/esm-browser/v4.js
 function v4(options, buf, offset) {
   if (native_default.randomUUID && !buf && !options) {
     return native_default.randomUUID();
@@ -1272,7 +1314,7 @@ function v4(options, buf, offset) {
 }
 var v4_default = v4;
 
-// node_modules/.pnpm/uuid@9.0.1/node_modules/uuid/dist/esm-browser/sha1.js
+// node_modules/uuid/dist/esm-browser/sha1.js
 function f(s, x2, y2, z) {
   switch (s) {
     case 0:
@@ -1346,10 +1388,10 @@ function sha1(bytes) {
 }
 var sha1_default = sha1;
 
-// node_modules/.pnpm/uuid@9.0.1/node_modules/uuid/dist/esm-browser/v5.js
+// node_modules/uuid/dist/esm-browser/v5.js
 var v5 = v35("v5", 80, sha1_default);
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/utils/mersenneTwister.js
+// node_modules/simple-mind-map/src/utils/mersenneTwister.js
 function MersenneTwister(seed) {
   this.N = 624;
   this.M = 397;
@@ -1373,7 +1415,8 @@ MersenneTwister.prototype.genrand_int32 = function() {
   var mag01 = new Array(0, this.MATRIX_A);
   if (this.mti >= this.N) {
     var kk;
-    if (this.mti == this.N + 1) this.init_genrand(5489);
+    if (this.mti == this.N + 1)
+      this.init_genrand(5489);
     for (kk = 0; kk < this.N - this.M; kk++) {
       y2 = this.mt[kk] & this.UPPER_MASK | this.mt[kk + 1] & this.LOWER_MASK;
       this.mt[kk] = this.mt[kk + this.M] ^ y2 >>> 1 ^ mag01[y2 & 1];
@@ -1394,7 +1437,7 @@ MersenneTwister.prototype.genrand_int32 = function() {
   return y2 >>> 0;
 };
 
-// node_modules/.pnpm/@svgdotjs+svg.js@3.2.0/node_modules/@svgdotjs/svg.js/dist/svg.esm.js
+// node_modules/@svgdotjs/svg.js/dist/svg.esm.js
 var methods$1 = {};
 var names = [];
 function registerMethods(name, m) {
@@ -1522,7 +1565,8 @@ function create(name, ns = svg) {
   return globals.document.createElementNS(ns, name);
 }
 function makeInstance(element, isHTML = false) {
-  if (element instanceof Base) return element;
+  if (element instanceof Base)
+    return element;
   if (typeof element === "object") {
     return adopter(element);
   }
@@ -1542,8 +1586,10 @@ function nodeOrNew(name, node) {
   return node && node.ownerDocument && node instanceof node.ownerDocument.defaultView.Node ? node : create(name);
 }
 function adopt(node) {
-  if (!node) return null;
-  if (node.instance instanceof Base) return node.instance;
+  if (!node)
+    return null;
+  if (node.instance instanceof Base)
+    return node.instance;
   if (node.nodeName === "#document-fragment") {
     return new elements.Fragment(node);
   }
@@ -1558,7 +1604,8 @@ function adopt(node) {
 var adopter = adopt;
 function register(element, name = element.name, asRoot = false) {
   elements[name] = element;
-  if (asRoot) elements[root] = element;
+  if (asRoot)
+    elements[root] = element;
   addMethodNames(Object.getOwnPropertyNames(element.prototype));
   return element;
 }
@@ -1892,11 +1939,16 @@ function cieSpace(space) {
   }
 }
 function hueToRgb(p, q, t) {
-  if (t < 0) t += 1;
-  if (t > 1) t -= 1;
-  if (t < 1 / 6) return p + (q - p) * 6 * t;
-  if (t < 1 / 2) return q;
-  if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+  if (t < 0)
+    t += 1;
+  if (t > 1)
+    t -= 1;
+  if (t < 1 / 6)
+    return p + (q - p) * 6 * t;
+  if (t < 1 / 2)
+    return q;
+  if (t < 2 / 3)
+    return p + (q - p) * (2 / 3 - t) * 6;
   return p;
 }
 var Color = class _Color {
@@ -2053,7 +2105,8 @@ var Color = class _Color {
           _d: 0,
           space: "rgb"
         });
-      } else throw Error("Unsupported string format, can't construct Color");
+      } else
+        throw Error("Unsupported string format, can't construct Color");
     }
     const {
       _a,
@@ -2441,7 +2494,8 @@ var Matrix = class _Matrix {
   }
   // Check if two matrices are equal
   equals(other) {
-    if (other === this) return true;
+    if (other === this)
+      return true;
     const comp = new _Matrix(other);
     return closeEnough(this.a, comp.a) && closeEnough(this.b, comp.b) && closeEnough(this.c, comp.c) && closeEnough(this.d, comp.d) && closeEnough(this.e, comp.e) && closeEnough(this.f, comp.f);
   }
@@ -2476,7 +2530,8 @@ var Matrix = class _Matrix {
     const e = this.e;
     const f2 = this.f;
     const det = a * d - b * c;
-    if (!det) throw new Error("Cannot invert " + this);
+    if (!det)
+      throw new Error("Cannot invert " + this);
     const na = d / det;
     const nb = -b / det;
     const nc = -c / det;
@@ -2810,7 +2865,8 @@ function inside(x2, y2) {
 registerMethods({
   viewbox: {
     viewbox(x2, y2, width2, height2) {
-      if (x2 == null) return new Box(this.attr("viewBox"));
+      if (x2 == null)
+        return new Box(this.attr("viewBox"));
       return this.attr("viewBox", new Box(x2, y2, width2, height2));
     },
     zoom(level, point2) {
@@ -2833,7 +2889,8 @@ registerMethods({
         return zoom;
       }
       let zoomAmount = zoom / level;
-      if (zoomAmount === Infinity) zoomAmount = Number.MAX_SAFE_INTEGER / 100;
+      if (zoomAmount === Infinity)
+        zoomAmount = Number.MAX_SAFE_INTEGER / 100;
       point2 = point2 || new Point(width2 / 2 / zoomX + v.x, height2 / 2 / zoomY + v.y);
       const box = new Box(v).transform(new Matrix({
         scale: zoomAmount,
@@ -2847,7 +2904,8 @@ register(Box, "Box");
 var List = class extends Array {
   constructor(arr = [], ...args) {
     super(arr, ...args);
-    if (typeof arr === "number") return this;
+    if (typeof arr === "number")
+      return this;
     this.length = 0;
     this.push(...arr);
   }
@@ -2871,8 +2929,10 @@ extend([List], {
 var reserved = ["toArray", "constructor", "each"];
 List.extend = function(methods2) {
   methods2 = methods2.reduce((obj, name) => {
-    if (reserved.includes(name)) return obj;
-    if (name[0] === "_") return obj;
+    if (reserved.includes(name))
+      return obj;
+    if (name[0] === "_")
+      return obj;
     obj[name] = function(...attrs2) {
       return this.each(name, ...attrs2);
     };
@@ -2895,8 +2955,10 @@ var listenerId = 0;
 var windowEvents = {};
 function getEvents(instance) {
   let n = instance.getEventHolder();
-  if (n === globals.window) n = windowEvents;
-  if (!n.events) n.events = {};
+  if (n === globals.window)
+    n = windowEvents;
+  if (!n.events)
+    n.events = {};
   return n.events;
 }
 function getEventTarget(instance) {
@@ -2904,8 +2966,10 @@ function getEventTarget(instance) {
 }
 function clearEvents(instance) {
   let n = instance.getEventHolder();
-  if (n === globals.window) n = windowEvents;
-  if (n.events) n.events = {};
+  if (n === globals.window)
+    n = windowEvents;
+  if (n.events)
+    n.events = {};
 }
 function on(node, events, listener, binding, options) {
   const l = listener.bind(binding || node);
@@ -2931,7 +2995,8 @@ function off(node, events, listener, options) {
   const n = getEventTarget(instance);
   if (typeof listener === "function") {
     listener = listener._svgjsListenerId;
-    if (!listener) return;
+    if (!listener)
+      return;
   }
   events = Array.isArray(events) ? events : (events || "").split(delimiter);
   events.forEach(function(event) {
@@ -2995,7 +3060,8 @@ var EventTarget = class extends Base {
   }
   dispatchEvent(event) {
     const bag = this.getEventHolder().events;
-    if (!bag) return true;
+    if (!bag)
+      return true;
     const events = bag[event.type];
     for (const i in events) {
       for (const j in events[i]) {
@@ -3074,14 +3140,16 @@ var SVGArray = class extends Array {
     return new this.constructor(this);
   }
   init(arr) {
-    if (typeof arr === "number") return this;
+    if (typeof arr === "number")
+      return this;
     this.length = 0;
     this.push(...this.parse(arr));
     return this;
   }
   // Parse whitespace separated string
   parse(array2 = []) {
-    if (array2 instanceof Array) return array2;
+    if (array2 instanceof Array)
+      return array2;
     return array2.trim().split(delimiter).map(parseFloat);
   }
   toArray() {
@@ -3185,7 +3253,8 @@ function attr(attr2, val, ns) {
       return last;
     }, {});
   } else if (typeof attr2 === "object" && attr2.constructor === Object) {
-    for (val in attr2) this.attr(val, attr2[val]);
+    for (val in attr2)
+      this.attr(val, attr2[val]);
   } else if (val === null) {
     this.node.removeAttribute(attr2);
   } else if (val == null) {
@@ -3323,11 +3392,14 @@ var Dom = class _Dom extends EventTarget {
   // Returns the parent element instance
   parent(type) {
     let parent = this;
-    if (!parent.node.parentNode) return null;
+    if (!parent.node.parentNode)
+      return null;
     parent = adopt(parent.node.parentNode);
-    if (!type) return parent;
+    if (!type)
+      return parent;
     do {
-      if (typeof type === "string" ? parent.matches(type) : parent instanceof type) return parent;
+      if (typeof type === "string" ? parent.matches(type) : parent instanceof type)
+        return parent;
     } while (parent = adopt(parent.node.parentNode));
     return parent;
   }
@@ -3415,7 +3487,8 @@ var Dom = class _Dom extends EventTarget {
         if (outerXML) {
           const result = xmlOrFn(current);
           current = result || current;
-          if (result === false) return "";
+          if (result === false)
+            return "";
         }
         current.each(function() {
           const result = xmlOrFn(this);
@@ -3520,7 +3593,8 @@ var Element = class extends Dom {
   // Get referenced element form attribute value
   reference(attr2) {
     attr2 = this.attr(attr2);
-    if (!attr2) return null;
+    if (!attr2)
+      return null;
     const m = (attr2 + "").match(reference);
     return m ? makeInstance(m[1]) : null;
   }
@@ -3692,7 +3766,8 @@ registerMethods(["Element", "Runner"], {
   // Set font
   font: function(a, v) {
     if (typeof a === "object") {
-      for (v in a) this.font(v, a[v]);
+      for (v in a)
+        this.font(v, a[v]);
       return this;
     }
     return a === "leading" ? this.leading(v) : a === "anchor" ? this.attr("text-anchor", v) : a === "size" || a === "family" || a === "weight" || a === "stretch" || a === "variant" || a === "style" ? this.attr("font-" + a, v) : this.attr(a, v);
@@ -3729,7 +3804,8 @@ function matrixify() {
   return matrix;
 }
 function toParent(parent, i) {
-  if (this === parent) return this;
+  if (this === parent)
+    return this;
   const ctm2 = this.screenCTM();
   const pCtm = parent.screenCTM().inverse();
   this.addTo(parent, i).untransform().transform(pCtm.multiply(ctm2));
@@ -3894,7 +3970,8 @@ var Gradient = class extends Container {
   }
   // custom attr to handle transform
   attr(a, b, c) {
-    if (a === "transform") a = "gradientTransform";
+    if (a === "transform")
+      a = "gradientTransform";
     return super.attr(a, b, c);
   }
   bbox() {
@@ -3943,7 +4020,8 @@ var Pattern = class extends Container {
   }
   // custom attr to handle transform
   attr(a, b, c) {
-    if (a === "transform") a = "patternTransform";
+    if (a === "transform")
+      a = "patternTransform";
     return super.attr(a, b, c);
   }
   bbox() {
@@ -3995,7 +4073,8 @@ var Image2 = class extends Shape {
   }
   // (re)load image
   load(url, callback) {
-    if (!url) return this;
+    if (!url)
+      return this;
     const img = new globals.window.Image();
     on(img, "load", function(e) {
       const p = this.parent(Pattern);
@@ -4074,7 +4153,8 @@ var PointArray = class extends SVGArray {
     } else {
       array2 = array2.trim().split(delimiter).map(parseFloat);
     }
-    if (array2.length % 2 !== 0) array2.pop();
+    if (array2.length % 2 !== 0)
+      array2.pop();
     for (let i = 0, len = array2.length; i < len; i = i + 2) {
       points.push([array2[i], array2[i + 1]]);
     }
@@ -4085,8 +4165,10 @@ var PointArray = class extends SVGArray {
     let i;
     const box = this.bbox();
     for (i = this.length - 1; i >= 0; i--) {
-      if (box.width) this[i][0] = (this[i][0] - box.x) * width2 / box.width + box.x;
-      if (box.height) this[i][1] = (this[i][1] - box.y) * height2 / box.height + box.y;
+      if (box.width)
+        this[i][0] = (this[i][0] - box.x) * width2 / box.width + box.x;
+      if (box.height)
+        this[i][1] = (this[i][1] - box.y) * height2 / box.height + box.y;
     }
     return this;
   }
@@ -4240,7 +4322,8 @@ registerMethods({
     // Create and attach markers
     marker(marker, width2, height2, block) {
       let attr2 = ["marker"];
-      if (marker !== "all") attr2.push(marker);
+      if (marker !== "all")
+        attr2.push(marker);
       attr2 = attr2.join("-");
       marker = arguments[1] instanceof Marker ? arguments[1] : this.defs().marker(width2, height2, block);
       return this.attr(attr2, marker);
@@ -4250,9 +4333,11 @@ registerMethods({
 register(Marker, "Marker");
 function makeSetterGetter(k, f2) {
   return function(v) {
-    if (v == null) return this[k];
+    if (v == null)
+      return this[k];
     this[k] = v;
-    if (f2) f2.call(this);
+    if (f2)
+      f2.call(this);
     return this;
   };
 }
@@ -4366,11 +4451,15 @@ var Spring = class extends Controller {
     this.duration(duration).overshoot(overshoot);
   }
   step(current, target, dt, c) {
-    if (typeof current === "string") return current;
+    if (typeof current === "string")
+      return current;
     c.done = dt === Infinity;
-    if (dt === Infinity) return target;
-    if (dt === 0) return current;
-    if (dt > 100) dt = 16;
+    if (dt === Infinity)
+      return target;
+    if (dt === 0)
+      return current;
+    if (dt > 100)
+      dt = 16;
     dt /= 1e3;
     const velocity = c.velocity || 0;
     const acceleration = -this.d * velocity - this.k * (current - target);
@@ -4390,10 +4479,13 @@ var PID = class extends Controller {
     this.p(p).i(i).d(d).windup(windup);
   }
   step(current, target, dt, c) {
-    if (typeof current === "string") return current;
+    if (typeof current === "string")
+      return current;
     c.done = dt === Infinity;
-    if (dt === Infinity) return target;
-    if (dt === 0) return current;
+    if (dt === Infinity)
+      return target;
+    if (dt === 0)
+      return current;
     const p = target - current;
     let i = (c.integral || 0) + p * dt;
     const d = (p - (c.error || 0)) / dt;
@@ -4477,10 +4569,12 @@ var pathHandlers = {
 };
 var mlhvqtcsaz = "mlhvqtcsaz".split("");
 for (let i = 0, il = mlhvqtcsaz.length; i < il; ++i) {
-  pathHandlers[mlhvqtcsaz[i]] = /* @__PURE__ */ function(i2) {
+  pathHandlers[mlhvqtcsaz[i]] = function(i2) {
     return function(c, p, p0) {
-      if (i2 === "H") c[0] = c[0] + p.x;
-      else if (i2 === "V") c[0] = c[0] + p.y;
+      if (i2 === "H")
+        c[0] = c[0] + p.x;
+      else if (i2 === "V")
+        c[0] = c[0] + p.y;
       else if (i2 === "A") {
         c[5] = c[5] + p.x;
         c[6] = c[6] + p.y;
@@ -4516,7 +4610,8 @@ function startNewSegment(parser2, token) {
   return pathLetter;
 }
 function finalizeNumber(parser2, inNumber) {
-  if (!parser2.inNumber) throw new Error("Parser Error");
+  if (!parser2.inNumber)
+    throw new Error("Parser Error");
   parser2.number && parser2.segment.push(parseFloat(parser2.number));
   parser2.inNumber = inNumber;
   parser2.number = "";
@@ -4534,7 +4629,8 @@ function finalizeSegment(parser2) {
   parser2.segments.push(parser2.segment);
 }
 function isArcFlag(parser2) {
-  if (!parser2.segment.length) return false;
+  if (!parser2.segment.length)
+    return false;
   const isArc = parser2.segment[0].toUpperCase() === "A";
   const length2 = parser2.segment.length;
   return isArc && (length2 === 4 || length2 === 5);
@@ -4789,7 +4885,8 @@ var Morphable = class {
     return this;
   }
   stepper(stepper) {
-    if (stepper == null) return this._stepper;
+    if (stepper == null)
+      return this._stepper;
     this._stepper = stepper;
     return this;
   }
@@ -5127,18 +5224,24 @@ var Queue = class {
   }
   // Removes the item that was returned from the push
   remove(item) {
-    if (item.prev) item.prev.next = item.next;
-    if (item.next) item.next.prev = item.prev;
-    if (item === this._last) this._last = item.prev;
-    if (item === this._first) this._first = item.next;
+    if (item.prev)
+      item.prev.next = item.next;
+    if (item.next)
+      item.next.prev = item.prev;
+    if (item === this._last)
+      this._last = item.prev;
+    if (item === this._first)
+      this._first = item.next;
     item.prev = null;
     item.next = null;
   }
   shift() {
     const remove2 = this._first;
-    if (!remove2) return null;
+    if (!remove2)
+      return null;
     this._first = remove2.next;
-    if (this._first) this._first.prev = null;
+    if (this._first)
+      this._first.prev = null;
     this._last = this._first ? this._last : null;
     return remove2.value;
   }
@@ -5196,7 +5299,8 @@ var Animator = {
       } else {
         Animator.timeouts.push(nextTimeout);
       }
-      if (nextTimeout === lastTimeout) break;
+      if (nextTimeout === lastTimeout)
+        break;
     }
     let nextFrame = null;
     const lastFrame = Animator.frames.last();
@@ -5273,7 +5377,8 @@ var Timeline = class extends EventTarget {
     return this._continue();
   }
   persist(dtOrForever) {
-    if (dtOrForever == null) return this._persist;
+    if (dtOrForever == null)
+      return this._persist;
     this._persist = dtOrForever;
     return this;
   }
@@ -5283,7 +5388,8 @@ var Timeline = class extends EventTarget {
   }
   reverse(yes) {
     const currentSpeed = this.speed();
-    if (yes == null) return this.speed(-currentSpeed);
+    if (yes == null)
+      return this.speed(-currentSpeed);
     const positive = Math.abs(currentSpeed);
     return this.speed(yes ? -positive : positive);
   }
@@ -5334,12 +5440,14 @@ var Timeline = class extends EventTarget {
     return this.time(this._time + dt);
   }
   source(fn) {
-    if (fn == null) return this._timeSource;
+    if (fn == null)
+      return this._timeSource;
     this._timeSource = fn;
     return this;
   }
   speed(speed) {
-    if (speed == null) return this._speed;
+    if (speed == null)
+      return this._speed;
     this._speed = speed;
     return this;
   }
@@ -5348,14 +5456,16 @@ var Timeline = class extends EventTarget {
     return this.pause();
   }
   time(time) {
-    if (time == null) return this._time;
+    if (time == null)
+      return this._time;
     this._time = time;
     return this._continue(true);
   }
   // Remove the runner from this timeline
   unschedule(runner) {
     const index = this._runnerIds.indexOf(runner.id);
-    if (index < 0) return this;
+    if (index < 0)
+      return this;
     this._runners.splice(index, 1);
     this._runnerIds.splice(index, 1);
     runner.timeline(null);
@@ -5372,15 +5482,18 @@ var Timeline = class extends EventTarget {
   _continue(immediateStep = false) {
     Animator.cancelFrame(this._nextFrame);
     this._nextFrame = null;
-    if (immediateStep) return this._stepImmediate();
-    if (this._paused) return this;
+    if (immediateStep)
+      return this._stepImmediate();
+    if (this._paused)
+      return this;
     this._nextFrame = Animator.frame(this._step);
     return this;
   }
   _stepFn(immediateStep = false) {
     const time = this._timeSource();
     let dtSource = time - this._lastSourceTime;
-    if (immediateStep) dtSource = 0;
+    if (immediateStep)
+      dtSource = 0;
     const dtTime = this._speed * dtSource + (this._time - this._lastStepTime);
     this._lastSourceTime = time;
     if (!immediateStep) {
@@ -5409,7 +5522,8 @@ var Timeline = class extends EventTarget {
       } else if (dtToStart < dt) {
         dt = dtToStart;
       }
-      if (!runner.active()) continue;
+      if (!runner.active())
+        continue;
       const finished = runner.step(dt).done;
       if (!finished) {
         runnersLeft = true;
@@ -5498,7 +5612,8 @@ var Runner = class _Runner extends EventTarget {
     };
   }
   active(enabled) {
-    if (enabled == null) return this.enabled;
+    if (enabled == null)
+      return this.enabled;
     this.enabled = enabled;
     return this;
   }
@@ -5517,8 +5632,10 @@ var Runner = class _Runner extends EventTarget {
   animate(duration, delay, when) {
     const o = _Runner.sanitise(duration, delay, when);
     const runner = new _Runner(o.duration);
-    if (this._timeline) runner.timeline(this._timeline);
-    if (this._element) runner.element(this._element);
+    if (this._timeline)
+      runner.timeline(this._timeline);
+    if (this._element)
+      runner.element(this._element);
     return runner.loop(o).schedule(o.delay, o.when);
   }
   clearTransform() {
@@ -5553,7 +5670,8 @@ var Runner = class _Runner extends EventTarget {
   help us make new runners from the current runner
   */
   element(element) {
-    if (element == null) return this._element;
+    if (element == null)
+      return this._element;
     this._element = element;
     element._prepareRunner();
     return this;
@@ -5589,7 +5707,8 @@ var Runner = class _Runner extends EventTarget {
     return this.time(time);
   }
   persist(dtOrForever) {
-    if (dtOrForever == null) return this._persist;
+    if (dtOrForever == null)
+      return this._persist;
     this._persist = dtOrForever;
     return this;
   }
@@ -5644,7 +5763,8 @@ var Runner = class _Runner extends EventTarget {
     return this;
   }
   reset() {
-    if (this._reseted) return this;
+    if (this._reseted)
+      return this;
     this.time(0);
     this._reseted = true;
     return this;
@@ -5666,7 +5786,8 @@ var Runner = class _Runner extends EventTarget {
     return this;
   }
   step(dt) {
-    if (!this.enabled) return this;
+    if (!this.enabled)
+      return this;
     dt = dt == null ? 16 : dt;
     this._time += dt;
     const position2 = this.position();
@@ -5709,7 +5830,8 @@ var Runner = class _Runner extends EventTarget {
     return this;
   }
   timeline(timeline2) {
-    if (typeof timeline2 === "undefined") return this._timeline;
+    if (typeof timeline2 === "undefined")
+      return this._timeline;
     this._timeline = timeline2;
     return this;
   }
@@ -5720,7 +5842,8 @@ var Runner = class _Runner extends EventTarget {
   }
   // Run each initialise function in the runner if required
   _initialise(running) {
-    if (!running && !this._isDeclarative) return;
+    if (!running && !this._isDeclarative)
+      return;
     for (let i = 0, len = this._queue.length; i < len; ++i) {
       const current = this._queue[i];
       const needsIt = this._isDeclarative || !current.initialised && running;
@@ -5807,7 +5930,8 @@ var RunnerArray = class {
     this.ids = [];
   }
   add(runner) {
-    if (this.runners.includes(runner)) return;
+    if (this.runners.includes(runner))
+      return;
     const id = runner.id + 1;
     this.runners.push(runner);
     this.ids.push(id);
@@ -5903,7 +6027,8 @@ extend(Runner, {
       });
     }
     let attrs2 = nameOrAttrs;
-    if (this._tryRetarget(type, attrs2)) return this;
+    if (this._tryRetarget(type, attrs2))
+      return this;
     let morpher = new Morphable(this._stepper).to(attrs2);
     let keys = Object.keys(attrs2);
     this.queue(function() {
@@ -5930,7 +6055,8 @@ extend(Runner, {
     return this;
   },
   zoom(level, point2) {
-    if (this._tryRetarget("zoom", level, point2)) return this;
+    if (this._tryRetarget("zoom", level, point2))
+      return this;
     let morpher = new Morphable(this._stepper).to(new SVGNumber(level));
     this.queue(function() {
       morpher = morpher.from(this.element().zoom());
@@ -5982,7 +6108,8 @@ extend(Runner, {
       }
     }
     function run(pos) {
-      if (!relative) this.clearTransform();
+      if (!relative)
+        this.clearTransform();
       const {
         x: x2,
         y: y2
@@ -6052,7 +6179,8 @@ extend(Runner, {
   },
   _queueNumberDelta(method, to2) {
     to2 = new SVGNumber(to2);
-    if (this._tryRetarget(method, to2)) return this;
+    if (this._tryRetarget(method, to2))
+      return this;
     const morpher = new Morphable(this._stepper).to(to2);
     let from2 = null;
     this.queue(function() {
@@ -6069,7 +6197,8 @@ extend(Runner, {
     return this;
   },
   _queueObject(method, to2) {
-    if (this._tryRetarget(method, to2)) return this;
+    if (this._tryRetarget(method, to2))
+      return this;
     const morpher = new Morphable(this._stepper).to(to2);
     this.queue(function() {
       morpher.from(this.element()[method]());
@@ -6126,7 +6255,8 @@ extend(Runner, {
     if (arguments.length === 4) {
       return this.plot([a, b, c, d]);
     }
-    if (this._tryRetarget("plot", a)) return this;
+    if (this._tryRetarget("plot", a))
+      return this;
     const morpher = new Morphable(this._stepper).type(this._element.MorphArray).to(a);
     this.queue(function() {
       morpher.from(this._element.array());
@@ -6153,9 +6283,12 @@ extend(Runner, {
         opacity: arguments[2]
       });
     }
-    if (o.opacity != null) this.attr("stop-opacity", o.opacity);
-    if (o.color != null) this.attr("stop-color", o.color);
-    if (o.offset != null) this.attr("offset", o.offset);
+    if (o.opacity != null)
+      this.attr("stop-opacity", o.opacity);
+    if (o.color != null)
+      this.attr("stop-color", o.color);
+    if (o.offset != null)
+      this.attr("offset", o.offset);
     return this;
   }
 });
@@ -6173,7 +6306,8 @@ var Svg = class extends Container {
   }
   // Creates and returns defs element
   defs() {
-    if (!this.isRoot()) return this.root().defs();
+    if (!this.isRoot())
+      return this.root().defs();
     return adopt(this.node.querySelector("defs")) || this.put(new Defs());
   }
   isRoot() {
@@ -6181,7 +6315,8 @@ var Svg = class extends Container {
   }
   // Add namespaces
   namespace() {
-    if (!this.isRoot()) return this.root().namespace();
+    if (!this.isRoot())
+      return this.root().namespace();
     return this.attr({
       xmlns: svg,
       version: "1.1"
@@ -6196,7 +6331,8 @@ var Svg = class extends Container {
   // Check if this is a root svg
   // If not, call root() from this element
   root() {
-    if (this.isRoot()) return this;
+    if (this.isRoot())
+      return this;
     return super.root();
   }
 };
@@ -6347,7 +6483,8 @@ var Text = class extends Shape {
       text = "";
       for (let i = 0, len = children.length; i < len; ++i) {
         if (children[i].nodeName === "textPath") {
-          if (i === 0) firstLine = 1;
+          if (i === 0)
+            firstLine = 1;
           continue;
         }
         if (i !== firstLine && children[i].nodeType !== 3 && adopt(children[i]).dom.newLined === true) {
@@ -6411,7 +6548,8 @@ var Tspan = class extends Shape {
   }
   // Set text content
   text(text) {
-    if (text == null) return this.node.textContent + (this.dom.newLined ? "\n" : "");
+    if (text == null)
+      return this.node.textContent + (this.dom.newLined ? "\n" : "");
     if (typeof text === "function") {
       this.clear().build(true);
       text.call(this, this);
@@ -6549,7 +6687,8 @@ function dy(dy2) {
   return this.dmove(0, dy2);
 }
 function height(height2, box = this.bbox()) {
-  if (height2 == null) return box.height;
+  if (height2 == null)
+    return box.height;
   return this.size(box.width, height2, box);
 }
 function move(x2 = 0, y2 = 0, box = this.bbox()) {
@@ -6568,15 +6707,18 @@ function size(width2, height2, box = this.bbox()) {
   return this;
 }
 function width(width2, box = this.bbox()) {
-  if (width2 == null) return box.width;
+  if (width2 == null)
+    return box.width;
   return this.size(width2, box.height, box);
 }
 function x(x2, box = this.bbox()) {
-  if (x2 == null) return box.x;
+  if (x2 == null)
+    return box.x;
   return this.move(x2, box.y, box);
 }
 function y(y2, box = this.bbox()) {
-  if (y2 == null) return box.y;
+  if (y2 == null)
+    return box.y;
   return this.move(box.x, y2, box);
 }
 var containerGeometry = {
@@ -6630,7 +6772,8 @@ registerMethods({
   Element: {
     unlink() {
       const link = this.linker();
-      if (!link) return this;
+      if (!link)
+        return this;
       const parent = link.parent();
       if (!parent) {
         return this.remove();
@@ -6714,9 +6857,12 @@ var Stop = class extends Element {
         opacity: arguments[2]
       };
     }
-    if (o.opacity != null) this.attr("stop-opacity", o.opacity);
-    if (o.color != null) this.attr("stop-color", o.color);
-    if (o.offset != null) this.attr("offset", new SVGNumber(o.offset));
+    if (o.opacity != null)
+      this.attr("stop-opacity", o.opacity);
+    if (o.color != null)
+      this.attr("stop-color", o.color);
+    if (o.offset != null)
+      this.attr("offset", new SVGNumber(o.offset));
     return this;
   }
 };
@@ -6730,8 +6876,10 @@ registerMethods({
 });
 register(Stop, "Stop");
 function cssRule(selector, rule) {
-  if (!selector) return "";
-  if (!rule) return selector;
+  if (!selector)
+    return "";
+  if (!rule)
+    return selector;
   let ret = selector + "{";
   for (const i in rule) {
     ret += unCamelCase(i) + ":" + rule[i] + ";";
@@ -6875,7 +7023,7 @@ List.extend(getMethodNames());
 registerMorphableType([SVGNumber, Color, Box, Matrix, SVGArray, PointArray, PathArray, Point]);
 makeMorphable();
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/theme/default.js
+// node_modules/simple-mind-map/src/theme/default.js
 var default_default = {
   // 节点内边距
   paddingX: 15,
@@ -7109,7 +7257,7 @@ var lineStyleProps = [
   "lineFlowForward"
 ];
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/utils/index.js
+// node_modules/simple-mind-map/src/utils/index.js
 var walk = (root2, parent, beforeCallback, afterCallback, isRoot, layerIndex = 0, index = 0, ancestors = []) => {
   let stop = false;
   if (beforeCallback) {
@@ -7145,7 +7293,8 @@ var bfsWalk = (root2, callback) => {
     let cur = stack.shift();
     if (cur.children && cur.children.length) {
       cur.children.forEach((item) => {
-        if (isStop) return;
+        if (isStop)
+          return;
         stack.push(item);
         if (callback(item, cur) === "stop") {
           isStop = true;
@@ -7212,10 +7361,16 @@ var copyRenderTree = (tree, root2, removeActiveState = false) => {
       tree.children[index] = copyRenderTree({}, item, removeActiveState);
     });
   }
+  Object.keys(root2).forEach((key) => {
+    if (!["data", "children"].includes(key) && !/^_/.test(key)) {
+      tree[key] = root2[key];
+    }
+  });
   return tree;
 };
 var copyNodeTree = (tree, root2, removeActiveState = false, removeId = true) => {
-  tree.data = simpleDeepClone(root2.nodeData ? root2.nodeData.data : root2.data);
+  const rootData = root2.nodeData ? root2.nodeData : root2;
+  tree.data = simpleDeepClone(rootData.data);
   if (removeId) {
     delete tree.data.uid;
   } else if (!tree.data.uid) {
@@ -7234,6 +7389,11 @@ var copyNodeTree = (tree, root2, removeActiveState = false, removeId = true) => 
       tree.children[index] = copyNodeTree({}, item, removeActiveState, removeId);
     });
   }
+  Object.keys(rootData).forEach((key) => {
+    if (!["data", "children"].includes(key) && !/^_/.test(key)) {
+      tree[key] = rootData[key];
+    }
+  });
   return tree;
 };
 var throttle = (fn, time = 300, ctx) => {
@@ -7246,6 +7406,20 @@ var throttle = (fn, time = 300, ctx) => {
       fn.call(ctx, ...args);
       timer = null;
     }, time);
+  };
+};
+var debounce = (fn, wait = 300, ctx) => {
+  let timeout = null;
+  return (...args) => {
+    if (timeout)
+      clearTimeout(timeout);
+    const callNow = !timeout;
+    timeout = setTimeout(() => {
+      timeout = null;
+      fn.apply(ctx, args);
+    }, wait);
+    if (callNow)
+      fn.apply(ctx, args);
   };
 };
 var asyncRun = (taskList, callback = () => {
@@ -7271,6 +7445,11 @@ var asyncRun = (taskList, callback = () => {
 var degToRad = (deg) => {
   return deg * (Math.PI / 180);
 };
+var camelCaseToHyphen = (str) => {
+  return str.replace(/([a-z])([A-Z])/g, (...args) => {
+    return args[1] + "-" + args[2].toLowerCase();
+  });
+};
 var nextTick = function(fn, ctx) {
   let pending = false;
   let timerFunc = null;
@@ -7294,7 +7473,8 @@ var nextTick = function(fn, ctx) {
     timerFunc = setTimeout;
   }
   return function() {
-    if (pending) return;
+    if (pending)
+      return;
     pending = true;
     timerFunc(handle, 0);
   };
@@ -7379,31 +7559,6 @@ var getType = (data2) => {
 var isUndef = (data2) => {
   return data2 === null || data2 === void 0 || data2 === "";
 };
-var removeHtmlStyle = (html2) => {
-  return html2.replaceAll(/(<[^\s]+)\s+style=["'][^'"]+["']\s*(>)/g, "$1$2");
-};
-var addHtmlStyleEl = null;
-var addHtmlStyle = (html2, tag, style) => {
-  if (!addHtmlStyleEl) {
-    addHtmlStyleEl = document.createElement("div");
-  }
-  const tags = Array.isArray(tag) ? tag : [tag];
-  addHtmlStyleEl.innerHTML = html2;
-  let walk2 = (root2) => {
-    let childNodes = root2.childNodes;
-    childNodes.forEach((node) => {
-      if (node.nodeType === 1) {
-        if (tags.includes(node.tagName.toLowerCase())) {
-          node.style.cssText = style;
-        } else {
-          walk2(node);
-        }
-      }
-    });
-  };
-  walk2(addHtmlStyleEl);
-  return addHtmlStyleEl.innerHTML;
-};
 var checkIsRichTextEl = null;
 var checkIsRichText = (str) => {
   if (!checkIsRichTextEl) {
@@ -7411,7 +7566,8 @@ var checkIsRichText = (str) => {
   }
   checkIsRichTextEl.innerHTML = str;
   for (let c = checkIsRichTextEl.childNodes, i = c.length; i--; ) {
-    if (c[i].nodeType == 1) return true;
+    if (c[i].nodeType == 1)
+      return true;
   }
   return false;
 };
@@ -7505,7 +7661,8 @@ var getObjectChangedProps = (oldObject, newObject) => {
   return res;
 };
 var checkIsNodeStyleDataKey = (key) => {
-  if (/^_/.test(key)) return false;
+  if (/^_/.test(key))
+    return false;
   if (!nodeDataNoStylePropList.includes(key)) {
     return true;
   }
@@ -7610,6 +7767,11 @@ var selectAllInput = (el) => {
   selection.addRange(range);
 };
 var addDataToAppointNodes = (appointNodes, data2 = {}) => {
+  data2 = { ...data2 };
+  const alreadyIsRichText = data2 && data2.richText;
+  if (alreadyIsRichText && data2.resetRichText) {
+    delete data2.resetRichText;
+  }
   const walk2 = (list) => {
     list.forEach((node) => {
       node.data = {
@@ -7643,7 +7805,8 @@ var createUidForAppointNodes = (appointNodes, createNewId = false, handle = null
   return appointNodes;
 };
 var formatDataToArray = (data2) => {
-  if (!data2) return [];
+  if (!data2)
+    return [];
   return Array.isArray(data2) ? data2 : [data2];
 };
 var getNodeDataIndex = (node) => {
@@ -7666,7 +7829,6 @@ var generateColorByContent = (str) => {
   return "hsla(" + h + ", 50%, 50%, 1)";
 };
 var htmlEscape = (str) => {
-  ;
   [
     ["&", "&amp;"],
     ["<", "&lt;"],
@@ -7678,14 +7840,17 @@ var htmlEscape = (str) => {
 };
 var isSameObject = (a, b) => {
   const type = getType(a);
-  if (type !== getType(b)) return false;
+  if (type !== getType(b))
+    return false;
   if (type === "Object") {
     const keysa = Object.keys(a);
     const keysb = Object.keys(b);
-    if (keysa.length !== keysb.length) return false;
+    if (keysa.length !== keysb.length)
+      return false;
     for (let i = 0; i < keysa.length; i++) {
       const key = keysa[i];
-      if (!keysb.includes(key)) return false;
+      if (!keysb.includes(key))
+        return false;
       const isSame = isSameObject(a[key], b[key]);
       if (!isSame) {
         return false;
@@ -7693,13 +7858,15 @@ var isSameObject = (a, b) => {
     }
     return true;
   } else if (type === "Array") {
-    if (a.length !== b.length) return false;
+    if (a.length !== b.length)
+      return false;
     for (let i = 0; i < a.length; i++) {
       const itema = a[i];
       const itemb = b[i];
       const typea = getType(itema);
       const typeb = getType(itemb);
-      if (typea !== typeb) return false;
+      if (typea !== typeb)
+        return false;
       const isSame = isSameObject(itema, itemb);
       if (!isSame) {
         return false;
@@ -7742,13 +7909,16 @@ var getDataFromClipboard = async () => {
   };
 };
 var removeFromParentNodeData = (node) => {
-  if (!node || !node.parent) return;
+  if (!node || !node.parent)
+    return;
   const index = getNodeDataIndex(node);
-  if (index === -1) return;
+  if (index === -1)
+    return;
   node.parent.nodeData.children.splice(index, 1);
 };
 var checkNodeListIsEqual = (list1, list2) => {
-  if (list1.length !== list2.length) return false;
+  if (list1.length !== list2.length)
+    return false;
   for (let i = 0; i < list1.length; i++) {
     if (!list2.find((item) => {
       return item.uid === list1[i].uid;
@@ -7786,9 +7956,11 @@ var checkSmmFormatData = (data2) => {
 var handleInputPasteText = (e, text) => {
   e.preventDefault();
   const selection = window.getSelection();
-  if (!selection.rangeCount) return;
+  if (!selection.rangeCount)
+    return;
   selection.deleteFromDocument();
   text = text || e.clipboardData.getData("text");
+  text = htmlEscape(text);
   text = getTextFromHtml(text);
   const textArr = text.split(/\n/g);
   const fragment = document.createDocumentFragment();
@@ -7838,7 +8010,8 @@ var handleGetSvgDataExtraContent = ({
   const handle = (fn, callback) => {
     if (typeof fn === "function") {
       const res = fn();
-      if (!res) return;
+      if (!res)
+        return;
       const { el, cssText, height: height2 } = res;
       if (el instanceof HTMLElement) {
         addXmlns(el);
@@ -7961,8 +8134,19 @@ var mergeTheme = (dest, source) => {
     }
   });
 };
+var getNodeRichTextStyles = (node) => {
+  const res = {};
+  richTextSupportStyleList.forEach((prop) => {
+    let value = node.style.merge(prop);
+    if (prop === "fontSize") {
+      value = value + "px";
+    }
+    res[prop] = value;
+  });
+  return res;
+};
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/core/render/node/Style.js
+// node_modules/simple-mind-map/src/core/render/node/Style.js
 var backgroundStyleProps = [
   "backgroundColor",
   "backgroundImage",
@@ -7973,7 +8157,8 @@ var backgroundStyleProps = [
 var Style2 = class _Style {
   //   设置背景样式
   static setBackgroundStyle(el, themeConfig) {
-    if (!el) return;
+    if (!el)
+      return;
     if (!_Style.cacheStyle) {
       _Style.cacheStyle = {};
       let style = window.getComputedStyle(el);
@@ -8000,7 +8185,8 @@ var Style2 = class _Style {
   }
   // 移除背景样式
   static removeBackgroundStyle(el) {
-    if (!_Style.cacheStyle) return;
+    if (!_Style.cacheStyle)
+      return;
     backgroundStyleProps.forEach((prop) => {
       el.style[prop] = _Style.cacheStyle[prop];
     });
@@ -8191,9 +8377,9 @@ var Style2 = class _Style {
     }
   }
   //  内置图标
-  iconNode(node) {
+  iconNode(node, color) {
     node.attr({
-      fill: this.merge("color")
+      fill: color || this.merge("color")
     });
   }
   //  连线
@@ -8301,7 +8487,7 @@ var Style2 = class _Style {
 Style2.cacheStyle = null;
 var Style_default = Style2;
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/core/render/node/Shape.js
+// node_modules/simple-mind-map/src/core/render/node/Shape.js
 var Shape2 = class {
   constructor(node) {
     this.node = node;
@@ -8560,7 +8746,7 @@ var shapeList = [
   CONSTANTS.SHAPE.CIRCLE
 ];
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/core/render/node/nodeGeneralization.js
+// node_modules/simple-mind-map/src/core/render/node/nodeGeneralization.js
 function formatGetGeneralization() {
   const data2 = this.getData("generalization");
   return Array.isArray(data2) ? data2 : data2 ? [data2] : [];
@@ -8622,12 +8808,14 @@ function createGeneralizationNode() {
   this._generalizationNodeHeight = maxHeight;
 }
 function updateGeneralization() {
-  if (this.isGeneralization) return;
+  if (this.isGeneralization)
+    return;
   this.removeGeneralization();
   this.createGeneralizationNode();
 }
 function renderGeneralization(forceRender) {
-  if (this.isGeneralization) return;
+  if (this.isGeneralization)
+    return;
   this.updateGeneralizationData();
   const list = this.formatGetGeneralization();
   if (list.length <= 0 || this.getData("expand") === false) {
@@ -8665,7 +8853,8 @@ function updateGeneralizationData() {
   }
 }
 function removeGeneralization() {
-  if (this.isGeneralization) return;
+  if (this.isGeneralization)
+    return;
   this._generalizationList.forEach((item) => {
     item.generalizationNode.style.onRemove();
     if (item.generalizationLine) {
@@ -8684,17 +8873,23 @@ function removeGeneralization() {
   }
 }
 function hideGeneralization() {
-  if (this.isGeneralization) return;
+  if (this.isGeneralization)
+    return;
   this._generalizationList.forEach((item) => {
-    if (item.generalizationLine) item.generalizationLine.hide();
-    if (item.generalizationNode) item.generalizationNode.hide();
+    if (item.generalizationLine)
+      item.generalizationLine.hide();
+    if (item.generalizationNode)
+      item.generalizationNode.hide();
   });
 }
 function showGeneralization() {
-  if (this.isGeneralization) return;
+  if (this.isGeneralization)
+    return;
   this._generalizationList.forEach((item) => {
-    if (item.generalizationLine) item.generalizationLine.show();
-    if (item.generalizationNode) item.generalizationNode.show();
+    if (item.generalizationLine)
+      item.generalizationLine.show();
+    if (item.generalizationNode)
+      item.generalizationNode.show();
   });
 }
 function setGeneralizationOpacity(val) {
@@ -8743,7 +8938,7 @@ var nodeGeneralization_default = {
   handleGeneralizationMouseleave
 };
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/svg/btns.js
+// node_modules/simple-mind-map/src/svg/btns.js
 var open = `<svg t="1618141562310" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="13476" width="200" height="200"><path d="M475.136 327.168v147.968h-147.968v74.24h147.968v147.968h74.24v-147.968h147.968v-74.24h-147.968v-147.968h-74.24z m36.864-222.208c225.28 0 407.04 181.76 407.04 407.04s-181.76 407.04-407.04 407.04-407.04-181.76-407.04-407.04 181.76-407.04 407.04-407.04z m0-74.24c-265.216 0-480.768 215.552-480.768 480.768s215.552 480.768 480.768 480.768 480.768-215.552 480.768-480.768-215.552-480.768-480.768-480.768z" p-id="13477"></path></svg>`;
 var close = `<svg t="1618141589243" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="13611" width="200" height="200"><path d="M512 105.472c225.28 0 407.04 181.76 407.04 407.04s-181.76 407.04-407.04 407.04-407.04-181.76-407.04-407.04 181.76-407.04 407.04-407.04z m0-74.24c-265.216 0-480.768 215.552-480.768 480.768s215.552 480.768 480.768 480.768 480.768-215.552 480.768-480.768-215.552-480.768-480.768-480.768z" p-id="13612"></path><path d="M252.928 474.624h518.144v74.24h-518.144z" p-id="13613"></path></svg>`;
 var remove = `<svg width="14px" height="14px" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="13611" width="200" height="200"><path fill="#ffffff" d="M512 105.472c225.28 0 407.04 181.76 407.04 407.04s-181.76 407.04-407.04 407.04-407.04-181.76-407.04-407.04 181.76-407.04 407.04-407.04z m0-74.24c-265.216 0-480.768 215.552-480.768 480.768s215.552 480.768 480.768 480.768 480.768-215.552 480.768-480.768-215.552-480.768-480.768-480.768z" p-id="13612"></path><path fill="#ffffff" d="M252.928 474.624h518.144v74.24h-518.144z" p-id="13613"></path></svg>`;
@@ -8755,7 +8950,7 @@ var btns_default = {
   imgAdjust
 };
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/core/render/node/nodeExpandBtn.js
+// node_modules/simple-mind-map/src/core/render/node/nodeExpandBtn.js
 function createExpandNodeContent() {
   if (this._openExpandNode) {
     return;
@@ -8763,6 +8958,7 @@ function createExpandNodeContent() {
   let { close: close2, open: open2 } = this.mindMap.opt.expandBtnIcon || {};
   if (this.mindMap.opt.isShowExpandNum) {
     this._openExpandNode = new Text();
+    this._openExpandNode.addClass("smm-expand-btn-text");
     this._openExpandNode.attr({
       "text-anchor": "middle",
       "dominant-baseline": "middle",
@@ -8797,7 +8993,8 @@ function sumNode(data2 = []) {
 }
 function updateExpandBtnNode() {
   let { expand } = this.getData();
-  if (expand === this._lastExpandBtnType) return;
+  if (expand === this._lastExpandBtnType)
+    return;
   if (this._expandBtn) {
     this._expandBtn.clear();
   }
@@ -8881,14 +9078,16 @@ function removeExpandBtn() {
 }
 function showExpandBtn() {
   const { alwaysShowExpandBtn, notShowExpandBtn } = this.mindMap.opt;
-  if (alwaysShowExpandBtn || notShowExpandBtn) return;
+  if (alwaysShowExpandBtn || notShowExpandBtn)
+    return;
   setTimeout(() => {
     this.renderExpandBtn();
   }, 0);
 }
 function hideExpandBtn() {
   const { alwaysShowExpandBtn, notShowExpandBtn } = this.mindMap.opt;
-  if (alwaysShowExpandBtn || this._isMouseenter || notShowExpandBtn) return;
+  if (alwaysShowExpandBtn || this._isMouseenter || notShowExpandBtn)
+    return;
   let { isActive, expand } = this.getData();
   if (!isActive && expand) {
     setTimeout(() => {
@@ -8907,7 +9106,7 @@ var nodeExpandBtn_default = {
   sumNode
 };
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/core/render/node/nodeCommandWraps.js
+// node_modules/simple-mind-map/src/core/render/node/nodeCommandWraps.js
 function setData(data2 = {}) {
   this.mindMap.execCommand("SET_NODE_DATA", this, data2);
 }
@@ -8955,7 +9154,7 @@ var nodeCommandWraps_default = {
   setStyles
 };
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/svg/icons.js
+// node_modules/simple-mind-map/src/svg/icons.js
 var hyperlink = '<svg t="1624174958075" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7982" ><path d="M435.484444 251.733333v68.892445L295.822222 320.682667a168.504889 168.504889 0 0 0-2.844444 336.952889h142.506666v68.892444H295.822222a237.397333 237.397333 0 0 1 0-474.794667h139.662222z m248.945778 0a237.397333 237.397333 0 0 1 0 474.851556H544.654222v-69.006222l139.776 0.056889a168.504889 168.504889 0 0 0 2.844445-336.952889H544.597333V251.676444h139.776z m-25.827555 203.946667a34.474667 34.474667 0 0 1 0 68.892444H321.649778a34.474667 34.474667 0 0 1 0-68.892444h336.952889z" p-id="7983"></path></svg>';
 var note = '<svg t="1624195132675" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8792" ><path d="M152.768 985.984 152.768 49.856l434.56 0 66.816 0 234.048 267.392 0 66.816 0 601.92L152.768 985.984 152.768 985.984zM654.144 193.088l0 124.16 108.736 0L654.144 193.088 654.144 193.088zM821.312 384.064l-167.168 0L587.328 384.064 587.328 317.312 587.328 116.736 219.584 116.736 219.584 919.04l601.728 0L821.312 384.064 821.312 384.064zM386.688 517.888 319.808 517.888 319.808 450.944l66.816 0L386.624 517.888 386.688 517.888zM386.688 651.584 319.808 651.584 319.808 584.704l66.816 0L386.624 651.584 386.688 651.584zM386.688 785.344 319.808 785.344l0-66.88 66.816 0L386.624 785.344 386.688 785.344zM721.024 517.888 453.632 517.888 453.632 450.944l267.392 0L721.024 517.888 721.024 517.888zM654.144 651.584 453.632 651.584 453.632 584.704l200.512 0L654.144 651.584 654.144 651.584zM620.672 785.344l-167.04 0 0-66.88 167.04 0L620.672 785.344 620.672 785.344z" p-id="8793"></path></svg>';
 var attachment = '<svg t="1711935375590" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3864" xmlns:xlink="http://www.w3.org/1999/xlink" width="128" height="128"><path d="M516.373333 375.978667l136.576-136.576a147.797333 147.797333 0 0 1 208.853334-0.021334 147.690667 147.690667 0 0 1-0.042667 208.832l-204.8 204.778667v0.021333l-153.621333 153.6c-85.973333 85.973333-225.28 85.973333-311.253334 0.021334-85.994667-85.973333-85.973333-225.216 0.149334-311.36L431.146667 256.362667a21.333333 21.333333 0 0 0-30.165334-30.165334L162.069333 465.066667c-102.805333 102.826667-102.826667 269.056-0.149333 371.733333 102.613333 102.613333 268.970667 102.613333 371.584 0l153.6-153.642667h0.021333l0.021334-0.021333 204.778666-204.778667c74.325333-74.325333 74.346667-194.858667 0.021334-269.184-74.24-74.24-194.88-74.24-269.162667 0.042667l-136.576 136.554667-187.626667 187.626666a117.845333 117.845333 0 0 0-0.106666 166.826667 118.037333 118.037333 0 0 0 166.826666-0.106667l255.850667-255.829333a21.333333 21.333333 0 0 0-30.165333-30.165333L435.136 669.973333a75.370667 75.370667 0 0 1-106.496 0.106667 75.178667 75.178667 0 0 1 0.128-106.496l187.605333-187.605333z" p-id="3865"></path></svg>';
@@ -9255,7 +9454,7 @@ var icons_default = {
   getNodeIconListIcon
 };
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/core/render/node/nodeCreateContents.js
+// node_modules/simple-mind-map/src/core/render/node/nodeCreateContents.js
 var measureText = (text, style) => {
   const g = new G();
   const node = new Text().text(text);
@@ -9314,7 +9513,8 @@ function createImgNode() {
 }
 function getImgShowSize() {
   const { custom, width: width2, height: height2 } = this.getData("imageSize");
-  if (custom) return [width2, height2];
+  if (custom)
+    return [width2, height2];
   return resizeImgSize(
     width2,
     height2,
@@ -9356,39 +9556,32 @@ function createIconNode() {
     };
   });
 }
-function tryAddHtmlStyle(text, style) {
-  const tagList = ["span", "strong", "s", "em", "u"];
-  return addHtmlStyle(text, tagList, style);
-}
 function createRichTextNode(specifyText) {
   const hasCustomWidth = this.hasCustomWidth();
   let text = typeof specifyText === "string" ? specifyText : this.getData("text");
   let { textAutoWrapWidth, emptyTextMeasureHeightText } = this.mindMap.opt;
   textAutoWrapWidth = hasCustomWidth ? this.customTextWidth : textAutoWrapWidth;
-  let g = new G();
+  const g = new G();
   let recoverText = false;
   if (this.getData("resetRichText")) {
     delete this.nodeData.data.resetRichText;
     recoverText = true;
   }
-  if ([CONSTANTS.CHANGE_THEME].includes(this.mindMap.renderer.renderSource)) {
-    recoverText = true;
-  }
   if (recoverText && !isUndef(text)) {
-    const isRichText = checkIsRichText(text);
-    const customStyle = this.style.getCustomStyle();
-    const style = this.style.createStyleText(customStyle);
-    if (isRichText) {
-      text = removeHtmlStyle(text);
-      text = this.tryAddHtmlStyle(text, style);
+    if (checkIsRichText(text)) {
+      text = removeRichTextStyes(text);
     } else {
-      text = `<p><span style="${style}">${text}</span></p>`;
+      text = `<p>${text}</p>`;
     }
     this.setData({
       text
     });
   }
-  let html2 = `<div>${text}</div>`;
+  const nodeTextStyleList = [];
+  const nodeRichTextStyles = getNodeRichTextStyles(this);
+  Object.keys(nodeRichTextStyles).forEach((prop) => {
+    nodeTextStyleList.push([prop, nodeRichTextStyles[prop]]);
+  });
   if (!this.mindMap.commonCaches.measureRichtextNodeTextSizeEl) {
     this.mindMap.commonCaches.measureRichtextNodeTextSizeEl = document.createElement("div");
     this.mindMap.commonCaches.measureRichtextNodeTextSizeEl.style.position = "fixed";
@@ -9397,9 +9590,14 @@ function createRichTextNode(specifyText) {
       this.mindMap.commonCaches.measureRichtextNodeTextSizeEl
     );
   }
-  let div = this.mindMap.commonCaches.measureRichtextNodeTextSizeEl;
+  const div = this.mindMap.commonCaches.measureRichtextNodeTextSizeEl;
+  nodeTextStyleList.forEach(([prop, value]) => {
+    div.style[prop] = value;
+  });
+  div.style.lineHeight = 1.2;
+  const html2 = `<div>${text}</div>`;
   div.innerHTML = html2;
-  let el = div.children[0];
+  const el = div.children[0];
   el.classList.add("smm-richtext-node-wrap");
   addXmlns(el);
   el.style.maxWidth = textAutoWrapWidth + "px";
@@ -9425,6 +9623,13 @@ function createRichTextNode(specifyText) {
     width: width2,
     height: height2
   });
+  const foreignObjectStyle = {
+    "line-height": 1.2
+  };
+  nodeTextStyleList.forEach(([prop, value]) => {
+    foreignObjectStyle[camelCaseToHyphen(prop)] = value;
+  });
+  foreignObject.css(foreignObjectStyle);
   g.add(foreignObject);
   return {
     node: g,
@@ -9434,6 +9639,9 @@ function createRichTextNode(specifyText) {
   };
 }
 function createTextNode(specifyText) {
+  if (this.getData("needUpdate")) {
+    delete this.nodeData.data.needUpdate;
+  }
   if (this.getData("richText")) {
     return this.createRichTextNode(specifyText);
   }
@@ -9503,14 +9711,15 @@ function createTextNode(specifyText) {
   };
 }
 function createHyperlinkNode() {
-  let { hyperlink: hyperlink2, hyperlinkTitle } = this.getData();
+  const { hyperlink: hyperlink2, hyperlinkTitle } = this.getData();
   if (!hyperlink2) {
     return;
   }
-  const { customHyperlinkJump } = this.mindMap.opt;
-  let iconSize = this.mindMap.themeConfig.iconSize;
-  let node = new SVG().size(iconSize, iconSize);
-  let a = new A().to(hyperlink2).target("_blank");
+  const { customHyperlinkJump, hyperlinkIcon } = this.mindMap.opt;
+  const { icon, style } = hyperlinkIcon;
+  const iconSize = this.getNodeIconSize("hyperlinkIcon");
+  const node = new SVG().size(iconSize, iconSize);
+  const a = new A().to(hyperlink2).target("_blank");
   a.node.addEventListener("click", (e) => {
     if (typeof customHyperlinkJump === "function") {
       e.preventDefault();
@@ -9521,8 +9730,8 @@ function createHyperlinkNode() {
     node.add(SVG(`<title>${hyperlinkTitle}</title>`));
   }
   a.rect(iconSize, iconSize).fill({ color: "transparent" });
-  let iconNode = SVG(icons_default.hyperlink).size(iconSize, iconSize);
-  this.style.iconNode(iconNode);
+  const iconNode = SVG(icon || icons_default.hyperlink).size(iconSize, iconSize);
+  this.style.iconNode(iconNode, style.color);
   a.add(iconNode);
   node.add(a);
   return {
@@ -9591,11 +9800,12 @@ function createNoteNode() {
   if (!this.getData("note")) {
     return null;
   }
-  let iconSize = this.mindMap.themeConfig.iconSize;
-  let node = new SVG().attr("cursor", "pointer").addClass("smm-node-note").size(iconSize, iconSize);
+  const { icon, style } = this.mindMap.opt.noteIcon;
+  const iconSize = this.getNodeIconSize("noteIcon");
+  const node = new SVG().attr("cursor", "pointer").addClass("smm-node-note").size(iconSize, iconSize);
   node.add(new Rect().size(iconSize, iconSize).fill({ color: "transparent" }));
-  let iconNode = SVG(icons_default.note).size(iconSize, iconSize);
-  this.style.iconNode(iconNode);
+  const iconNode = SVG(icon || icons_default.note).size(iconSize, iconSize);
+  this.style.iconNode(iconNode, style.color);
   node.add(iconNode);
   if (!this.mindMap.opt.customNoteContentShow) {
     if (!this.noteEl) {
@@ -9653,14 +9863,15 @@ function createAttachmentNode() {
   if (!attachmentUrl) {
     return;
   }
-  const iconSize = this.mindMap.themeConfig.iconSize;
+  const iconSize = this.getNodeIconSize("attachmentIcon");
+  const { icon, style } = this.mindMap.opt.attachmentIcon;
   const node = new SVG().attr("cursor", "pointer").size(iconSize, iconSize);
   if (attachmentName) {
     node.add(SVG(`<title>${attachmentName}</title>`));
   }
   node.add(new Rect().size(iconSize, iconSize).fill({ color: "transparent" }));
-  const iconNode = SVG(icons_default.attachment).size(iconSize, iconSize);
-  this.style.iconNode(iconNode);
+  const iconNode = SVG(icon || icons_default.attachment).size(iconSize, iconSize);
+  this.style.iconNode(iconNode, style.color);
   node.add(iconNode);
   node.on("click", (e) => {
     this.mindMap.emit("node_attachmentClick", this, e, node);
@@ -9674,8 +9885,12 @@ function createAttachmentNode() {
     height: iconSize
   };
 }
+function getNodeIconSize(prop) {
+  const { style } = this.mindMap.opt[prop];
+  return isUndef(style.size) ? this.mindMap.themeConfig.iconSize : style.size;
+}
 function getNoteContentPosition() {
-  const iconSize = this.mindMap.themeConfig.iconSize;
+  const iconSize = this.getNodeIconSize("noteIcon");
   const { scaleY } = this.mindMap.view.getTransformData().transform;
   const iconSizeAddScale = iconSize * scaleY;
   let { left, top } = this._noteData.node.node.getBoundingClientRect();
@@ -9712,7 +9927,6 @@ var nodeCreateContents_default = {
   createImgNode,
   getImgShowSize,
   createIconNode,
-  tryAddHtmlStyle,
   createRichTextNode,
   createTextNode,
   createHyperlinkNode,
@@ -9720,11 +9934,12 @@ var nodeCreateContents_default = {
   createNoteNode,
   createAttachmentNode,
   getNoteContentPosition,
+  getNodeIconSize,
   measureCustomNodeContentSize,
   isUseCustomNodeContent
 };
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/core/render/node/nodeExpandBtnPlaceholderRect.js
+// node_modules/simple-mind-map/src/core/render/node/nodeExpandBtnPlaceholderRect.js
 function renderExpandBtnPlaceholderRect() {
   if (!this.nodeData.children || this.nodeData.children.length <= 0 || this.isRoot) {
     return;
@@ -9776,7 +9991,7 @@ var nodeExpandBtnPlaceholderRect_default = {
   updateExpandBtnPlaceholderRect
 };
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/core/render/node/nodeModifyWidth.js
+// node_modules/simple-mind-map/src/core/render/node/nodeModifyWidth.js
 function initDragHandle() {
   if (!this.checkEnableDragModifyNodeWidth()) {
     return;
@@ -9796,7 +10011,8 @@ function initDragHandle() {
   this.mindMap.on("node_mouseup", this.onDragMouseupHandle);
 }
 function onDragMousemoveHandle(e) {
-  if (!this.isDragHandleMousedown) return;
+  if (!this.isDragHandleMousedown)
+    return;
   e.stopPropagation();
   e.preventDefault();
   let {
@@ -9832,7 +10048,8 @@ function onDragMousemoveHandle(e) {
   });
 }
 function onDragMouseupHandle() {
-  if (!this.isDragHandleMousedown) return;
+  if (!this.isDragHandleMousedown)
+    return;
   document.body.style.cursor = this.dragHandleMousedownBodyCursor;
   this.group.css({
     cursor: "default"
@@ -9869,7 +10086,8 @@ function createDragHandleNode() {
   return list;
 }
 function updateDragHandle() {
-  if (!this.checkEnableDragModifyNodeWidth()) return;
+  if (!this.checkEnableDragModifyNodeWidth())
+    return;
   if (!this._dragHandleNodes) {
     this._dragHandleNodes = this.createDragHandleNode();
   }
@@ -9893,9 +10111,10 @@ var nodeModifyWidth_default = {
   updateDragHandle
 };
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/core/render/node/nodeCooperate.js
+// node_modules/simple-mind-map/src/core/render/node/nodeCooperate.js
 function createUserListNode() {
-  if (!this.mindMap.cooperate) return;
+  if (!this.mindMap.cooperate)
+    return;
   this._userListGroup = new G();
   this.group.add(this._userListGroup);
 }
@@ -9920,7 +10139,8 @@ function createImageAvatar(item) {
   return new Image2().load(item.avatar).size(avatarSize, avatarSize);
 }
 function updateUserListNode() {
-  if (!this._userListGroup) return;
+  if (!this._userListGroup)
+    return;
   const { avatarSize } = this.mindMap.opt.cooperateStyle;
   this._userListGroup.clear();
   const length2 = this.userList.length;
@@ -9966,7 +10186,8 @@ function removeUser(userInfo) {
   const index = this.userList.findIndex((item) => {
     return item.id == userInfo.id;
   });
-  if (index === -1) return;
+  if (index === -1)
+    return;
   this.userList.splice(index, 1);
   this.updateUserListNode();
 }
@@ -9984,7 +10205,7 @@ var nodeCooperate_default = {
   emptyUser
 };
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/core/render/node/MindMapNode.js
+// node_modules/simple-mind-map/src/core/render/node/MindMapNode.js
 var MindMapNode = class _MindMapNode {
   //  构造函数
   constructor(opt = {}) {
@@ -10087,6 +10308,7 @@ var MindMapNode = class _MindMapNode {
       proto.bindEvent = true;
     }
     this.getSize();
+    this.updateGeneralization();
     this.initDragHandle();
   }
   // 支持自定义位置
@@ -10165,12 +10387,18 @@ var MindMapNode = class _MindMapNode {
       addXmlns(this._customNodeContent);
       return;
     }
-    if (createTypes.image) this._imgData = this.createImgNode();
-    if (createTypes.icon) this._iconData = this.createIconNode();
-    if (createTypes.text) this._textData = this.createTextNode();
-    if (createTypes.hyperlink) this._hyperlinkData = this.createHyperlinkNode();
-    if (createTypes.tag) this._tagData = this.createTagNode();
-    if (createTypes.note) this._noteData = this.createNoteNode();
+    if (createTypes.image)
+      this._imgData = this.createImgNode();
+    if (createTypes.icon)
+      this._iconData = this.createIconNode();
+    if (createTypes.text)
+      this._textData = this.createTextNode();
+    if (createTypes.hyperlink)
+      this._hyperlinkData = this.createHyperlinkNode();
+    if (createTypes.tag)
+      this._tagData = this.createTagNode();
+    if (createTypes.note)
+      this._noteData = this.createNoteNode();
     if (createTypes.attachment)
       this._attachmentData = this.createAttachmentNode();
     this.mindMap.nodeInnerPrefixList.forEach((item) => {
@@ -10306,7 +10534,8 @@ var MindMapNode = class _MindMapNode {
   }
   //  定位节点内容
   layout() {
-    if (!this.group) return;
+    if (!this.group)
+      return;
     this.group.clear();
     const { hoverRectPadding, tagPosition, openRealtimeRenderOnNodeTextEdit } = this.mindMap.opt;
     let { width: width2, height: height2, textContentItemMargin } = this;
@@ -10319,7 +10548,8 @@ var MindMapNode = class _MindMapNode {
     this.style.shape(this.shapeNode);
     this.group.add(this.shapeNode);
     this.renderExpandBtnPlaceholderRect();
-    if (this.createUserListNode) this.createUserListNode();
+    if (this.createUserListNode)
+      this.createUserListNode();
     if (this.isGeneralization && this.generalizationBelongNode) {
       this.group.addClass("generalization_" + this.generalizationBelongNode.uid);
     }
@@ -10511,7 +10741,8 @@ var MindMapNode = class _MindMapNode {
       this.mindMap.emit("node_mouseup", this, e);
     });
     this.group.on("mouseenter", (e) => {
-      if (this.isDrag) return;
+      if (this.isDrag)
+        return;
       this._isMouseenter = true;
       this.showExpandBtn();
       if (this.isGeneralization) {
@@ -10520,7 +10751,8 @@ var MindMapNode = class _MindMapNode {
       this.mindMap.emit("node_mouseenter", this, e);
     });
     this.group.on("mouseleave", (e) => {
-      if (!this._isMouseenter) return;
+      if (!this._isMouseenter)
+        return;
       this._isMouseenter = false;
       this.hideExpandBtn();
       if (this.isGeneralization) {
@@ -10603,7 +10835,8 @@ var MindMapNode = class _MindMapNode {
     }
     this.updateDragHandle();
     this.renderGeneralization(forceRender);
-    if (this.updateUserListNode) this.updateUserListNode();
+    if (this.updateUserListNode)
+      this.updateUserListNode();
     const t = this.group.transform();
     this.nodeDataSnapshot = JSON.stringify(this.getData());
     if (this.left !== t.translateX || this.top !== t.translateY) {
@@ -10635,7 +10868,8 @@ var MindMapNode = class _MindMapNode {
   }
   // 更新节点激活状态
   updateNodeActiveClass() {
-    if (!this.group) return;
+    if (!this.group)
+      return;
     const isActive = this.getData("isActive");
     this.group[isActive ? "addClass" : "removeClass"]("active");
   }
@@ -10715,13 +10949,15 @@ var MindMapNode = class _MindMapNode {
   }
   // 删除自身，只是从画布删除，节点容器还在，后续还可以重新插回画布
   removeSelf() {
-    if (!this.group) return;
+    if (!this.group)
+      return;
     this.group.remove();
     this.removeGeneralization();
   }
   //  递归删除，只是从画布删除，节点容器还在，后续还可以重新插回画布
   remove() {
-    if (!this.group) return;
+    if (!this.group)
+      return;
     this.group.remove();
     this.removeGeneralization();
     this.removeLine();
@@ -10737,7 +10973,8 @@ var MindMapNode = class _MindMapNode {
     if (this.parent) {
       this.parent.removeLine();
     }
-    if (!this.group) return;
+    if (!this.group)
+      return;
     if (this.emptyUser) {
       this.emptyUser();
     }
@@ -10749,7 +10986,8 @@ var MindMapNode = class _MindMapNode {
   }
   //  隐藏节点
   hide() {
-    if (this.group) this.group.hide();
+    if (this.group)
+      this.group.hide();
     this.hideGeneralization();
     if (this.parent) {
       const index = this.parent.children.indexOf(this);
@@ -10787,7 +11025,8 @@ var MindMapNode = class _MindMapNode {
   // 设置节点透明度
   // 包括连接线和下级节点
   setOpacity(val) {
-    if (this.group) this.group.opacity(val);
+    if (this.group)
+      this.group.opacity(val);
     this._lines.forEach((line) => {
       line.opacity(val);
     });
@@ -10821,12 +11060,14 @@ var MindMapNode = class _MindMapNode {
   // 被拖拽中
   startDrag() {
     this.isDrag = true;
-    if (this.group) this.group.addClass("smm-node-dragging");
+    if (this.group)
+      this.group.addClass("smm-node-dragging");
   }
   // 拖拽结束
   endDrag() {
     this.isDrag = false;
-    if (this.group) this.group.removeClass("smm-node-dragging");
+    if (this.group)
+      this.group.removeClass("smm-node-dragging");
   }
   //  连线
   renderLine(deep = false) {
@@ -11039,11 +11280,13 @@ var MindMapNode = class _MindMapNode {
   }
   // 高亮节点
   highlight() {
-    if (this.group) this.group.addClass("smm-node-highlight");
+    if (this.group)
+      this.group.addClass("smm-node-highlight");
   }
   // 取消高亮节点
   closeHighlight() {
-    if (this.group) this.group.removeClass("smm-node-highlight");
+    if (this.group)
+      this.group.removeClass("smm-node-highlight");
   }
   // 伪克隆节点
   // 克隆出的节点并不能真正当做一个节点使用
@@ -11087,7 +11330,7 @@ var MindMapNode = class _MindMapNode {
 };
 var MindMapNode_default = MindMapNode;
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/utils/Lru.js
+// node_modules/simple-mind-map/src/utils/Lru.js
 var Lru = class {
   constructor(max) {
     this.max = max || 1e3;
@@ -11124,7 +11367,7 @@ var Lru = class {
   }
 };
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/layouts/Base.js
+// node_modules/simple-mind-map/src/layouts/Base.js
 var Base2 = class {
   //  构造函数
   constructor(renderer) {
@@ -11158,16 +11401,16 @@ var Base2 = class {
   }
   // 检查当前来源是否需要重新计算节点大小
   checkIsNeedResizeSources() {
-    return [
-      CONSTANTS.CHANGE_THEME,
-      CONSTANTS.TRANSFORM_TO_NORMAL_NODE
-    ].includes(this.renderer.renderSource);
+    return [CONSTANTS.CHANGE_THEME].includes(this.renderer.renderSource);
   }
   // 层级类型改变
   checkIsLayerTypeChange(oldIndex, newIndex) {
-    if (oldIndex >= 2 && newIndex >= 2) return false;
-    if (oldIndex >= 2 && newIndex < 2) return true;
-    if (oldIndex < 2 && newIndex >= 2) return true;
+    if (oldIndex >= 2 && newIndex >= 2)
+      return false;
+    if (oldIndex >= 2 && newIndex < 2)
+      return true;
+    if (oldIndex < 2 && newIndex >= 2)
+      return true;
   }
   // 检查是否是结构布局改变重新渲染展开收起按钮占位元素
   checkIsLayoutChangeRerenderExpandBtnPlaceholderRect(node) {
@@ -11231,7 +11474,7 @@ var Base2 = class {
         data2._node.nodeDataSnapshot,
         data2.data
       );
-      if (isResizeSource || isNodeDataChange || isLayerTypeChange || newNode.getData("resetRichText") || isNodeInnerPrefixChange) {
+      if (isResizeSource || isNodeDataChange || isLayerTypeChange || newNode.getData("resetRichText") || newNode.getData("needUpdate") || isNodeInnerPrefixChange) {
         newNode.getSize();
         newNode.needLayout = true;
       }
@@ -11265,7 +11508,7 @@ var Base2 = class {
           }
         }
       });
-      if (isResizeSource || isNodeDataChange || isLayerTypeChange || newNode.getData("resetRichText") || isNodeInnerPrefixChange) {
+      if (isResizeSource || isNodeDataChange || isLayerTypeChange || newNode.getData("resetRichText") || newNode.getData("needUpdate") || isNodeInnerPrefixChange) {
         newNode.getSize();
         newNode.needLayout = true;
       }
@@ -11359,7 +11602,8 @@ var Base2 = class {
   }
   // 当initRootNodePosition配置不为默认的['center','center']时，计算当前配置和默认配置情况下，根节点位置的差值
   getRootCenterOffset(width2, height2) {
-    if (this.rootNodeCenterOffset) return this.rootNodeCenterOffset;
+    if (this.rootNodeCenterOffset)
+      return this.rootNodeCenterOffset;
     let { initRootNodePosition } = this.mindMap.opt;
     const { CENTER } = CONSTANTS.INIT_ROOT_NODE_POSITION;
     initRootNodePosition = this.formatInitRootNodePosition(initRootNodePosition);
@@ -11646,7 +11890,7 @@ var Base2 = class {
 };
 var Base_default = Base2;
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/layouts/LogicalStructure.js
+// node_modules/simple-mind-map/src/layouts/LogicalStructure.js
 var LogicalStructure = class extends Base_default {
   //  构造函数
   constructor(opt = {}, layout) {
@@ -11939,7 +12183,7 @@ var LogicalStructure = class extends Base_default {
 };
 var LogicalStructure_default = LogicalStructure;
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/layouts/MindMap.js
+// node_modules/simple-mind-map/src/layouts/MindMap.js
 var MindMap = class extends Base_default {
   //  构造函数
   // 在逻辑结构图的基础上增加一个变量来记录生长方向，向左还是向右，同时在计算left的时候根据方向来计算、调整top时只考虑同方向的节点即可
@@ -12273,7 +12517,7 @@ var MindMap = class extends Base_default {
 };
 var MindMap_default = MindMap;
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/layouts/CatalogOrganization.js
+// node_modules/simple-mind-map/src/layouts/CatalogOrganization.js
 var CatalogOrganization = class extends Base_default {
   //  构造函数
   constructor(opt = {}) {
@@ -12571,7 +12815,7 @@ var CatalogOrganization = class extends Base_default {
 };
 var CatalogOrganization_default = CatalogOrganization;
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/layouts/OrganizationStructure.js
+// node_modules/simple-mind-map/src/layouts/OrganizationStructure.js
 var OrganizationStructure = class extends Base_default {
   //  构造函数
   constructor(opt = {}) {
@@ -12840,7 +13084,7 @@ var OrganizationStructure = class extends Base_default {
 };
 var OrganizationStructure_default = OrganizationStructure;
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/layouts/Timeline.js
+// node_modules/simple-mind-map/src/layouts/Timeline.js
 var Timeline2 = class extends Base_default {
   //  构造函数
   constructor(opt = {}, layout) {
@@ -13128,7 +13372,7 @@ var Timeline2 = class extends Base_default {
 };
 var Timeline_default = Timeline2;
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/layouts/VerticalTimeline.js
+// node_modules/simple-mind-map/src/layouts/VerticalTimeline.js
 var VerticalTimeline = class extends Base_default {
   //  构造函数
   constructor(opt = {}, layout) {
@@ -13230,7 +13474,8 @@ var VerticalTimeline = class extends Base_default {
         if (!node.getData("expand")) {
           return;
         }
-        if (isRoot) return;
+        if (isRoot)
+          return;
         let base = this.getMarginY(layerIndex + 1) * 2 + node.height;
         let difference2 = node.childrenAreaHeight - base;
         if (difference2 > 0) {
@@ -13247,8 +13492,10 @@ var VerticalTimeline = class extends Base_default {
       let childrenList = node.parent.children;
       let index = getNodeIndexInNodeList(node, childrenList);
       childrenList.forEach((item, _index) => {
-        if (item.hasCustomPosition()) return;
-        if (!node.parent.isRoot && item.uid === node.uid) return;
+        if (item.hasCustomPosition())
+          return;
+        if (!node.parent.isRoot && item.uid === node.uid)
+          return;
         let _offset = 0;
         if (node.parent.isRoot) {
           if (_index < index) {
@@ -13470,7 +13717,7 @@ var VerticalTimeline = class extends Base_default {
 };
 var VerticalTimeline_default = VerticalTimeline;
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/layouts/fishboneUtils.js
+// node_modules/simple-mind-map/src/layouts/fishboneUtils.js
 var fishboneUtils_default = {
   top: {
     renderExpandBtn({
@@ -13650,7 +13897,7 @@ var fishboneUtils_default = {
   }
 };
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/layouts/Fishbone.js
+// node_modules/simple-mind-map/src/layouts/Fishbone.js
 var Fishbone = class extends Base_default {
   //  构造函数
   constructor(opt = {}) {
@@ -14007,7 +14254,7 @@ var Fishbone = class extends Base_default {
 };
 var Fishbone_default = Fishbone;
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/core/render/TextEdit.js
+// node_modules/simple-mind-map/src/core/render/TextEdit.js
 var TextEdit = class {
   //  构造函数
   constructor(renderer) {
@@ -14020,6 +14267,7 @@ var TextEdit = class {
     this.hasBodyMousedown = false;
     this.textNodePaddingX = 5;
     this.textNodePaddingY = 3;
+    this.isNeedUpdateTextEditNode = false;
     this.bindEvent();
   }
   //  事件
@@ -14037,7 +14285,8 @@ var TextEdit = class {
       this.hasBodyMousedown = true;
     });
     this.mindMap.on("body_click", () => {
-      if (!this.hasBodyMousedown) return;
+      if (!this.hasBodyMousedown)
+        return;
       this.hasBodyMousedown = false;
       if (this.mindMap.opt.isEndNodeTextEditOnClickOuter) {
         this.hideEditTextBox();
@@ -14088,6 +14337,19 @@ var TextEdit = class {
         window[opt.enableAutoEnterTextEditWhenKeydown ? "addEventListener" : "removeEventListener"]("keydown", this.onKeydown);
       }
     });
+    this.mindMap.on("afterExecCommand", () => {
+      if (!this.isShowTextEdit())
+        return;
+      this.isNeedUpdateTextEditNode = true;
+    });
+    this.mindMap.on("node_tree_render_end", () => {
+      if (!this.isShowTextEdit())
+        return;
+      if (this.isNeedUpdateTextEditNode) {
+        this.isNeedUpdateTextEditNode = false;
+        this.updateTextEditNode();
+      }
+    });
   }
   // 解绑事件
   unBindEvent() {
@@ -14095,11 +14357,14 @@ var TextEdit = class {
   }
   // 按键事件
   onKeydown(e) {
-    if (e.target !== document.body) return;
+    if (e.target !== document.body)
+      return;
     const activeNodeList = this.mindMap.renderer.activeNodeList;
-    if (activeNodeList.length <= 0 || activeNodeList.length > 1) return;
+    if (activeNodeList.length <= 0 || activeNodeList.length > 1)
+      return;
     const node = activeNodeList[0];
     if (node && this.checkIsAutoEnterTextEditKey(e)) {
+      e.preventDefault();
       this.show({
         node,
         e,
@@ -14129,7 +14394,7 @@ var TextEdit = class {
     }
     return this.showTextEdit;
   }
-  //  显示文本编辑框
+  // 显示文本编辑框
   // isInserting：是否是刚创建的节点
   // isFromKeyDown：是否是在按键事件进入的编辑
   async show({
@@ -14141,6 +14406,10 @@ var TextEdit = class {
     if (node.isUseCustomNodeContent()) {
       return;
     }
+    const currentEditNode = this.getCurrentEditNode();
+    if (currentEditNode) {
+      this.hideEditTextBox();
+    }
     const { beforeTextEdit, openRealtimeRenderOnNodeTextEdit } = this.mindMap.opt;
     if (typeof beforeTextEdit === "function") {
       let isShow = false;
@@ -14150,12 +14419,15 @@ var TextEdit = class {
         isShow = false;
         this.mindMap.opt.errorHandler(ERROR_TYPES.BEFORE_TEXT_EDIT_ERROR, error);
       }
-      if (!isShow) return;
+      if (!isShow)
+        return;
     }
-    this.currentNode = node;
     const { offsetLeft, offsetTop } = checkNodeOuter(this.mindMap, node);
     this.mindMap.view.translateXY(offsetLeft, offsetTop);
     const g = node._textData.node;
+    if (openRealtimeRenderOnNodeTextEdit) {
+      g.show();
+    }
     const rect = g.node.getBoundingClientRect();
     if (openRealtimeRenderOnNodeTextEdit) {
       g.hide();
@@ -14171,18 +14443,21 @@ var TextEdit = class {
       this.mindMap.richText.showEditText(params);
       return;
     }
+    this.currentNode = node;
     this.showEditTextBox(params);
   }
   // 当openRealtimeRenderOnNodeTextEdit配置更新后需要更新编辑框样式
   onOpenRealtimeRenderOnNodeTextEditConfigUpdate(openRealtimeRenderOnNodeTextEdit) {
-    if (!this.textEditNode) return;
+    if (!this.textEditNode)
+      return;
     this.textEditNode.style.background = openRealtimeRenderOnNodeTextEdit ? "transparent" : this.currentNode ? this.getBackground(this.currentNode) : "";
     this.textEditNode.style.boxShadow = openRealtimeRenderOnNodeTextEdit ? "none" : "0 0 20px rgba(0,0,0,.5)";
   }
   // 处理画布缩放
   onScale() {
     const node = this.getCurrentEditNode();
-    if (!node) return;
+    if (!node)
+      return;
     if (this.mindMap.richText) {
       this.mindMap.richText.cacheEditingText = this.mindMap.richText.getEditText();
       this.mindMap.richText.showTextEdit = false;
@@ -14197,7 +14472,8 @@ var TextEdit = class {
   }
   //  显示文本编辑框
   showEditTextBox({ node, rect, isInserting, isFromKeyDown, isFromScale }) {
-    if (this.showTextEdit) return;
+    if (this.showTextEdit)
+      return;
     const {
       nodeTextEditZIndex,
       textAutoWrapWidth,
@@ -14248,13 +14524,10 @@ var TextEdit = class {
         } else {
           handleInputPasteText(e);
         }
+        this.emitTextChangeEvent();
       });
       this.textEditNode.addEventListener("input", () => {
-        this.mindMap.emit("node_text_edit_change", {
-          node: this.currentNode,
-          text: this.getEditText(),
-          richText: false
-        });
+        this.emitTextChangeEvent();
       });
       const targetNode = this.mindMap.opt.customInnerElsAppendTo || document.body;
       targetNode.appendChild(this.textEditNode);
@@ -14277,8 +14550,8 @@ var TextEdit = class {
     }
     this.textEditNode.style.minWidth = rect.width + this.textNodePaddingX * 2 + "px";
     this.textEditNode.style.minHeight = rect.height + "px";
-    this.textEditNode.style.left = rect.left + "px";
-    this.textEditNode.style.top = rect.top + "px";
+    this.textEditNode.style.left = Math.floor(rect.left) + "px";
+    this.textEditNode.style.top = Math.floor(rect.top) + "px";
     this.textEditNode.style.display = "block";
     this.textEditNode.style.maxWidth = textAutoWrapWidth * scale + "px";
     if (isMultiLine) {
@@ -14295,6 +14568,14 @@ var TextEdit = class {
     }
     this.cacheEditingText = "";
   }
+  // 派发节点文本编辑事件
+  emitTextChangeEvent() {
+    this.mindMap.emit("node_text_edit_change", {
+      node: this.currentNode,
+      text: this.getEditText(),
+      richText: false
+    });
+  }
   // 更新文本编辑框的大小和位置
   updateTextEditNode() {
     if (this.mindMap.richText) {
@@ -14307,8 +14588,8 @@ var TextEdit = class {
     const rect = this.currentNode._textData.node.node.getBoundingClientRect();
     this.textEditNode.style.minWidth = rect.width + this.textNodePaddingX * 2 + "px";
     this.textEditNode.style.minHeight = rect.height + this.textNodePaddingY * 2 + "px";
-    this.textEditNode.style.left = rect.left + "px";
-    this.textEditNode.style.top = rect.top + "px";
+    this.textEditNode.style.left = Math.floor(rect.left) + "px";
+    this.textEditNode.style.top = Math.floor(rect.top) + "px";
   }
   // 获取编辑区域的背景填充
   getBackground(node) {
@@ -14329,7 +14610,8 @@ var TextEdit = class {
       this.mindMap.richText.removeTextEditEl();
       return;
     }
-    if (!this.textEditNode) return;
+    if (!this.textEditNode)
+      return;
     const targetNode = this.mindMap.opt.customInnerElsAppendTo || document.body;
     targetNode.removeChild(this.textEditNode);
   }
@@ -14373,7 +14655,7 @@ var TextEdit = class {
   }
 };
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/core/render/Render.js
+// node_modules/simple-mind-map/src/core/render/Render.js
 var layouts = {
   // 逻辑结构图
   [CONSTANTS.LAYOUT.LOGICAL_STRUCTURE]: LogicalStructure_default,
@@ -14443,7 +14725,8 @@ var Render = class {
       this.clearActiveNodeListOnDrawClick(e, "contextmenu");
     });
     this.mindMap.svg.on("dblclick", () => {
-      if (!this.mindMap.opt.enableDblclickBackToRootNode) return;
+      if (!this.mindMap.opt.enableDblclickBackToRootNode)
+        return;
       this.setRootNodeCenter();
     });
     const onViewDataChange = throttle(() => {
@@ -14461,7 +14744,7 @@ var Render = class {
     if (openPerformance) {
       this.mindMap.on("view_data_change", onViewDataChange);
     }
-    this.onNodeTextEditChange = this.onNodeTextEditChange.bind(this);
+    this.onNodeTextEditChange = debounce(this.onNodeTextEditChange, 100, this);
     if (openRealtimeRenderOnNodeTextEdit) {
       this.mindMap.on("node_text_edit_change", this.onNodeTextEditChange);
     }
@@ -14662,7 +14945,8 @@ var Render = class {
       this.lastActiveNodeList,
       activeNodeList
     );
-    if (!isChange) return;
+    if (!isChange)
+      return;
     this.lastActiveNodeList = [...activeNodeList];
     this.mindMap.batchExecution.push("emitNodeActiveEvent", () => {
       this.mindMap.emit("node_active", node, activeNodeList);
@@ -14670,7 +14954,8 @@ var Render = class {
   }
   // 鼠标点击画布时清空当前激活节点列表
   clearActiveNodeListOnDrawClick(e, eventType) {
-    if (this.activeNodeList.length <= 0) return;
+    if (this.activeNodeList.length <= 0)
+      return;
     let isTrueClick = true;
     const { useLeftKeySelectionRightKeyDrag } = this.mindMap.opt;
     if (eventType === "contextmenu" ? !useLeftKeySelectionRightKeyDrag : useLeftKeySelectionRightKeyDrag) {
@@ -14742,22 +15027,20 @@ var Render = class {
           if (this.reRender) {
             this.reRender = false;
           }
-          if (this.hasRichTextPlugin() && [CONSTANTS.CHANGE_THEME, CONSTANTS.SET_DATA].includes(source)) {
-            this.mindMap.command.addHistory();
-          }
         }
         this.mindMap.emit("node_tree_render_end");
       });
     });
     this.emitNodeActiveEvent();
   }
-  // 给当前被收起来的节点数据添加文本复位标志
+  // 给当前被收起来的节点数据添加更新标志
   resetUnExpandNodeStyle() {
-    if (!this.renderTree || !this.hasRichTextPlugin()) return;
+    if (!this.renderTree)
+      return;
     walk(this.renderTree, null, (node) => {
       if (!node.data.expand) {
         walk(node, null, (node2) => {
-          node2.data.resetRichText = true;
+          node2.data["needUpdate"] = true;
         });
         return true;
       }
@@ -14821,7 +15104,8 @@ var Render = class {
   }
   //  全选
   selectAll() {
-    if (this.mindMap.opt.readonly) return;
+    if (this.mindMap.opt.readonly)
+      return;
     walk(
       this.root,
       null,
@@ -14913,18 +15197,23 @@ var Render = class {
       isActive: focusNewNode
       // 如果同时对多个节点插入子节点，那么需要把新增的节点设为激活状态。如果不进入编辑状态，那么也需要手动设为激活状态
     };
-    if (isRichText) params.resetRichText = isRichText;
-    appointChildren = addDataToAppointNodes(appointChildren, {
-      ...params
-    });
+    if (isRichText)
+      params.resetRichText = true;
+    appointChildren = addDataToAppointNodes(appointChildren, params);
+    const alreadyIsRichText = appointData && appointData.richText;
+    let createNewId = false;
     list.forEach((node) => {
       if (node.isGeneralization || node.isRoot) {
         return;
       }
+      appointChildren = simpleDeepClone(appointChildren);
       const parent = node.parent;
       const isOneLayer = node.layerIndex === 1;
       const text = isOneLayer ? defaultInsertSecondLevelNodeText : defaultInsertBelowSecondLevelNodeText;
       const index = getNodeDataIndex(node);
+      if (alreadyIsRichText && params.resetRichText) {
+        delete params.resetRichText;
+      }
       const newNodeData = {
         inserting,
         data: {
@@ -14933,8 +15222,9 @@ var Render = class {
           uid: createUid(),
           ...appointData || {}
         },
-        children: [...createUidForAppointNodes(appointChildren)]
+        children: [...createUidForAppointNodes(appointChildren, createNewId)]
       };
+      createNewId = true;
       parent.nodeData.children.splice(index + 1, 0, newNodeData);
     });
     if (focusNewNode) {
@@ -14944,7 +15234,8 @@ var Render = class {
   }
   // 插入多个同级节点
   insertMultiNode(appointNodes, nodeList) {
-    if (!nodeList || nodeList.length <= 0) return;
+    if (!nodeList || nodeList.length <= 0)
+      return;
     appointNodes = formatDataToArray(appointNodes);
     if (this.activeNodeList.length <= 0 && appointNodes.length <= 0) {
       return;
@@ -14958,15 +15249,19 @@ var Render = class {
       richText: isRichText,
       isActive: focusNewNode
     };
-    if (isRichText) params.resetRichText = isRichText;
+    if (isRichText)
+      params.resetRichText = true;
     nodeList = addDataToAppointNodes(nodeList, params);
+    let createNewId = false;
     list.forEach((node) => {
       if (node.isGeneralization || node.isRoot) {
         return;
       }
+      nodeList = simpleDeepClone(nodeList);
       const parent = node.parent;
       const index = getNodeDataIndex(node);
-      const newNodeList = createUidForAppointNodes(simpleDeepClone(nodeList));
+      const newNodeList = createUidForAppointNodes(nodeList, createNewId);
+      createNewId = true;
       parent.nodeData.children.splice(index + 1, 0, ...newNodeList);
     });
     if (focusNewNode) {
@@ -14997,18 +15292,23 @@ var Render = class {
       richText: isRichText,
       isActive: focusNewNode
     };
-    if (isRichText) params.resetRichText = isRichText;
-    appointChildren = addDataToAppointNodes(appointChildren, {
-      ...params
-    });
+    if (isRichText)
+      params.resetRichText = true;
+    appointChildren = addDataToAppointNodes(appointChildren, params);
+    const alreadyIsRichText = appointData && appointData.richText;
+    let createNewId = false;
     list.forEach((node) => {
       if (node.isGeneralization) {
         return;
       }
+      appointChildren = simpleDeepClone(appointChildren);
       if (!node.nodeData.children) {
         node.nodeData.children = [];
       }
       const text = node.isRoot ? defaultInsertSecondLevelNodeText : defaultInsertBelowSecondLevelNodeText;
+      if (alreadyIsRichText && params.resetRichText) {
+        delete params.resetRichText;
+      }
       const newNode = {
         inserting,
         data: {
@@ -15017,8 +15317,9 @@ var Render = class {
           ...params,
           ...appointData || {}
         },
-        children: [...createUidForAppointNodes(appointChildren)]
+        children: [...createUidForAppointNodes(appointChildren, createNewId)]
       };
+      createNewId = true;
       node.nodeData.children.push(newNode);
       node.setData({
         expand: true
@@ -15031,7 +15332,8 @@ var Render = class {
   }
   // 插入多个子节点
   insertMultiChildNode(appointNodes, childList) {
-    if (!childList || childList.length <= 0) return;
+    if (!childList || childList.length <= 0)
+      return;
     appointNodes = formatDataToArray(appointNodes);
     if (this.activeNodeList.length <= 0 && appointNodes.length <= 0) {
       return;
@@ -15045,16 +15347,20 @@ var Render = class {
       richText: isRichText,
       isActive: focusNewNode
     };
-    if (isRichText) params.resetRichText = isRichText;
+    if (isRichText)
+      params.resetRichText = true;
     childList = addDataToAppointNodes(childList, params);
+    let createNewId = false;
     list.forEach((node) => {
       if (node.isGeneralization) {
         return;
       }
+      childList = simpleDeepClone(childList);
       if (!node.nodeData.children) {
         node.nodeData.children = [];
       }
-      childList = createUidForAppointNodes(childList);
+      childList = createUidForAppointNodes(childList, createNewId);
+      createNewId = true;
       node.nodeData.children.push(...childList);
       node.setData({
         expand: true
@@ -15088,12 +15394,17 @@ var Render = class {
       richText: isRichText,
       isActive: focusNewNode
     };
-    if (isRichText) params.resetRichText = isRichText;
+    if (isRichText)
+      params.resetRichText = true;
+    const alreadyIsRichText = appointData && appointData.richText;
     list.forEach((node) => {
       if (node.isGeneralization || node.isRoot) {
         return;
       }
       const text = node.layerIndex === 1 ? defaultInsertSecondLevelNodeText : defaultInsertBelowSecondLevelNodeText;
+      if (alreadyIsRichText && params.resetRichText) {
+        delete params.resetRichText;
+      }
       const newNode = {
         inserting,
         data: {
@@ -15104,11 +15415,6 @@ var Render = class {
         },
         children: [node.nodeData]
       };
-      if (isRichText) {
-        node.setData({
-          resetRichText: true
-        });
-      }
       const parent = node.parent;
       const index = getNodeDataIndex(node);
       parent.nodeData.children.splice(index, 1, newNode);
@@ -15174,7 +15480,6 @@ var Render = class {
     const grandpa = parent.parent;
     const index = getNodeIndexInNodeList(node, parent.children);
     const parentIndex = getNodeIndexInNodeList(parent, grandpa.children);
-    this.checkNodeLayerChange(node, parent);
     parent.nodeData.children.splice(index, 1);
     grandpa.nodeData.children.splice(parentIndex + 1, 0, node.nodeData);
     this.mindMap.render();
@@ -15188,9 +15493,9 @@ var Render = class {
         delete nodeData[key];
       }
     });
-    if (hasCustomStyles && this.hasRichTextPlugin()) {
+    if (this.hasRichTextPlugin()) {
+      hasCustomStyles = true;
       nodeData.resetRichText = true;
-      nodeData.text = removeRichTextStyes(nodeData.text);
     }
     return hasCustomStyles;
   }
@@ -15212,18 +15517,22 @@ var Render = class {
     if (appointNodes.length > 0) {
       appointNodes.forEach((node) => {
         const _hasCustomStyles = this._handleRemoveCustomStyles(node.getData());
-        if (_hasCustomStyles) hasCustomStyles = true;
+        if (_hasCustomStyles)
+          hasCustomStyles = true;
       });
     } else {
-      if (!this.renderTree) return;
+      if (!this.renderTree)
+        return;
       walk(this.renderTree, null, (node) => {
         const _hasCustomStyles = this._handleRemoveCustomStyles(node.data);
-        if (_hasCustomStyles) hasCustomStyles = true;
+        if (_hasCustomStyles)
+          hasCustomStyles = true;
         const generalizationList = formatGetNodeGeneralization(node.data);
         if (generalizationList.length > 0) {
           generalizationList.forEach((generalizationData) => {
             const _hasCustomStyles2 = this._handleRemoveCustomStyles(generalizationData);
-            if (_hasCustomStyles2) hasCustomStyles = true;
+            if (_hasCustomStyles2)
+              hasCustomStyles = true;
           });
         }
       });
@@ -15235,7 +15544,8 @@ var Render = class {
   // 复制节点
   copy() {
     this.beingCopyData = this.copyNode();
-    if (!this.beingCopyData) return;
+    if (!this.beingCopyData)
+      return;
     if (!this.mindMap.opt.disabledClipboard) {
       setDataToClipboard(createSmmFormatData(this.beingCopyData));
     }
@@ -15252,7 +15562,8 @@ var Render = class {
   // 非https下复制黏贴，获取内容方法
   handlePaste(event) {
     const { disabledClipboard } = this.mindMap.opt;
-    if (disabledClipboard) return;
+    if (disabledClipboard)
+      return;
     const clipboardData = event.clipboardData || event.originalEvent.clipboardData;
     const items = clipboardData.items;
     let img = null;
@@ -15318,7 +15629,9 @@ var Render = class {
               Array.isArray(smmData) ? smmData : [smmData]
             );
           } else {
-            text = htmlEscape(text);
+            if (this.hasRichTextPlugin()) {
+              text = htmlEscape(text);
+            }
             const textArr = text.split(new RegExp("\r?\n|(?<!\n)\r", "g")).filter((item) => {
               return !!item;
             });
@@ -15397,7 +15710,6 @@ var Render = class {
       nodeList.reverse();
     }
     nodeList.forEach((item) => {
-      this.checkNodeLayerChange(item, exist);
       let nodeParent = item.parent;
       let nodeBorthers = nodeParent.children;
       let nodeIndex = getNodeIndexInNodeList(item, nodeBorthers);
@@ -15419,21 +15731,6 @@ var Render = class {
       existParent.nodeData.children.splice(existIndex, 0, item.nodeData);
     });
     this.mindMap.render();
-  }
-  // 如果是富文本模式，那么某些层级变化需要更新样式
-  checkNodeLayerChange(node, toNode, toNodeIsParent = false) {
-    if (this.hasRichTextPlugin()) {
-      if (this.mindMap.richText.checkNodeHasCustomRichTextStyle(node)) {
-        return;
-      }
-      const toIndex = toNodeIsParent ? toNode.layerIndex + 1 : toNode.layerIndex;
-      let nodeLayerChanged = node.layerIndex === 1 && toIndex !== 1 || node.layerIndex !== 1 && toIndex === 1;
-      if (nodeLayerChanged) {
-        node.setData({
-          resetRichText: true
-        });
-      }
-    }
   }
   //  移除节点
   removeNode(appointNodes = []) {
@@ -15459,7 +15756,8 @@ var Render = class {
         if (currentEditNode && currentEditNode.getData("uid") === node.getData("uid")) {
           this.textEdit.hideEditTextBox();
         }
-        if (isAppointNodes) list.splice(i, 1);
+        if (isAppointNodes)
+          list.splice(i, 1);
         if (node.isGeneralization) {
           this.deleteNodeGeneralization(node);
           this.removeNodeFromActiveList(node);
@@ -15528,8 +15826,10 @@ var Render = class {
   }
   // 计算下一个可激活的节点
   getNextActiveNode(deleteList) {
-    if (deleteList.length !== 1) return null;
-    if (this.findActiveNodeIndex(deleteList[0]) === -1) return null;
+    if (deleteList.length !== 1)
+      return null;
+    if (this.findActiveNodeIndex(deleteList[0]) === -1)
+      return null;
     let needActiveNode = null;
     if (this.activeNodeList.length === 1 && !this.activeNodeList[0].isGeneralization && this.mindMap.opt.deleteNodeActive) {
       const node = this.activeNodeList[0];
@@ -15588,7 +15888,6 @@ var Render = class {
       return !item.isRoot;
     });
     nodeList.forEach((item) => {
-      this.checkNodeLayerChange(item, toNode, true);
       this.removeNodeFromActiveList(item);
       removeFromParentNodeData(item);
       toNode.setData({
@@ -15602,39 +15901,13 @@ var Render = class {
   //   粘贴节点到节点
   pasteNode(data2) {
     data2 = formatDataToArray(data2);
-    if (this.activeNodeList.length <= 0 || data2.length <= 0) {
-      return;
-    }
-    this.activeNodeList.forEach((node) => {
-      if (node.isGeneralization) return;
-      node.setData({
-        expand: true
-      });
-      node.nodeData.children.push(
-        ...data2.map((item) => {
-          const newData = simpleDeepClone(item);
-          createUidForAppointNodes([newData], true, (node2) => {
-            if (this.hasRichTextPlugin()) {
-              if (this.mindMap.richText.checkNodeHasCustomRichTextStyle(node2.data)) {
-                return;
-              }
-              node2.data.resetRichText = true;
-            }
-          });
-          return newData;
-        })
-      );
-    });
-    this.mindMap.render();
+    this.mindMap.execCommand("INSERT_MULTI_CHILD_NODE", [], data2);
   }
   //  设置节点样式
   setNodeStyle(node, prop, value) {
     const data2 = {
       [prop]: value
     };
-    if (this.hasRichTextPlugin() && this.mindMap.richText.isHasRichTextStyle(data2)) {
-      data2.resetRichText = true;
-    }
     this.setNodeDataRender(node, data2);
     if (lineStyleProps.includes(prop)) {
       (node.parent || node).renderLine(true);
@@ -15643,9 +15916,6 @@ var Render = class {
   //  设置节点多个样式
   setNodeStyles(node, style) {
     const data2 = { ...style };
-    if (this.hasRichTextPlugin() && this.mindMap.richText.isHasRichTextStyle(data2)) {
-      data2.resetRichText = true;
-    }
     this.setNodeDataRender(node, data2);
     let props = Object.keys(style);
     let hasLineStyleProps = false;
@@ -15674,7 +15944,8 @@ var Render = class {
   }
   //  展开所有
   expandAllNode(uid = "") {
-    if (!this.renderTree) return;
+    if (!this.renderTree)
+      return;
     const _walk = (node, enableExpand) => {
       if (!enableExpand && node.data.uid === uid) {
         enableExpand = true;
@@ -15693,7 +15964,8 @@ var Render = class {
   }
   //  收起所有
   unexpandAllNode(isSetRootNodeCenter = true, uid = "") {
-    if (!this.renderTree) return;
+    if (!this.renderTree)
+      return;
     const _walk = (node, isRoot, enableUnExpand) => {
       if (!enableUnExpand && node.data.uid === uid) {
         enableUnExpand = true;
@@ -15716,7 +15988,8 @@ var Render = class {
   }
   //  展开到指定层级
   expandToLevel(level) {
-    if (!this.renderTree) return;
+    if (!this.renderTree)
+      return;
     walk(
       this.renderTree,
       null,
@@ -15810,7 +16083,8 @@ var Render = class {
   }
   // 设置节点公式
   insertFormula(formula, appointNodes = []) {
-    if (!this.hasRichTextPlugin() || !this.mindMap.formula) return;
+    if (!this.hasRichTextPlugin() || !this.mindMap.formula)
+      return;
     appointNodes = formatDataToArray(appointNodes);
     const list = appointNodes.length > 0 ? appointNodes : this.activeNodeList;
     list.forEach((node) => {
@@ -15826,13 +16100,15 @@ var Render = class {
       return !node.isRoot && !node.isGeneralization && !node.checkHasSelfGeneralization();
     });
     const list = parseAddGeneralizationNodeList(nodeList);
-    if (list.length <= 0) return;
+    if (list.length <= 0)
+      return;
     const isRichText = this.hasRichTextPlugin();
     const { focusNewNode, inserting } = this.getNewNodeBehavior(
       openEdit,
       list.length > 1
     );
     let needRender = false;
+    const alreadyIsRichText = data2 && data2.richText;
     list.forEach((item) => {
       const newData = {
         inserting,
@@ -15844,7 +16120,8 @@ var Render = class {
         richText: isRichText,
         isActive: focusNewNode
       };
-      if (isRichText) newData.resetRichText = isRichText;
+      if (isRichText && !alreadyIsRichText)
+        newData.resetRichText = isRichText;
       let generalization = item.node.getData("generalization");
       generalization = generalization ? Array.isArray(generalization) ? generalization : [generalization] : [];
       if (item.range) {
@@ -15866,7 +16143,8 @@ var Render = class {
         expand: true
       });
     });
-    if (!needRender) return;
+    if (!needRender)
+      return;
     if (focusNewNode) {
       this.clearActiveNodeList();
     }
@@ -15934,7 +16212,8 @@ var Render = class {
   goTargetNode(node, callback = () => {
   }) {
     let uid = typeof node === "string" ? node : node.getData("uid");
-    if (!uid) return;
+    if (!uid)
+      return;
     this.expandToNodeUid(uid, () => {
       let targetNode = this.findNodeByUid(uid);
       if (targetNode) {
@@ -15963,7 +16242,8 @@ var Render = class {
   reRenderNodeCheckChange(node, notRender) {
     let changed = node.reRender();
     if (changed) {
-      if (!notRender) this.mindMap.render();
+      if (!notRender)
+        this.mindMap.render();
     } else {
       this.mindMap.emit("node_tree_render_end");
     }
@@ -16054,7 +16334,8 @@ var Render = class {
   }
   // 根据uid找到对应的节点实例
   findNodeByUid(uid) {
-    if (!this.root) return;
+    if (!this.root)
+      return;
     let res = null;
     walk(this.root, null, (node) => {
       if (node.getData("uid") === uid) {
@@ -16076,7 +16357,8 @@ var Render = class {
   }
   // 高亮节点或子节点
   highlightNode(node, range, style) {
-    if (this.isRendering) return;
+    if (this.isRendering)
+      return;
     style = {
       stroke: "rgb(94, 200, 248)",
       fill: "transparent",
@@ -16133,7 +16415,8 @@ var Render = class {
   }
   // 关闭高亮
   closeHighlightNode() {
-    if (!this.highlightBoxNode) return;
+    if (!this.highlightBoxNode)
+      return;
     this.highlightBoxNode.remove();
   }
   // 是否存在富文本插件
@@ -16143,12 +16426,12 @@ var Render = class {
 };
 var Render_default = Render;
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/theme/index.js
+// node_modules/simple-mind-map/src/theme/index.js
 var theme_default = {
   default: default_default
 };
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/core/command/keyMap.js
+// node_modules/simple-mind-map/src/core/command/keyMap.js
 var map2 = {
   Backspace: 8,
   Tab: 9,
@@ -16198,7 +16481,7 @@ for (let i = 0; i <= 9; i++) {
 });
 var keyMap = map2;
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/core/command/KeyCommand.js
+// node_modules/simple-mind-map/src/core/command/KeyCommand.js
 var KeyCommand = class {
   //  构造函数
   constructor(opt) {
@@ -16253,7 +16536,8 @@ var KeyCommand = class {
       this.isInSvg = true;
     });
     this.mindMap.on("svg_mouseleave", () => {
-      if (this.mindMap.renderer.textEdit.isShowTextEdit()) return;
+      if (this.mindMap.renderer.textEdit.isShowTextEdit())
+        return;
       if (this.mindMap.associativeLine && this.mindMap.associativeLine.showTextEdit) {
         return;
       }
@@ -16281,7 +16565,8 @@ var KeyCommand = class {
       customCheckEnableShortcut
     } = this.mindMap.opt;
     const checkFn = typeof customCheckEnableShortcut === "function" ? customCheckEnableShortcut : this.defaultEnableCheck;
-    if (!checkFn(e)) return;
+    if (!checkFn(e))
+      return;
     if (this.isPause || enableShortcutOnlyWhenMouseInSvg && !this.isInSvg) {
       return;
     }
@@ -16295,7 +16580,8 @@ var KeyCommand = class {
           const isStop = beforeShortcutRun(key, [
             ...this.mindMap.renderer.activeNodeList
           ]);
-          if (isStop) return;
+          if (isStop)
+            return;
         }
         this.shortcutMap[key].forEach((fn) => {
           fn();
@@ -16395,7 +16681,66 @@ var KeyCommand = class {
   }
 };
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/core/command/Command.js
+// node_modules/simple-mind-map/package.json
+var package_default = {
+  name: "simple-mind-map",
+  version: "0.13.0",
+  description: "一个简单的web在线思维导图",
+  authors: [
+    {
+      name: "街角小林",
+      email: "1013335014@qq.com"
+    },
+    {
+      name: "理想青年实验室",
+      url: "http://lxqnsys.com/"
+    }
+  ],
+  types: "./types/index.d.ts",
+  typings: "./types/index.d.ts",
+  license: "MIT",
+  repository: {
+    type: "git",
+    url: "https://github.com/wanglin2/mind-map"
+  },
+  scripts: {
+    lint: "eslint src/",
+    format: "prettier --write .",
+    types: "npx -p typescript tsc index.js --declaration --allowJs --emitDeclarationOnly --outDir types --target es2017 --skipLibCheck & node ./bin/createPluginsTypeFiles.js",
+    wsServe: "node ./bin/wsServer.mjs"
+  },
+  module: "index.js",
+  main: "./dist/simpleMindMap.umd.min.js",
+  dependencies: {
+    "@svgdotjs/svg.js": "3.2.0",
+    deepmerge: "^1.5.2",
+    eventemitter3: "^4.0.7",
+    jszip: "^3.10.1",
+    katex: "^0.16.8",
+    "mdast-util-from-markdown": "^1.3.0",
+    "pdf-lib": "^1.17.1",
+    quill: "^2.0.3",
+    tern: "^0.24.3",
+    uuid: "^9.0.0",
+    ws: "^7.5.9",
+    "xml-js": "^1.6.11",
+    "y-webrtc": "^10.2.5",
+    yjs: "^13.6.8"
+  },
+  keywords: [
+    "javascript",
+    "svg",
+    "mind-map",
+    "mindMap",
+    "MindMap"
+  ],
+  devDependencies: {
+    eslint: "^8.25.0",
+    prettier: "^2.7.1"
+  }
+};
+
+// node_modules/simple-mind-map/src/core/command/Command.js
 var Command = class {
   //  构造函数
   constructor(opt = {}) {
@@ -16483,7 +16828,8 @@ var Command = class {
     }
     const lastData = this.history.length > 0 ? this.history[this.activeHistoryIndex] : null;
     const data2 = this.getCopyData();
-    if (lastData === data2) return;
+    if (lastData === data2)
+      return;
     if (lastData && JSON.stringify(lastData) === JSON.stringify(data2)) {
       return;
     }
@@ -16540,8 +16886,11 @@ var Command = class {
   }
   //  获取渲染树数据副本
   getCopyData() {
-    if (!this.mindMap.renderer.renderTree) return null;
-    return copyRenderTree({}, this.mindMap.renderer.renderTree, true);
+    if (!this.mindMap.renderer.renderTree)
+      return null;
+    const res = copyRenderTree({}, this.mindMap.renderer.renderTree, true);
+    res.smmVersion = package_default.version;
+    return res;
   }
   // 移除节点数据中的uid
   removeDataUid(data2) {
@@ -16609,7 +16958,7 @@ var Command = class {
 };
 var Command_default = Command;
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/utils/BatchExecution.js
+// node_modules/simple-mind-map/src/utils/BatchExecution.js
 var BatchExecution = class {
   //  构造函数
   constructor() {
@@ -16654,7 +17003,7 @@ var BatchExecution = class {
 };
 var BatchExecution_default = BatchExecution;
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/src/constants/defaultOptions.js
+// node_modules/simple-mind-map/src/constants/defaultOptions.js
 var defaultOpt = {
   // 【基本】
   // 容器元素，必传，必须为DOM元素
@@ -16930,6 +17279,33 @@ var defaultOpt = {
   // 实例化完后是否立刻进行一次历史数据入栈操作
   // 即调用mindMap.command.addHistory方法
   addHistoryOnInit: true,
+  // 自定义节点备注图标
+  noteIcon: {
+    icon: "",
+    // svg字符串，如果不是确定要使用svg自带的样式，否则请去除其中的fill等样式属性
+    style: {
+      // size: 20,// 图标大小，不手动设置则会使用主题的iconSize配置
+      // color: '',// 图标颜色，不手动设置则会使用节点文本的颜色
+    }
+  },
+  // 自定义节点超链接图标
+  hyperlinkIcon: {
+    icon: "",
+    // svg字符串，如果不是确定要使用svg自带的样式，否则请去除其中的fill等样式属性
+    style: {
+      // size: 20,// 图标大小，不手动设置则会使用主题的iconSize配置
+      // color: '',// 图标颜色，不手动设置则会使用节点文本的颜色
+    }
+  },
+  // 自定义节点附件图标
+  attachmentIcon: {
+    icon: "",
+    // svg字符串，如果不是确定要使用svg自带的样式，否则请去除其中的fill等样式属性
+    style: {
+      // size: 20,// 图标大小，不手动设置则会使用主题的iconSize配置
+      // color: '',// 图标颜色，不手动设置则会使用节点文本的颜色
+    }
+  },
   // 【Select插件】
   // 多选节点时鼠标移动到边缘时的画布移动偏移量
   selectTranslateStep: 3,
@@ -17115,7 +17491,7 @@ var defaultOpt = {
   maxImgResizeHeight: Infinity
 };
 
-// node_modules/.pnpm/simple-mind-map@0.12.2/node_modules/simple-mind-map/index.js
+// node_modules/simple-mind-map/index.js
 var MindMap2 = class _MindMap {
   //  构造函数
   /**
@@ -17127,7 +17503,8 @@ var MindMap2 = class _MindMap {
     this.opt = this.handleOpt(es_default(defaultOpt, opt));
     this.opt.data = this.handleData(this.opt.data);
     this.el = this.opt.el;
-    if (!this.el) throw new Error("缺少容器元素el");
+    if (!this.el)
+      throw new Error("缺少容器元素el");
     this.getElRectInfo();
     this.initWidth = this.width;
     this.initHeight = this.height;
@@ -17173,7 +17550,8 @@ var MindMap2 = class _MindMap {
   }
   // 预处理节点数据
   handleData(data2) {
-    if (isUndef(data2) || Object.keys(data2).length <= 0) return null;
+    if (isUndef(data2) || Object.keys(data2).length <= 0)
+      return null;
     data2 = simpleDeepClone(data2 || {});
     if (data2.data && !data2.data.expand) {
       data2.data.expand = true;
@@ -17241,7 +17619,8 @@ var MindMap2 = class _MindMap {
   }
   // 移除css
   removeCss() {
-    if (this.cssEl) document.head.removeChild(this.cssEl);
+    if (this.cssEl)
+      document.head.removeChild(this.cssEl);
   }
   //  渲染，部分渲染
   render(callback, source = "") {
@@ -17458,7 +17837,8 @@ var MindMap2 = class _MindMap {
       return;
     }
     const isReadonly = mode === CONSTANTS.MODE.READONLY;
-    if (isReadonly === this.opt.readonly) return;
+    if (isReadonly === this.opt.readonly)
+      return;
     if (isReadonly) {
       if (this.renderer.textEdit.isShowTextEdit()) {
         this.renderer.textEdit.hideEditTextBox();
@@ -17554,7 +17934,8 @@ var MindMap2 = class _MindMap {
     const defs2 = clone.find("defs");
     defs.forEach((def, defIndex) => {
       const def2 = defs2[defIndex];
-      if (!def2) return;
+      if (!def2)
+        return;
       const children = def.children();
       const children2 = def2.children();
       for (let i = 0; i < children.length; i++) {
@@ -17612,7 +17993,8 @@ var MindMap2 = class _MindMap {
   }
   // 实例化插件
   initPlugin(plugin) {
-    if (this[plugin.instanceName]) return;
+    if (this[plugin.instanceName])
+      return;
     this[plugin.instanceName] = new plugin({
       mindMap: this,
       pluginOpt: plugin.pluginOpt
@@ -17641,7 +18023,8 @@ var MindMap2 = class _MindMap {
 };
 MindMap2.pluginList = [];
 MindMap2.usePlugin = (plugin, opt = {}) => {
-  if (MindMap2.hasPlugin(plugin) !== -1) return MindMap2;
+  if (MindMap2.hasPlugin(plugin) !== -1)
+    return MindMap2;
   plugin.pluginOpt = opt;
   MindMap2.pluginList.push(plugin);
   return MindMap2;

@@ -22,7 +22,8 @@
 	},
 	"dependencies": {
 		"@vue/compiler-sfc": "^3.5.13",
-		"vue": "^3.5.13",
-		"vitepress-vue3-components": "^0.0.14"
+		"simple-mind-map": "^0.13.0",
+		"vitepress-vue3-components": "^0.0.14",
+		"vue": "^3.5.13"
 	}
 }
