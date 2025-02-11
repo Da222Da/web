@@ -4,10 +4,12 @@ header: false
 ---
 
 
-<ElMindmap :data="data" :height="height" :offsetLeft="offsetLeft"  />
+<ElMindmap :data="data" :height="height" :offsetLeft="offsetLeft" :router="router"  />
 
 <script setup>
 import { onMounted, ref, computed } from "vue";
+import { useRouter } from "vitepress";
+const router = useRouter();
 const commonOptions = { fillColor: '#549688', shape: 'ellipse', color: '#fff', paddingY: 5, paddingY: 10 }
 const data = ref({
 	data: {

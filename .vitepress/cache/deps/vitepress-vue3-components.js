@@ -1,191 +1,3751 @@
 import {
-  __commonJS,
-  __toESM
-} from "./chunk-UXIASGQL.js";
+  Fragment,
+  Teleport,
+  Transition,
+  computed,
+  createBaseVNode,
+  createBlock,
+  createCommentVNode,
+  createElementBlock,
+  createSlots,
+  createVNode,
+  defineComponent,
+  effectScope,
+  getCurrentInstance,
+  getCurrentScope,
+  h,
+  inject,
+  isRef,
+  markRaw,
+  mergeProps,
+  nextTick,
+  normalizeClass,
+  normalizeStyle,
+  onBeforeUnmount,
+  onMounted,
+  onScopeDispose,
+  openBlock,
+  provide,
+  readonly,
+  ref,
+  renderList,
+  renderSlot,
+  resolveDynamicComponent,
+  shallowRef,
+  toDisplayString,
+  unref,
+  useAttrs,
+  useSlots,
+  vShow,
+  warn,
+  watch,
+  watchEffect,
+  withCtx,
+  withDirectives,
+  withModifiers
+} from "./chunk-LYGT5VEH.js";
 
-// node_modules/eventemitter3/index.js
-var require_eventemitter3 = __commonJS({
-  "node_modules/eventemitter3/index.js"(exports, module) {
-    "use strict";
-    var has = Object.prototype.hasOwnProperty;
-    var prefix = "~";
-    function Events() {
+// node_modules/vitepress-vue3-components/dist/index.es.js
+var configProviderContextKey = Symbol();
+var defaultNamespace = "el";
+var statePrefix = "is-";
+var _bem = (namespace, block, blockSuffix, element, modifier) => {
+  let cls = `${namespace}-${block}`;
+  if (blockSuffix) {
+    cls += `-${blockSuffix}`;
+  }
+  if (element) {
+    cls += `__${element}`;
+  }
+  if (modifier) {
+    cls += `--${modifier}`;
+  }
+  return cls;
+};
+var namespaceContextKey = Symbol("namespaceContextKey");
+var useGetDerivedNamespace = (namespaceOverrides) => {
+  const derivedNamespace = getCurrentInstance() ? inject(namespaceContextKey, ref(defaultNamespace)) : ref(defaultNamespace);
+  const namespace = computed(() => {
+    return unref(derivedNamespace) || defaultNamespace;
+  });
+  return namespace;
+};
+var useNamespace = (block, namespaceOverrides) => {
+  const namespace = useGetDerivedNamespace();
+  const b = (blockSuffix = "") => _bem(namespace.value, block, blockSuffix, "", "");
+  const e = (element) => element ? _bem(namespace.value, block, "", element, "") : "";
+  const m = (modifier) => modifier ? _bem(namespace.value, block, "", "", modifier) : "";
+  const be = (blockSuffix, element) => blockSuffix && element ? _bem(namespace.value, block, blockSuffix, element, "") : "";
+  const em = (element, modifier) => element && modifier ? _bem(namespace.value, block, "", element, modifier) : "";
+  const bm = (blockSuffix, modifier) => blockSuffix && modifier ? _bem(namespace.value, block, blockSuffix, "", modifier) : "";
+  const bem = (blockSuffix, element, modifier) => blockSuffix && element && modifier ? _bem(namespace.value, block, blockSuffix, element, modifier) : "";
+  const is2 = (name2, ...args) => {
+    const state = args.length >= 1 ? args[0] : true;
+    return name2 && state ? `${statePrefix}${name2}` : "";
+  };
+  const cssVar = (object) => {
+    const styles = {};
+    for (const key in object) {
+      if (object[key]) {
+        styles[`--${namespace.value}-${key}`] = object[key];
+      }
     }
-    if (Object.create) {
-      Events.prototype = /* @__PURE__ */ Object.create(null);
-      if (!new Events().__proto__)
-        prefix = false;
+    return styles;
+  };
+  const cssVarBlock = (object) => {
+    const styles = {};
+    for (const key in object) {
+      if (object[key]) {
+        styles[`--${namespace.value}-${block}-${key}`] = object[key];
+      }
     }
-    function EE(fn, context, once) {
-      this.fn = fn;
-      this.context = context;
-      this.once = once || false;
-    }
-    function addListener(emitter, event, fn, context, once) {
-      if (typeof fn !== "function") {
-        throw new TypeError("The listener must be a function");
-      }
-      var listener = new EE(fn, context || emitter, once), evt = prefix ? prefix + event : event;
-      if (!emitter._events[evt])
-        emitter._events[evt] = listener, emitter._eventsCount++;
-      else if (!emitter._events[evt].fn)
-        emitter._events[evt].push(listener);
-      else
-        emitter._events[evt] = [emitter._events[evt], listener];
-      return emitter;
-    }
-    function clearEvent(emitter, evt) {
-      if (--emitter._eventsCount === 0)
-        emitter._events = new Events();
-      else
-        delete emitter._events[evt];
-    }
-    function EventEmitter2() {
-      this._events = new Events();
-      this._eventsCount = 0;
-    }
-    EventEmitter2.prototype.eventNames = function eventNames() {
-      var names2 = [], events, name;
-      if (this._eventsCount === 0)
-        return names2;
-      for (name in events = this._events) {
-        if (has.call(events, name))
-          names2.push(prefix ? name.slice(1) : name);
-      }
-      if (Object.getOwnPropertySymbols) {
-        return names2.concat(Object.getOwnPropertySymbols(events));
-      }
-      return names2;
-    };
-    EventEmitter2.prototype.listeners = function listeners(event) {
-      var evt = prefix ? prefix + event : event, handlers = this._events[evt];
-      if (!handlers)
-        return [];
-      if (handlers.fn)
-        return [handlers.fn];
-      for (var i = 0, l = handlers.length, ee = new Array(l); i < l; i++) {
-        ee[i] = handlers[i].fn;
-      }
-      return ee;
-    };
-    EventEmitter2.prototype.listenerCount = function listenerCount(event) {
-      var evt = prefix ? prefix + event : event, listeners = this._events[evt];
-      if (!listeners)
-        return 0;
-      if (listeners.fn)
-        return 1;
-      return listeners.length;
-    };
-    EventEmitter2.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
-      var evt = prefix ? prefix + event : event;
-      if (!this._events[evt])
-        return false;
-      var listeners = this._events[evt], len = arguments.length, args, i;
-      if (listeners.fn) {
-        if (listeners.once)
-          this.removeListener(event, listeners.fn, void 0, true);
-        switch (len) {
-          case 1:
-            return listeners.fn.call(listeners.context), true;
-          case 2:
-            return listeners.fn.call(listeners.context, a1), true;
-          case 3:
-            return listeners.fn.call(listeners.context, a1, a2), true;
-          case 4:
-            return listeners.fn.call(listeners.context, a1, a2, a3), true;
-          case 5:
-            return listeners.fn.call(listeners.context, a1, a2, a3, a4), true;
-          case 6:
-            return listeners.fn.call(listeners.context, a1, a2, a3, a4, a5), true;
-        }
-        for (i = 1, args = new Array(len - 1); i < len; i++) {
-          args[i - 1] = arguments[i];
-        }
-        listeners.fn.apply(listeners.context, args);
-      } else {
-        var length2 = listeners.length, j;
-        for (i = 0; i < length2; i++) {
-          if (listeners[i].once)
-            this.removeListener(event, listeners[i].fn, void 0, true);
-          switch (len) {
-            case 1:
-              listeners[i].fn.call(listeners[i].context);
-              break;
-            case 2:
-              listeners[i].fn.call(listeners[i].context, a1);
-              break;
-            case 3:
-              listeners[i].fn.call(listeners[i].context, a1, a2);
-              break;
-            case 4:
-              listeners[i].fn.call(listeners[i].context, a1, a2, a3);
-              break;
-            default:
-              if (!args)
-                for (j = 1, args = new Array(len - 1); j < len; j++) {
-                  args[j - 1] = arguments[j];
-                }
-              listeners[i].fn.apply(listeners[i].context, args);
-          }
-        }
-      }
-      return true;
-    };
-    EventEmitter2.prototype.on = function on2(event, fn, context) {
-      return addListener(this, event, fn, context, false);
-    };
-    EventEmitter2.prototype.once = function once(event, fn, context) {
-      return addListener(this, event, fn, context, true);
-    };
-    EventEmitter2.prototype.removeListener = function removeListener(event, fn, context, once) {
-      var evt = prefix ? prefix + event : event;
-      if (!this._events[evt])
-        return this;
-      if (!fn) {
-        clearEvent(this, evt);
-        return this;
-      }
-      var listeners = this._events[evt];
-      if (listeners.fn) {
-        if (listeners.fn === fn && (!once || listeners.once) && (!context || listeners.context === context)) {
-          clearEvent(this, evt);
-        }
-      } else {
-        for (var i = 0, events = [], length2 = listeners.length; i < length2; i++) {
-          if (listeners[i].fn !== fn || once && !listeners[i].once || context && listeners[i].context !== context) {
-            events.push(listeners[i]);
-          }
-        }
-        if (events.length)
-          this._events[evt] = events.length === 1 ? events[0] : events;
-        else
-          clearEvent(this, evt);
-      }
-      return this;
-    };
-    EventEmitter2.prototype.removeAllListeners = function removeAllListeners(event) {
-      var evt;
-      if (event) {
-        evt = prefix ? prefix + event : event;
-        if (this._events[evt])
-          clearEvent(this, evt);
-      } else {
-        this._events = new Events();
-        this._eventsCount = 0;
-      }
-      return this;
-    };
-    EventEmitter2.prototype.off = EventEmitter2.prototype.removeListener;
-    EventEmitter2.prototype.addListener = EventEmitter2.prototype.on;
-    EventEmitter2.prefixed = prefix;
-    EventEmitter2.EventEmitter = EventEmitter2;
-    if ("undefined" !== typeof module) {
-      module.exports = EventEmitter2;
+    return styles;
+  };
+  const cssVarName = (name2) => `--${namespace.value}-${name2}`;
+  const cssVarBlockName = (name2) => `--${namespace.value}-${block}-${name2}`;
+  return {
+    namespace,
+    b,
+    e,
+    m,
+    be,
+    em,
+    bm,
+    bem,
+    is: is2,
+    cssVar,
+    cssVarName,
+    cssVarBlock,
+    cssVarBlockName
+  };
+};
+true ? Object.freeze({}) : {};
+true ? Object.freeze([]) : [];
+var NOOP = () => {
+};
+var hasOwnProperty$4 = Object.prototype.hasOwnProperty;
+var hasOwn = (val, key) => hasOwnProperty$4.call(val, key);
+var isArray$1 = Array.isArray;
+var isFunction$1 = (val) => typeof val === "function";
+var isString$1 = (val) => typeof val === "string";
+var isObject$1 = (val) => val !== null && typeof val === "object";
+var cacheStringFunction = (fn) => {
+  const cache = /* @__PURE__ */ Object.create(null);
+  return (str) => {
+    const hit = cache[str];
+    return hit || (cache[str] = fn(str));
+  };
+};
+var camelizeRE = /-(\w)/g;
+var camelize = cacheStringFunction(
+  (str) => {
+    return str.replace(camelizeRE, (_, c) => c ? c.toUpperCase() : "");
+  }
+);
+var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
+var freeSelf = typeof self == "object" && self && self.Object === Object && self;
+var root$1 = freeGlobal || freeSelf || Function("return this")();
+var Symbol$2 = root$1.Symbol;
+var objectProto$4 = Object.prototype;
+var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
+var nativeObjectToString$1 = objectProto$4.toString;
+var symToStringTag$1 = Symbol$2 ? Symbol$2.toStringTag : void 0;
+function getRawTag(value) {
+  var isOwn = hasOwnProperty$3.call(value, symToStringTag$1), tag = value[symToStringTag$1];
+  try {
+    value[symToStringTag$1] = void 0;
+    var unmasked = true;
+  } catch (e) {
+  }
+  var result = nativeObjectToString$1.call(value);
+  if (unmasked) {
+    if (isOwn) {
+      value[symToStringTag$1] = tag;
+    } else {
+      delete value[symToStringTag$1];
     }
   }
+  return result;
+}
+var objectProto$3 = Object.prototype;
+var nativeObjectToString = objectProto$3.toString;
+function objectToString(value) {
+  return nativeObjectToString.call(value);
+}
+var nullTag = "[object Null]";
+var undefinedTag = "[object Undefined]";
+var symToStringTag = Symbol$2 ? Symbol$2.toStringTag : void 0;
+function baseGetTag(value) {
+  if (value == null) {
+    return value === void 0 ? undefinedTag : nullTag;
+  }
+  return symToStringTag && symToStringTag in Object(value) ? getRawTag(value) : objectToString(value);
+}
+function isObjectLike(value) {
+  return value != null && typeof value == "object";
+}
+var symbolTag = "[object Symbol]";
+function isSymbol(value) {
+  return typeof value == "symbol" || isObjectLike(value) && baseGetTag(value) == symbolTag;
+}
+function arrayMap(array2, iteratee) {
+  var index = -1, length2 = array2 == null ? 0 : array2.length, result = Array(length2);
+  while (++index < length2) {
+    result[index] = iteratee(array2[index], index, array2);
+  }
+  return result;
+}
+var isArray = Array.isArray;
+var INFINITY$1 = 1 / 0;
+var symbolProto = Symbol$2 ? Symbol$2.prototype : void 0;
+var symbolToString = symbolProto ? symbolProto.toString : void 0;
+function baseToString(value) {
+  if (typeof value == "string") {
+    return value;
+  }
+  if (isArray(value)) {
+    return arrayMap(value, baseToString) + "";
+  }
+  if (isSymbol(value)) {
+    return symbolToString ? symbolToString.call(value) : "";
+  }
+  var result = value + "";
+  return result == "0" && 1 / value == -INFINITY$1 ? "-0" : result;
+}
+var reWhitespace = /\s/;
+function trimmedEndIndex(string) {
+  var index = string.length;
+  while (index-- && reWhitespace.test(string.charAt(index))) {
+  }
+  return index;
+}
+var reTrimStart = /^\s+/;
+function baseTrim(string) {
+  return string ? string.slice(0, trimmedEndIndex(string) + 1).replace(reTrimStart, "") : string;
+}
+function isObject(value) {
+  var type = typeof value;
+  return value != null && (type == "object" || type == "function");
+}
+var NAN = 0 / 0;
+var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+var reIsBinary = /^0b[01]+$/i;
+var reIsOctal = /^0o[0-7]+$/i;
+var freeParseInt = parseInt;
+function toNumber(value) {
+  if (typeof value == "number") {
+    return value;
+  }
+  if (isSymbol(value)) {
+    return NAN;
+  }
+  if (isObject(value)) {
+    var other = typeof value.valueOf == "function" ? value.valueOf() : value;
+    value = isObject(other) ? other + "" : other;
+  }
+  if (typeof value != "string") {
+    return value === 0 ? value : +value;
+  }
+  value = baseTrim(value);
+  var isBinary = reIsBinary.test(value);
+  return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
+}
+var asyncTag = "[object AsyncFunction]";
+var funcTag = "[object Function]";
+var genTag = "[object GeneratorFunction]";
+var proxyTag = "[object Proxy]";
+function isFunction(value) {
+  if (!isObject(value)) {
+    return false;
+  }
+  var tag = baseGetTag(value);
+  return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
+}
+var coreJsData = root$1["__core-js_shared__"];
+var maskSrcKey = function() {
+  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || "");
+  return uid ? "Symbol(src)_1." + uid : "";
+}();
+function isMasked(func) {
+  return !!maskSrcKey && maskSrcKey in func;
+}
+var funcProto$1 = Function.prototype;
+var funcToString$1 = funcProto$1.toString;
+function toSource(func) {
+  if (func != null) {
+    try {
+      return funcToString$1.call(func);
+    } catch (e) {
+    }
+    try {
+      return func + "";
+    } catch (e) {
+    }
+  }
+  return "";
+}
+var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+var funcProto = Function.prototype;
+var objectProto$2 = Object.prototype;
+var funcToString = funcProto.toString;
+var hasOwnProperty$2 = objectProto$2.hasOwnProperty;
+var reIsNative = RegExp(
+  "^" + funcToString.call(hasOwnProperty$2).replace(reRegExpChar, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"
+);
+function baseIsNative(value) {
+  if (!isObject(value) || isMasked(value)) {
+    return false;
+  }
+  var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
+  return pattern.test(toSource(value));
+}
+function getValue(object, key) {
+  return object == null ? void 0 : object[key];
+}
+function getNative(object, key) {
+  var value = getValue(object, key);
+  return baseIsNative(value) ? value : void 0;
+}
+function eq(value, other) {
+  return value === other || value !== value && other !== other;
+}
+var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/;
+var reIsPlainProp = /^\w*$/;
+function isKey(value, object) {
+  if (isArray(value)) {
+    return false;
+  }
+  var type = typeof value;
+  if (type == "number" || type == "symbol" || type == "boolean" || value == null || isSymbol(value)) {
+    return true;
+  }
+  return reIsPlainProp.test(value) || !reIsDeepProp.test(value) || object != null && value in Object(object);
+}
+var nativeCreate = getNative(Object, "create");
+function hashClear() {
+  this.__data__ = nativeCreate ? nativeCreate(null) : {};
+  this.size = 0;
+}
+function hashDelete(key) {
+  var result = this.has(key) && delete this.__data__[key];
+  this.size -= result ? 1 : 0;
+  return result;
+}
+var HASH_UNDEFINED$1 = "__lodash_hash_undefined__";
+var objectProto$1 = Object.prototype;
+var hasOwnProperty$1 = objectProto$1.hasOwnProperty;
+function hashGet(key) {
+  var data2 = this.__data__;
+  if (nativeCreate) {
+    var result = data2[key];
+    return result === HASH_UNDEFINED$1 ? void 0 : result;
+  }
+  return hasOwnProperty$1.call(data2, key) ? data2[key] : void 0;
+}
+var objectProto = Object.prototype;
+var hasOwnProperty = objectProto.hasOwnProperty;
+function hashHas(key) {
+  var data2 = this.__data__;
+  return nativeCreate ? data2[key] !== void 0 : hasOwnProperty.call(data2, key);
+}
+var HASH_UNDEFINED = "__lodash_hash_undefined__";
+function hashSet(key, value) {
+  var data2 = this.__data__;
+  this.size += this.has(key) ? 0 : 1;
+  data2[key] = nativeCreate && value === void 0 ? HASH_UNDEFINED : value;
+  return this;
+}
+function Hash(entries) {
+  var index = -1, length2 = entries == null ? 0 : entries.length;
+  this.clear();
+  while (++index < length2) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+Hash.prototype.clear = hashClear;
+Hash.prototype["delete"] = hashDelete;
+Hash.prototype.get = hashGet;
+Hash.prototype.has = hashHas;
+Hash.prototype.set = hashSet;
+function listCacheClear() {
+  this.__data__ = [];
+  this.size = 0;
+}
+function assocIndexOf(array2, key) {
+  var length2 = array2.length;
+  while (length2--) {
+    if (eq(array2[length2][0], key)) {
+      return length2;
+    }
+  }
+  return -1;
+}
+var arrayProto = Array.prototype;
+var splice = arrayProto.splice;
+function listCacheDelete(key) {
+  var data2 = this.__data__, index = assocIndexOf(data2, key);
+  if (index < 0) {
+    return false;
+  }
+  var lastIndex = data2.length - 1;
+  if (index == lastIndex) {
+    data2.pop();
+  } else {
+    splice.call(data2, index, 1);
+  }
+  --this.size;
+  return true;
+}
+function listCacheGet(key) {
+  var data2 = this.__data__, index = assocIndexOf(data2, key);
+  return index < 0 ? void 0 : data2[index][1];
+}
+function listCacheHas(key) {
+  return assocIndexOf(this.__data__, key) > -1;
+}
+function listCacheSet(key, value) {
+  var data2 = this.__data__, index = assocIndexOf(data2, key);
+  if (index < 0) {
+    ++this.size;
+    data2.push([key, value]);
+  } else {
+    data2[index][1] = value;
+  }
+  return this;
+}
+function ListCache(entries) {
+  var index = -1, length2 = entries == null ? 0 : entries.length;
+  this.clear();
+  while (++index < length2) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+ListCache.prototype.clear = listCacheClear;
+ListCache.prototype["delete"] = listCacheDelete;
+ListCache.prototype.get = listCacheGet;
+ListCache.prototype.has = listCacheHas;
+ListCache.prototype.set = listCacheSet;
+var Map$1 = getNative(root$1, "Map");
+function mapCacheClear() {
+  this.size = 0;
+  this.__data__ = {
+    "hash": new Hash(),
+    "map": new (Map$1 || ListCache)(),
+    "string": new Hash()
+  };
+}
+function isKeyable(value) {
+  var type = typeof value;
+  return type == "string" || type == "number" || type == "symbol" || type == "boolean" ? value !== "__proto__" : value === null;
+}
+function getMapData(map2, key) {
+  var data2 = map2.__data__;
+  return isKeyable(key) ? data2[typeof key == "string" ? "string" : "hash"] : data2.map;
+}
+function mapCacheDelete(key) {
+  var result = getMapData(this, key)["delete"](key);
+  this.size -= result ? 1 : 0;
+  return result;
+}
+function mapCacheGet(key) {
+  return getMapData(this, key).get(key);
+}
+function mapCacheHas(key) {
+  return getMapData(this, key).has(key);
+}
+function mapCacheSet(key, value) {
+  var data2 = getMapData(this, key), size2 = data2.size;
+  data2.set(key, value);
+  this.size += data2.size == size2 ? 0 : 1;
+  return this;
+}
+function MapCache(entries) {
+  var index = -1, length2 = entries == null ? 0 : entries.length;
+  this.clear();
+  while (++index < length2) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+MapCache.prototype.clear = mapCacheClear;
+MapCache.prototype["delete"] = mapCacheDelete;
+MapCache.prototype.get = mapCacheGet;
+MapCache.prototype.has = mapCacheHas;
+MapCache.prototype.set = mapCacheSet;
+var FUNC_ERROR_TEXT$2 = "Expected a function";
+function memoize(func, resolver) {
+  if (typeof func != "function" || resolver != null && typeof resolver != "function") {
+    throw new TypeError(FUNC_ERROR_TEXT$2);
+  }
+  var memoized = function() {
+    var args = arguments, key = resolver ? resolver.apply(this, args) : args[0], cache = memoized.cache;
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+    var result = func.apply(this, args);
+    memoized.cache = cache.set(key, result) || cache;
+    return result;
+  };
+  memoized.cache = new (memoize.Cache || MapCache)();
+  return memoized;
+}
+memoize.Cache = MapCache;
+var MAX_MEMOIZE_SIZE = 500;
+function memoizeCapped(func) {
+  var result = memoize(func, function(key) {
+    if (cache.size === MAX_MEMOIZE_SIZE) {
+      cache.clear();
+    }
+    return key;
+  });
+  var cache = result.cache;
+  return result;
+}
+var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
+var reEscapeChar = /\\(\\)?/g;
+var stringToPath = memoizeCapped(function(string) {
+  var result = [];
+  if (string.charCodeAt(0) === 46) {
+    result.push("");
+  }
+  string.replace(rePropName, function(match, number, quote, subString) {
+    result.push(quote ? subString.replace(reEscapeChar, "$1") : number || match);
+  });
+  return result;
 });
-
-// node_modules/simple-mind-map/src/constants/constant.js
+function toString(value) {
+  return value == null ? "" : baseToString(value);
+}
+function castPath(value, object) {
+  if (isArray(value)) {
+    return value;
+  }
+  return isKey(value, object) ? [value] : stringToPath(toString(value));
+}
+var INFINITY = 1 / 0;
+function toKey(value) {
+  if (typeof value == "string" || isSymbol(value)) {
+    return value;
+  }
+  var result = value + "";
+  return result == "0" && 1 / value == -INFINITY ? "-0" : result;
+}
+function baseGet(object, path) {
+  path = castPath(path, object);
+  var index = 0, length2 = path.length;
+  while (object != null && index < length2) {
+    object = object[toKey(path[index++])];
+  }
+  return index && index == length2 ? object : void 0;
+}
+function get(object, path, defaultValue) {
+  var result = object == null ? void 0 : baseGet(object, path);
+  return result === void 0 ? defaultValue : result;
+}
+var now = function() {
+  return root$1.Date.now();
+};
+var FUNC_ERROR_TEXT$1 = "Expected a function";
+var nativeMax = Math.max;
+var nativeMin = Math.min;
+function debounce$1(func, wait, options) {
+  var lastArgs, lastThis, maxWait, result, timerId, lastCallTime, lastInvokeTime = 0, leading = false, maxing = false, trailing = true;
+  if (typeof func != "function") {
+    throw new TypeError(FUNC_ERROR_TEXT$1);
+  }
+  wait = toNumber(wait) || 0;
+  if (isObject(options)) {
+    leading = !!options.leading;
+    maxing = "maxWait" in options;
+    maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
+    trailing = "trailing" in options ? !!options.trailing : trailing;
+  }
+  function invokeFunc(time) {
+    var args = lastArgs, thisArg = lastThis;
+    lastArgs = lastThis = void 0;
+    lastInvokeTime = time;
+    result = func.apply(thisArg, args);
+    return result;
+  }
+  function leadingEdge(time) {
+    lastInvokeTime = time;
+    timerId = setTimeout(timerExpired, wait);
+    return leading ? invokeFunc(time) : result;
+  }
+  function remainingWait(time) {
+    var timeSinceLastCall = time - lastCallTime, timeSinceLastInvoke = time - lastInvokeTime, timeWaiting = wait - timeSinceLastCall;
+    return maxing ? nativeMin(timeWaiting, maxWait - timeSinceLastInvoke) : timeWaiting;
+  }
+  function shouldInvoke(time) {
+    var timeSinceLastCall = time - lastCallTime, timeSinceLastInvoke = time - lastInvokeTime;
+    return lastCallTime === void 0 || timeSinceLastCall >= wait || timeSinceLastCall < 0 || maxing && timeSinceLastInvoke >= maxWait;
+  }
+  function timerExpired() {
+    var time = now();
+    if (shouldInvoke(time)) {
+      return trailingEdge(time);
+    }
+    timerId = setTimeout(timerExpired, remainingWait(time));
+  }
+  function trailingEdge(time) {
+    timerId = void 0;
+    if (trailing && lastArgs) {
+      return invokeFunc(time);
+    }
+    lastArgs = lastThis = void 0;
+    return result;
+  }
+  function cancel() {
+    if (timerId !== void 0) {
+      clearTimeout(timerId);
+    }
+    lastInvokeTime = 0;
+    lastArgs = lastCallTime = lastThis = timerId = void 0;
+  }
+  function flush() {
+    return timerId === void 0 ? result : trailingEdge(now());
+  }
+  function debounced() {
+    var time = now(), isInvoking = shouldInvoke(time);
+    lastArgs = arguments;
+    lastThis = this;
+    lastCallTime = time;
+    if (isInvoking) {
+      if (timerId === void 0) {
+        return leadingEdge(lastCallTime);
+      }
+      if (maxing) {
+        clearTimeout(timerId);
+        timerId = setTimeout(timerExpired, wait);
+        return invokeFunc(lastCallTime);
+      }
+    }
+    if (timerId === void 0) {
+      timerId = setTimeout(timerExpired, wait);
+    }
+    return result;
+  }
+  debounced.cancel = cancel;
+  debounced.flush = flush;
+  return debounced;
+}
+function fromPairs(pairs) {
+  var index = -1, length2 = pairs == null ? 0 : pairs.length, result = {};
+  while (++index < length2) {
+    var pair = pairs[index];
+    result[pair[0]] = pair[1];
+  }
+  return result;
+}
+function isNil(value) {
+  return value == null;
+}
+function isUndefined$1(value) {
+  return value === void 0;
+}
+var FUNC_ERROR_TEXT = "Expected a function";
+function throttle$1(func, wait, options) {
+  var leading = true, trailing = true;
+  if (typeof func != "function") {
+    throw new TypeError(FUNC_ERROR_TEXT);
+  }
+  if (isObject(options)) {
+    leading = "leading" in options ? !!options.leading : leading;
+    trailing = "trailing" in options ? !!options.trailing : trailing;
+  }
+  return debounce$1(func, wait, {
+    "leading": leading,
+    "maxWait": wait,
+    "trailing": trailing
+  });
+}
+var isUndefined = (val) => val === void 0;
+var isBoolean = (val) => typeof val === "boolean";
+var isNumber$1 = (val) => typeof val === "number";
+var isElement = (e) => {
+  if (typeof Element === "undefined")
+    return false;
+  return e instanceof Element;
+};
+var isStringNumber = (val) => {
+  if (!isString$1(val)) {
+    return false;
+  }
+  return !Number.isNaN(Number(val));
+};
+var __defProp$9 = Object.defineProperty;
+var __defProps$6 = Object.defineProperties;
+var __getOwnPropDescs$6 = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols$b = Object.getOwnPropertySymbols;
+var __hasOwnProp$b = Object.prototype.hasOwnProperty;
+var __propIsEnum$b = Object.prototype.propertyIsEnumerable;
+var __defNormalProp$9 = (obj, key, value) => key in obj ? __defProp$9(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues$9 = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp$b.call(b, prop))
+      __defNormalProp$9(a, prop, b[prop]);
+  if (__getOwnPropSymbols$b)
+    for (var prop of __getOwnPropSymbols$b(b)) {
+      if (__propIsEnum$b.call(b, prop))
+        __defNormalProp$9(a, prop, b[prop]);
+    }
+  return a;
+};
+var __spreadProps$6 = (a, b) => __defProps$6(a, __getOwnPropDescs$6(b));
+function computedEager(fn, options) {
+  var _a2;
+  const result = shallowRef();
+  watchEffect(() => {
+    result.value = fn();
+  }, __spreadProps$6(__spreadValues$9({}, options), {
+    flush: (_a2 = void 0) != null ? _a2 : "sync"
+  }));
+  return readonly(result);
+}
+var _a;
+var isClient = typeof window !== "undefined";
+var isString = (val) => typeof val === "string";
+var noop$1 = () => {
+};
+isClient && ((_a = window == null ? void 0 : window.navigator) == null ? void 0 : _a.userAgent) && /iP(ad|hone|od)/.test(window.navigator.userAgent);
+function resolveUnref(r) {
+  return typeof r === "function" ? r() : unref(r);
+}
+function createFilterWrapper(filter2, fn) {
+  function wrapper(...args) {
+    return new Promise((resolve, reject) => {
+      Promise.resolve(filter2(() => fn.apply(this, args), { fn, thisArg: this, args })).then(resolve).catch(reject);
+    });
+  }
+  return wrapper;
+}
+function throttleFilter(ms, trailing = true, leading = true, rejectOnCancel = false) {
+  let lastExec = 0;
+  let timer;
+  let isLeading = true;
+  let lastRejector = noop$1;
+  let lastValue;
+  const clear2 = () => {
+    if (timer) {
+      clearTimeout(timer);
+      timer = void 0;
+      lastRejector();
+      lastRejector = noop$1;
+    }
+  };
+  const filter2 = (_invoke) => {
+    const duration = resolveUnref(ms);
+    const elapsed = Date.now() - lastExec;
+    const invoke = () => {
+      return lastValue = _invoke();
+    };
+    clear2();
+    if (duration <= 0) {
+      lastExec = Date.now();
+      return invoke();
+    }
+    if (elapsed > duration && (leading || !isLeading)) {
+      lastExec = Date.now();
+      invoke();
+    } else if (trailing) {
+      lastValue = new Promise((resolve, reject) => {
+        lastRejector = rejectOnCancel ? reject : resolve;
+        timer = setTimeout(() => {
+          lastExec = Date.now();
+          isLeading = true;
+          resolve(invoke());
+          clear2();
+        }, Math.max(0, duration - elapsed));
+      });
+    }
+    if (!leading && !timer)
+      timer = setTimeout(() => isLeading = true, duration);
+    isLeading = false;
+    return lastValue;
+  };
+  return filter2;
+}
+function identity(arg) {
+  return arg;
+}
+function tryOnScopeDispose(fn) {
+  if (getCurrentScope()) {
+    onScopeDispose(fn);
+    return true;
+  }
+  return false;
+}
+function useThrottleFn(fn, ms = 200, trailing = false, leading = true, rejectOnCancel = false) {
+  return createFilterWrapper(throttleFilter(ms, trailing, leading, rejectOnCancel), fn);
+}
+function useTimeoutFn(cb, interval, options = {}) {
+  const {
+    immediate = true
+  } = options;
+  const isPending = ref(false);
+  let timer = null;
+  function clear2() {
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
+    }
+  }
+  function stop() {
+    isPending.value = false;
+    clear2();
+  }
+  function start(...args) {
+    clear2();
+    isPending.value = true;
+    timer = setTimeout(() => {
+      isPending.value = false;
+      timer = null;
+      cb(...args);
+    }, resolveUnref(interval));
+  }
+  if (immediate) {
+    isPending.value = true;
+    if (isClient)
+      start();
+  }
+  tryOnScopeDispose(stop);
+  return {
+    isPending: readonly(isPending),
+    start,
+    stop
+  };
+}
+function unrefElement(elRef) {
+  var _a2;
+  const plain2 = resolveUnref(elRef);
+  return (_a2 = plain2 == null ? void 0 : plain2.$el) != null ? _a2 : plain2;
+}
+var defaultWindow = isClient ? window : void 0;
+function useEventListener(...args) {
+  let target;
+  let events;
+  let listeners;
+  let options;
+  if (isString(args[0]) || Array.isArray(args[0])) {
+    [events, listeners, options] = args;
+    target = defaultWindow;
+  } else {
+    [target, events, listeners, options] = args;
+  }
+  if (!target)
+    return noop$1;
+  if (!Array.isArray(events))
+    events = [events];
+  if (!Array.isArray(listeners))
+    listeners = [listeners];
+  const cleanups = [];
+  const cleanup = () => {
+    cleanups.forEach((fn) => fn());
+    cleanups.length = 0;
+  };
+  const register2 = (el, event, listener, options2) => {
+    el.addEventListener(event, listener, options2);
+    return () => el.removeEventListener(event, listener, options2);
+  };
+  const stopWatch = watch(() => [unrefElement(target), resolveUnref(options)], ([el, options2]) => {
+    cleanup();
+    if (!el)
+      return;
+    cleanups.push(...events.flatMap((event) => {
+      return listeners.map((listener) => register2(el, event, listener, options2));
+    }));
+  }, { immediate: true, flush: "post" });
+  const stop = () => {
+    stopWatch();
+    cleanup();
+  };
+  tryOnScopeDispose(stop);
+  return stop;
+}
+var _global = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
+var globalKey = "__vueuse_ssr_handlers__";
+_global[globalKey] = _global[globalKey] || {};
+var SwipeDirection;
+(function(SwipeDirection2) {
+  SwipeDirection2["UP"] = "UP";
+  SwipeDirection2["RIGHT"] = "RIGHT";
+  SwipeDirection2["DOWN"] = "DOWN";
+  SwipeDirection2["LEFT"] = "LEFT";
+  SwipeDirection2["NONE"] = "NONE";
+})(SwipeDirection || (SwipeDirection = {}));
+var __defProp = Object.defineProperty;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b)
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+var _TransitionPresets = {
+  easeInSine: [0.12, 0, 0.39, 0],
+  easeOutSine: [0.61, 1, 0.88, 1],
+  easeInOutSine: [0.37, 0, 0.63, 1],
+  easeInQuad: [0.11, 0, 0.5, 0],
+  easeOutQuad: [0.5, 1, 0.89, 1],
+  easeInOutQuad: [0.45, 0, 0.55, 1],
+  easeInCubic: [0.32, 0, 0.67, 0],
+  easeOutCubic: [0.33, 1, 0.68, 1],
+  easeInOutCubic: [0.65, 0, 0.35, 1],
+  easeInQuart: [0.5, 0, 0.75, 0],
+  easeOutQuart: [0.25, 1, 0.5, 1],
+  easeInOutQuart: [0.76, 0, 0.24, 1],
+  easeInQuint: [0.64, 0, 0.78, 0],
+  easeOutQuint: [0.22, 1, 0.36, 1],
+  easeInOutQuint: [0.83, 0, 0.17, 1],
+  easeInExpo: [0.7, 0, 0.84, 0],
+  easeOutExpo: [0.16, 1, 0.3, 1],
+  easeInOutExpo: [0.87, 0, 0.13, 1],
+  easeInCirc: [0.55, 0, 1, 0.45],
+  easeOutCirc: [0, 0.55, 0.45, 1],
+  easeInOutCirc: [0.85, 0, 0.15, 1],
+  easeInBack: [0.36, 0, 0.66, -0.56],
+  easeOutBack: [0.34, 1.56, 0.64, 1],
+  easeInOutBack: [0.68, -0.6, 0.32, 1.6]
+};
+__spreadValues({
+  linear: identity
+}, _TransitionPresets);
+var ElementPlusError = class extends Error {
+  constructor(m) {
+    super(m);
+    this.name = "ElementPlusError";
+  }
+};
+function throwError(scope, m) {
+  throw new ElementPlusError(`[${scope}] ${m}`);
+}
+function debugWarn(scope, message) {
+  if (true) {
+    const error = isString$1(scope) ? new ElementPlusError(`[${scope}] ${message}`) : scope;
+    console.warn(error);
+  }
+}
+var initial = {
+  current: 0
+};
+var zIndex = ref(0);
+var defaultInitialZIndex = 2e3;
+var ZINDEX_INJECTION_KEY = Symbol("elZIndexContextKey");
+var zIndexContextKey = Symbol("zIndexContextKey");
+var useZIndex = (zIndexOverrides) => {
+  const increasingInjection = getCurrentInstance() ? inject(ZINDEX_INJECTION_KEY, initial) : initial;
+  const zIndexInjection = getCurrentInstance() ? inject(zIndexContextKey, void 0) : void 0;
+  const initialZIndex = computed(() => {
+    const zIndexFromInjection = unref(zIndexInjection);
+    return isNumber$1(zIndexFromInjection) ? zIndexFromInjection : defaultInitialZIndex;
+  });
+  const currentZIndex = computed(() => initialZIndex.value + zIndex.value);
+  const nextZIndex = () => {
+    increasingInjection.current++;
+    zIndex.value = increasingInjection.current;
+    return currentZIndex.value;
+  };
+  if (!isClient && !inject(ZINDEX_INJECTION_KEY)) {
+    debugWarn("ZIndexInjection", `Looks like you are using server rendering, you must provide a z-index provider to ensure the hydration process to be succeed
+usage: app.provide(ZINDEX_INJECTION_KEY, { current: 0 })`);
+  }
+  return {
+    initialZIndex,
+    currentZIndex,
+    nextZIndex
+  };
+};
+var English = {
+  name: "en",
+  el: {
+    breadcrumb: {
+      label: "Breadcrumb"
+    },
+    colorpicker: {
+      confirm: "OK",
+      clear: "Clear",
+      defaultLabel: "color picker",
+      description: "current color is {color}. press enter to select a new color.",
+      alphaLabel: "pick alpha value"
+    },
+    datepicker: {
+      now: "Now",
+      today: "Today",
+      cancel: "Cancel",
+      clear: "Clear",
+      confirm: "OK",
+      dateTablePrompt: "Use the arrow keys and enter to select the day of the month",
+      monthTablePrompt: "Use the arrow keys and enter to select the month",
+      yearTablePrompt: "Use the arrow keys and enter to select the year",
+      selectedDate: "Selected date",
+      selectDate: "Select date",
+      selectTime: "Select time",
+      startDate: "Start Date",
+      startTime: "Start Time",
+      endDate: "End Date",
+      endTime: "End Time",
+      prevYear: "Previous Year",
+      nextYear: "Next Year",
+      prevMonth: "Previous Month",
+      nextMonth: "Next Month",
+      year: "",
+      month1: "January",
+      month2: "February",
+      month3: "March",
+      month4: "April",
+      month5: "May",
+      month6: "June",
+      month7: "July",
+      month8: "August",
+      month9: "September",
+      month10: "October",
+      month11: "November",
+      month12: "December",
+      week: "week",
+      weeks: {
+        sun: "Sun",
+        mon: "Mon",
+        tue: "Tue",
+        wed: "Wed",
+        thu: "Thu",
+        fri: "Fri",
+        sat: "Sat"
+      },
+      weeksFull: {
+        sun: "Sunday",
+        mon: "Monday",
+        tue: "Tuesday",
+        wed: "Wednesday",
+        thu: "Thursday",
+        fri: "Friday",
+        sat: "Saturday"
+      },
+      months: {
+        jan: "Jan",
+        feb: "Feb",
+        mar: "Mar",
+        apr: "Apr",
+        may: "May",
+        jun: "Jun",
+        jul: "Jul",
+        aug: "Aug",
+        sep: "Sep",
+        oct: "Oct",
+        nov: "Nov",
+        dec: "Dec"
+      }
+    },
+    inputNumber: {
+      decrease: "decrease number",
+      increase: "increase number"
+    },
+    select: {
+      loading: "Loading",
+      noMatch: "No matching data",
+      noData: "No data",
+      placeholder: "Select"
+    },
+    mention: {
+      loading: "Loading"
+    },
+    dropdown: {
+      toggleDropdown: "Toggle Dropdown"
+    },
+    cascader: {
+      noMatch: "No matching data",
+      loading: "Loading",
+      placeholder: "Select",
+      noData: "No data"
+    },
+    pagination: {
+      goto: "Go to",
+      pagesize: "/page",
+      total: "Total {total}",
+      pageClassifier: "",
+      page: "Page",
+      prev: "Go to previous page",
+      next: "Go to next page",
+      currentPage: "page {pager}",
+      prevPages: "Previous {pager} pages",
+      nextPages: "Next {pager} pages",
+      deprecationWarning: "Deprecated usages detected, please refer to the el-pagination documentation for more details"
+    },
+    dialog: {
+      close: "Close this dialog"
+    },
+    drawer: {
+      close: "Close this dialog"
+    },
+    messagebox: {
+      title: "Message",
+      confirm: "OK",
+      cancel: "Cancel",
+      error: "Illegal input",
+      close: "Close this dialog"
+    },
+    upload: {
+      deleteTip: "press delete to remove",
+      delete: "Delete",
+      preview: "Preview",
+      continue: "Continue"
+    },
+    slider: {
+      defaultLabel: "slider between {min} and {max}",
+      defaultRangeStartLabel: "pick start value",
+      defaultRangeEndLabel: "pick end value"
+    },
+    table: {
+      emptyText: "No Data",
+      confirmFilter: "Confirm",
+      resetFilter: "Reset",
+      clearFilter: "All",
+      sumText: "Sum"
+    },
+    tour: {
+      next: "Next",
+      previous: "Previous",
+      finish: "Finish"
+    },
+    tree: {
+      emptyText: "No Data"
+    },
+    transfer: {
+      noMatch: "No matching data",
+      noData: "No data",
+      titles: ["List 1", "List 2"],
+      filterPlaceholder: "Enter keyword",
+      noCheckedFormat: "{total} items",
+      hasCheckedFormat: "{checked}/{total} checked"
+    },
+    image: {
+      error: "FAILED"
+    },
+    pageHeader: {
+      title: "Back"
+    },
+    popconfirm: {
+      confirmButtonText: "Yes",
+      cancelButtonText: "No"
+    },
+    carousel: {
+      leftArrow: "Carousel arrow left",
+      rightArrow: "Carousel arrow right",
+      indicator: "Carousel switch to index {index}"
+    }
+  }
+};
+var buildTranslator = (locale) => (path, option) => translate(path, option, unref(locale));
+var translate = (path, option, locale) => get(locale, path, path).replace(/\{(\w+)\}/g, (_, key) => {
+  var _a2;
+  return `${(_a2 = option == null ? void 0 : option[key]) != null ? _a2 : `{${key}}`}`;
+});
+var buildLocaleContext = (locale) => {
+  const lang = computed(() => unref(locale).name);
+  const localeRef = isRef(locale) ? locale : ref(locale);
+  return {
+    lang,
+    locale: localeRef,
+    t: buildTranslator(locale)
+  };
+};
+var localeContextKey = Symbol("localeContextKey");
+var useLocale = (localeOverrides) => {
+  const locale = inject(localeContextKey, ref());
+  return buildLocaleContext(computed(() => locale.value || English));
+};
+var epPropKey = "__epPropKey";
+var definePropType = (val) => val;
+var isEpProp = (val) => isObject$1(val) && !!val[epPropKey];
+var buildProp = (prop, key) => {
+  if (!isObject$1(prop) || isEpProp(prop))
+    return prop;
+  const { values, required, default: defaultValue, type, validator } = prop;
+  const _validator = values || validator ? (val) => {
+    let valid = false;
+    let allowedValues = [];
+    if (values) {
+      allowedValues = Array.from(values);
+      if (hasOwn(prop, "default")) {
+        allowedValues.push(defaultValue);
+      }
+      valid || (valid = allowedValues.includes(val));
+    }
+    if (validator)
+      valid || (valid = validator(val));
+    if (!valid && allowedValues.length > 0) {
+      const allowValuesText = [...new Set(allowedValues)].map((value) => JSON.stringify(value)).join(", ");
+      warn(`Invalid prop: validation failed${key ? ` for prop "${key}"` : ""}. Expected one of [${allowValuesText}], got value ${JSON.stringify(val)}.`);
+    }
+    return valid;
+  } : void 0;
+  const epProp = {
+    type,
+    required: !!required,
+    validator: _validator,
+    [epPropKey]: true
+  };
+  if (hasOwn(prop, "default"))
+    epProp.default = defaultValue;
+  return epProp;
+};
+var buildProps = (props) => fromPairs(Object.entries(props).map(([key, option]) => [
+  key,
+  buildProp(option, key)
+]));
+var keysOf = (arr) => Object.keys(arr);
+var globalConfig = ref();
+function useGlobalConfig(key, defaultValue = void 0) {
+  const config = getCurrentInstance() ? inject(configProviderContextKey, globalConfig) : globalConfig;
+  {
+    return computed(() => {
+      var _a2, _b;
+      return (_b = (_a2 = config.value) == null ? void 0 : _a2[key]) != null ? _b : defaultValue;
+    });
+  }
+}
+var UPDATE_MODEL_EVENT = "update:modelValue";
+var _export_sfc = (sfc, props) => {
+  const target = sfc.__vccOpts || sfc;
+  for (const [key, val] of props) {
+    target[key] = val;
+  }
+  return target;
+};
+var SCOPE = "utils/dom/style";
+var classNameToArray = (cls = "") => cls.split(" ").filter((item) => !!item.trim());
+var hasClass$1 = (el, cls) => {
+  if (!el || !cls)
+    return false;
+  if (cls.includes(" "))
+    throw new Error("className should not contain space.");
+  return el.classList.contains(cls);
+};
+var addClass$1 = (el, cls) => {
+  if (!el || !cls.trim())
+    return;
+  el.classList.add(...classNameToArray(cls));
+};
+var removeClass$1 = (el, cls) => {
+  if (!el || !cls.trim())
+    return;
+  el.classList.remove(...classNameToArray(cls));
+};
+var getStyle = (element, styleName) => {
+  var _a2;
+  if (!isClient || !element || !styleName)
+    return "";
+  let key = camelize(styleName);
+  if (key === "float")
+    key = "cssFloat";
+  try {
+    const style = element.style[key];
+    if (style)
+      return style;
+    const computed2 = (_a2 = document.defaultView) == null ? void 0 : _a2.getComputedStyle(element, "");
+    return computed2 ? computed2[key] : "";
+  } catch (e) {
+    return element.style[key];
+  }
+};
+function addUnit(value, defaultUnit = "px") {
+  if (!value)
+    return "";
+  if (isNumber$1(value) || isStringNumber(value)) {
+    return `${value}${defaultUnit}`;
+  } else if (isString$1(value)) {
+    return value;
+  }
+  debugWarn(SCOPE, "binding value must be a string or number");
+}
+var isScroll = (el, isVertical) => {
+  if (!isClient)
+    return false;
+  const key = {
+    undefined: "overflow",
+    true: "overflow-y",
+    false: "overflow-x"
+  }[String(isVertical)];
+  const overflow = getStyle(el, key);
+  return ["scroll", "auto", "overlay"].some((s) => overflow.includes(s));
+};
+var getScrollContainer = (el, isVertical) => {
+  if (!isClient)
+    return;
+  let parent = el;
+  while (parent) {
+    if ([window, document, document.documentElement].includes(parent))
+      return window;
+    if (isScroll(parent, isVertical))
+      return parent;
+    parent = parent.parentNode;
+  }
+  return parent;
+};
+var scrollBarWidth;
+var getScrollBarWidth = (namespace) => {
+  var _a2;
+  if (!isClient)
+    return 0;
+  if (scrollBarWidth !== void 0)
+    return scrollBarWidth;
+  const outer = document.createElement("div");
+  outer.className = `${namespace}-scrollbar__wrap`;
+  outer.style.visibility = "hidden";
+  outer.style.width = "100px";
+  outer.style.position = "absolute";
+  outer.style.top = "-9999px";
+  document.body.appendChild(outer);
+  const widthNoScroll = outer.offsetWidth;
+  outer.style.overflow = "scroll";
+  const inner = document.createElement("div");
+  inner.style.width = "100%";
+  outer.appendChild(inner);
+  const widthWithScroll = inner.offsetWidth;
+  (_a2 = outer.parentNode) == null ? void 0 : _a2.removeChild(outer);
+  scrollBarWidth = widthNoScroll - widthWithScroll;
+  return scrollBarWidth;
+};
+var withInstall = (main2, extra) => {
+  main2.install = (app) => {
+    for (const comp of [main2, ...Object.values(extra != null ? extra : {})]) {
+      app.component(comp.name, comp);
+    }
+  };
+  if (extra) {
+    for (const [key, comp] of Object.entries(extra)) {
+      main2[key] = comp;
+    }
+  }
+  return main2;
+};
+var withNoopInstall = (component) => {
+  component.install = NOOP;
+  return component;
+};
+var iconProps = buildProps({
+  size: {
+    type: definePropType([Number, String])
+  },
+  color: {
+    type: String
+  }
+});
+var __default__$9 = defineComponent({
+  name: "ElIcon",
+  inheritAttrs: false
+});
+var _sfc_main$9 = defineComponent({
+  ...__default__$9,
+  props: iconProps,
+  setup(__props) {
+    const props = __props;
+    const ns = useNamespace("icon");
+    const style = computed(() => {
+      const { size: size2, color } = props;
+      if (!size2 && !color)
+        return {};
+      return {
+        fontSize: isUndefined(size2) ? void 0 : addUnit(size2),
+        "--color": color
+      };
+    });
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock("i", mergeProps({
+        class: unref(ns).b(),
+        style: unref(style)
+      }, _ctx.$attrs), [
+        renderSlot(_ctx.$slots, "default")
+      ], 16);
+    };
+  }
+});
+var Icon = _export_sfc(_sfc_main$9, [["__file", "icon.vue"]]);
+var ElIcon = withInstall(Icon);
+var arrow_left_vue_vue_type_script_setup_true_lang_default = defineComponent({
+  name: "ArrowLeft",
+  __name: "arrow-left",
+  setup(__props) {
+    return (_ctx, _cache) => (openBlock(), createElementBlock("svg", {
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 1024 1024"
+    }, [
+      createBaseVNode("path", {
+        fill: "currentColor",
+        d: "M609.408 149.376 277.76 489.6a32 32 0 0 0 0 44.672l331.648 340.352a29.12 29.12 0 0 0 41.728 0 30.592 30.592 0 0 0 0-42.752L339.264 511.936l311.872-319.872a30.592 30.592 0 0 0 0-42.688 29.12 29.12 0 0 0-41.728 0z"
+      })
+    ]));
+  }
+});
+var arrow_left_default = arrow_left_vue_vue_type_script_setup_true_lang_default;
+var arrow_right_vue_vue_type_script_setup_true_lang_default = defineComponent({
+  name: "ArrowRight",
+  __name: "arrow-right",
+  setup(__props) {
+    return (_ctx, _cache) => (openBlock(), createElementBlock("svg", {
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 1024 1024"
+    }, [
+      createBaseVNode("path", {
+        fill: "currentColor",
+        d: "M340.864 149.312a30.592 30.592 0 0 0 0 42.752L652.736 512 340.864 831.872a30.592 30.592 0 0 0 0 42.752 29.12 29.12 0 0 0 41.728 0L714.24 534.336a32 32 0 0 0 0-44.672L382.592 149.376a29.12 29.12 0 0 0-41.728 0z"
+      })
+    ]));
+  }
+});
+var arrow_right_default = arrow_right_vue_vue_type_script_setup_true_lang_default;
+var close_vue_vue_type_script_setup_true_lang_default = defineComponent({
+  name: "Close",
+  __name: "close",
+  setup(__props) {
+    return (_ctx, _cache) => (openBlock(), createElementBlock("svg", {
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 1024 1024"
+    }, [
+      createBaseVNode("path", {
+        fill: "currentColor",
+        d: "M764.288 214.592 512 466.88 259.712 214.592a31.936 31.936 0 0 0-45.12 45.12L466.752 512 214.528 764.224a31.936 31.936 0 1 0 45.12 45.184L512 557.184l252.288 252.288a31.936 31.936 0 0 0 45.12-45.12L557.12 512.064l252.288-252.352a31.936 31.936 0 1 0-45.12-45.184z"
+      })
+    ]));
+  }
+});
+var close_default = close_vue_vue_type_script_setup_true_lang_default;
+var full_screen_vue_vue_type_script_setup_true_lang_default = defineComponent({
+  name: "FullScreen",
+  __name: "full-screen",
+  setup(__props) {
+    return (_ctx, _cache) => (openBlock(), createElementBlock("svg", {
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 1024 1024"
+    }, [
+      createBaseVNode("path", {
+        fill: "currentColor",
+        d: "m160 96.064 192 .192a32 32 0 0 1 0 64l-192-.192V352a32 32 0 0 1-64 0V96h64zm0 831.872V928H96V672a32 32 0 1 1 64 0v191.936l192-.192a32 32 0 1 1 0 64zM864 96.064V96h64v256a32 32 0 1 1-64 0V160.064l-192 .192a32 32 0 1 1 0-64l192-.192zm0 831.872-192-.192a32 32 0 0 1 0-64l192 .192V672a32 32 0 1 1 64 0v256h-64z"
+      })
+    ]));
+  }
+});
+var full_screen_default = full_screen_vue_vue_type_script_setup_true_lang_default;
+var refresh_left_vue_vue_type_script_setup_true_lang_default = defineComponent({
+  name: "RefreshLeft",
+  __name: "refresh-left",
+  setup(__props) {
+    return (_ctx, _cache) => (openBlock(), createElementBlock("svg", {
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 1024 1024"
+    }, [
+      createBaseVNode("path", {
+        fill: "currentColor",
+        d: "M289.088 296.704h92.992a32 32 0 0 1 0 64H232.96a32 32 0 0 1-32-32V179.712a32 32 0 0 1 64 0v50.56a384 384 0 0 1 643.84 282.88 384 384 0 0 1-383.936 384 384 384 0 0 1-384-384h64a320 320 0 1 0 640 0 320 320 0 0 0-555.712-216.448z"
+      })
+    ]));
+  }
+});
+var refresh_left_default = refresh_left_vue_vue_type_script_setup_true_lang_default;
+var refresh_right_vue_vue_type_script_setup_true_lang_default = defineComponent({
+  name: "RefreshRight",
+  __name: "refresh-right",
+  setup(__props) {
+    return (_ctx, _cache) => (openBlock(), createElementBlock("svg", {
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 1024 1024"
+    }, [
+      createBaseVNode("path", {
+        fill: "currentColor",
+        d: "M784.512 230.272v-50.56a32 32 0 1 1 64 0v149.056a32 32 0 0 1-32 32H667.52a32 32 0 1 1 0-64h92.992A320 320 0 1 0 524.8 833.152a320 320 0 0 0 320-320h64a384 384 0 0 1-384 384 384 384 0 0 1-384-384 384 384 0 0 1 643.712-282.88z"
+      })
+    ]));
+  }
+});
+var refresh_right_default = refresh_right_vue_vue_type_script_setup_true_lang_default;
+var scale_to_original_vue_vue_type_script_setup_true_lang_default = defineComponent({
+  name: "ScaleToOriginal",
+  __name: "scale-to-original",
+  setup(__props) {
+    return (_ctx, _cache) => (openBlock(), createElementBlock("svg", {
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 1024 1024"
+    }, [
+      createBaseVNode("path", {
+        fill: "currentColor",
+        d: "M813.176 180.706a60.235 60.235 0 0 1 60.236 60.235v481.883a60.235 60.235 0 0 1-60.236 60.235H210.824a60.235 60.235 0 0 1-60.236-60.235V240.94a60.235 60.235 0 0 1 60.236-60.235h602.352zm0-60.235H210.824A120.47 120.47 0 0 0 90.353 240.94v481.883a120.47 120.47 0 0 0 120.47 120.47h602.353a120.47 120.47 0 0 0 120.471-120.47V240.94a120.47 120.47 0 0 0-120.47-120.47zm-120.47 180.705a30.118 30.118 0 0 0-30.118 30.118v301.177a30.118 30.118 0 0 0 60.236 0V331.294a30.118 30.118 0 0 0-30.118-30.118zm-361.412 0a30.118 30.118 0 0 0-30.118 30.118v301.177a30.118 30.118 0 1 0 60.236 0V331.294a30.118 30.118 0 0 0-30.118-30.118M512 361.412a30.118 30.118 0 0 0-30.118 30.117v30.118a30.118 30.118 0 0 0 60.236 0V391.53A30.118 30.118 0 0 0 512 361.412M512 512a30.118 30.118 0 0 0-30.118 30.118v30.117a30.118 30.118 0 0 0 60.236 0v-30.117A30.118 30.118 0 0 0 512 512"
+      })
+    ]));
+  }
+});
+var scale_to_original_default = scale_to_original_vue_vue_type_script_setup_true_lang_default;
+var zoom_in_vue_vue_type_script_setup_true_lang_default = defineComponent({
+  name: "ZoomIn",
+  __name: "zoom-in",
+  setup(__props) {
+    return (_ctx, _cache) => (openBlock(), createElementBlock("svg", {
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 1024 1024"
+    }, [
+      createBaseVNode("path", {
+        fill: "currentColor",
+        d: "m795.904 750.72 124.992 124.928a32 32 0 0 1-45.248 45.248L750.656 795.904a416 416 0 1 1 45.248-45.248zM480 832a352 352 0 1 0 0-704 352 352 0 0 0 0 704m-32-384v-96a32 32 0 0 1 64 0v96h96a32 32 0 0 1 0 64h-96v96a32 32 0 0 1-64 0v-96h-96a32 32 0 0 1 0-64z"
+      })
+    ]));
+  }
+});
+var zoom_in_default = zoom_in_vue_vue_type_script_setup_true_lang_default;
+var zoom_out_vue_vue_type_script_setup_true_lang_default = defineComponent({
+  name: "ZoomOut",
+  __name: "zoom-out",
+  setup(__props) {
+    return (_ctx, _cache) => (openBlock(), createElementBlock("svg", {
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 1024 1024"
+    }, [
+      createBaseVNode("path", {
+        fill: "currentColor",
+        d: "m795.904 750.72 124.992 124.928a32 32 0 0 1-45.248 45.248L750.656 795.904a416 416 0 1 1 45.248-45.248zM480 832a352 352 0 1 0 0-704 352 352 0 0 0 0 704M352 448h256a32 32 0 0 1 0 64H352a32 32 0 0 1 0-64"
+      })
+    ]));
+  }
+});
+var zoom_out_default = zoom_out_vue_vue_type_script_setup_true_lang_default;
+var iconPropType = definePropType([
+  String,
+  Object,
+  Function
+]);
+var CloseComponents = {
+  Close: close_default
+};
+var mutable = (val) => val;
+var DEFAULT_EXCLUDE_KEYS = ["class", "style"];
+var LISTENER_PREFIX = /^on[A-Z]/;
+var useAttrs2 = (params = {}) => {
+  const { excludeListeners = false, excludeKeys } = params;
+  const allExcludeKeys = computed(() => {
+    return ((excludeKeys == null ? void 0 : excludeKeys.value) || []).concat(DEFAULT_EXCLUDE_KEYS);
+  });
+  const instance = getCurrentInstance();
+  if (!instance) {
+    debugWarn("use-attrs", "getCurrentInstance() returned null. useAttrs() must be called at the top of a setup function");
+    return computed(() => ({}));
+  }
+  return computed(() => {
+    var _a2;
+    return fromPairs(Object.entries((_a2 = instance.proxy) == null ? void 0 : _a2.$attrs).filter(([key]) => !allExcludeKeys.value.includes(key) && !(excludeListeners && LISTENER_PREFIX.test(key))));
+  });
+};
+var defaultIdInjection = {
+  prefix: Math.floor(Math.random() * 1e4),
+  current: 0
+};
+var ID_INJECTION_KEY = Symbol("elIdInjection");
+var useIdInjection = () => {
+  return getCurrentInstance() ? inject(ID_INJECTION_KEY, defaultIdInjection) : defaultIdInjection;
+};
+var useId = (deterministicId) => {
+  const idInjection = useIdInjection();
+  if (!isClient && idInjection === defaultIdInjection) {
+    debugWarn("IdInjection", `Looks like you are using server rendering, you must provide a id provider to ensure the hydration process to be succeed
+usage: app.provide(ID_INJECTION_KEY, {
+  prefix: number,
+  current: number,
+})`);
+  }
+  const namespace = useGetDerivedNamespace();
+  const idRef = computedEager(() => unref(deterministicId) || `${namespace.value}-id-${idInjection.prefix}-${idInjection.current++}`);
+  return idRef;
+};
+var isFocusable = (element) => {
+  if (element.tabIndex > 0 || element.tabIndex === 0 && element.getAttribute("tabIndex") !== null) {
+    return true;
+  }
+  if (element.tabIndex < 0 || element.hasAttribute("disabled") || element.getAttribute("aria-disabled") === "true") {
+    return false;
+  }
+  switch (element.nodeName) {
+    case "A": {
+      return !!element.href && element.rel !== "ignore";
+    }
+    case "INPUT": {
+      return !(element.type === "hidden" || element.type === "file");
+    }
+    case "BUTTON":
+    case "SELECT":
+    case "TEXTAREA": {
+      return true;
+    }
+    default: {
+      return false;
+    }
+  }
+};
+var FOCUS_AFTER_TRAPPED = "focus-trap.focus-after-trapped";
+var FOCUS_AFTER_RELEASED = "focus-trap.focus-after-released";
+var FOCUSOUT_PREVENTED = "focus-trap.focusout-prevented";
+var FOCUS_AFTER_TRAPPED_OPTS = {
+  cancelable: true,
+  bubbles: false
+};
+var FOCUSOUT_PREVENTED_OPTS = {
+  cancelable: true,
+  bubbles: false
+};
+var ON_TRAP_FOCUS_EVT = "focusAfterTrapped";
+var ON_RELEASE_FOCUS_EVT = "focusAfterReleased";
+var FOCUS_TRAP_INJECTION_KEY = Symbol("elFocusTrap");
+var focusReason = ref();
+var lastUserFocusTimestamp = ref(0);
+var lastAutomatedFocusTimestamp = ref(0);
+var focusReasonUserCount = 0;
+var obtainAllFocusableElements = (element) => {
+  const nodes = [];
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_ELEMENT, {
+    acceptNode: (node) => {
+      const isHiddenInput = node.tagName === "INPUT" && node.type === "hidden";
+      if (node.disabled || node.hidden || isHiddenInput)
+        return NodeFilter.FILTER_SKIP;
+      return node.tabIndex >= 0 || node === document.activeElement ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+    }
+  });
+  while (walker.nextNode())
+    nodes.push(walker.currentNode);
+  return nodes;
+};
+var getVisibleElement = (elements2, container) => {
+  for (const element of elements2) {
+    if (!isHidden(element, container))
+      return element;
+  }
+};
+var isHidden = (element, container) => {
+  if (false)
+    return false;
+  if (getComputedStyle(element).visibility === "hidden")
+    return true;
+  while (element) {
+    if (container && element === container)
+      return false;
+    if (getComputedStyle(element).display === "none")
+      return true;
+    element = element.parentElement;
+  }
+  return false;
+};
+var getEdges = (container) => {
+  const focusable = obtainAllFocusableElements(container);
+  const first = getVisibleElement(focusable, container);
+  const last = getVisibleElement(focusable.reverse(), container);
+  return [first, last];
+};
+var isSelectable = (element) => {
+  return element instanceof HTMLInputElement && "select" in element;
+};
+var tryFocus = (element, shouldSelect) => {
+  if (element && element.focus) {
+    const prevFocusedElement = document.activeElement;
+    let cleanup = false;
+    if (isElement(element) && !isFocusable(element) && !element.getAttribute("tabindex")) {
+      element.setAttribute("tabindex", "-1");
+      cleanup = true;
+    }
+    element.focus({ preventScroll: true });
+    lastAutomatedFocusTimestamp.value = window.performance.now();
+    if (element !== prevFocusedElement && isSelectable(element) && shouldSelect) {
+      element.select();
+    }
+    if (isElement(element) && cleanup) {
+      element.removeAttribute("tabindex");
+    }
+  }
+};
+function removeFromStack(list, item) {
+  const copy = [...list];
+  const idx = list.indexOf(item);
+  if (idx !== -1) {
+    copy.splice(idx, 1);
+  }
+  return copy;
+}
+var createFocusableStack = () => {
+  let stack = [];
+  const push = (layer) => {
+    const currentLayer = stack[0];
+    if (currentLayer && layer !== currentLayer) {
+      currentLayer.pause();
+    }
+    stack = removeFromStack(stack, layer);
+    stack.unshift(layer);
+  };
+  const remove2 = (layer) => {
+    var _a2, _b;
+    stack = removeFromStack(stack, layer);
+    (_b = (_a2 = stack[0]) == null ? void 0 : _a2.resume) == null ? void 0 : _b.call(_a2);
+  };
+  return {
+    push,
+    remove: remove2
+  };
+};
+var focusFirstDescendant = (elements2, shouldSelect = false) => {
+  const prevFocusedElement = document.activeElement;
+  for (const element of elements2) {
+    tryFocus(element, shouldSelect);
+    if (document.activeElement !== prevFocusedElement)
+      return;
+  }
+};
+var focusableStack = createFocusableStack();
+var isFocusCausedByUserEvent = () => {
+  return lastUserFocusTimestamp.value > lastAutomatedFocusTimestamp.value;
+};
+var notifyFocusReasonPointer = () => {
+  focusReason.value = "pointer";
+  lastUserFocusTimestamp.value = window.performance.now();
+};
+var notifyFocusReasonKeydown = () => {
+  focusReason.value = "keyboard";
+  lastUserFocusTimestamp.value = window.performance.now();
+};
+var useFocusReason = () => {
+  onMounted(() => {
+    if (focusReasonUserCount === 0) {
+      document.addEventListener("mousedown", notifyFocusReasonPointer);
+      document.addEventListener("touchstart", notifyFocusReasonPointer);
+      document.addEventListener("keydown", notifyFocusReasonKeydown);
+    }
+    focusReasonUserCount++;
+  });
+  onBeforeUnmount(() => {
+    focusReasonUserCount--;
+    if (focusReasonUserCount <= 0) {
+      document.removeEventListener("mousedown", notifyFocusReasonPointer);
+      document.removeEventListener("touchstart", notifyFocusReasonPointer);
+      document.removeEventListener("keydown", notifyFocusReasonKeydown);
+    }
+  });
+  return {
+    focusReason,
+    lastUserFocusTimestamp,
+    lastAutomatedFocusTimestamp
+  };
+};
+var createFocusOutPreventedEvent = (detail) => {
+  return new CustomEvent(FOCUSOUT_PREVENTED, {
+    ...FOCUSOUT_PREVENTED_OPTS,
+    detail
+  });
+};
+var EVENT_CODE = {
+  tab: "Tab",
+  enter: "Enter",
+  space: "Space",
+  left: "ArrowLeft",
+  up: "ArrowUp",
+  right: "ArrowRight",
+  down: "ArrowDown",
+  esc: "Escape",
+  delete: "Delete",
+  backspace: "Backspace",
+  numpadEnter: "NumpadEnter",
+  pageUp: "PageUp",
+  pageDown: "PageDown",
+  home: "Home",
+  end: "End"
+};
+var registeredEscapeHandlers = [];
+var cachedHandler = (event) => {
+  if (event.code === EVENT_CODE.esc) {
+    registeredEscapeHandlers.forEach((registeredHandler) => registeredHandler(event));
+  }
+};
+var useEscapeKeydown = (handler) => {
+  onMounted(() => {
+    if (registeredEscapeHandlers.length === 0) {
+      document.addEventListener("keydown", cachedHandler);
+    }
+    if (isClient)
+      registeredEscapeHandlers.push(handler);
+  });
+  onBeforeUnmount(() => {
+    registeredEscapeHandlers = registeredEscapeHandlers.filter((registeredHandler) => registeredHandler !== handler);
+    if (registeredEscapeHandlers.length === 0) {
+      if (isClient)
+        document.removeEventListener("keydown", cachedHandler);
+    }
+  });
+};
+var _sfc_main$8 = defineComponent({
+  name: "ElFocusTrap",
+  inheritAttrs: false,
+  props: {
+    loop: Boolean,
+    trapped: Boolean,
+    focusTrapEl: Object,
+    focusStartEl: {
+      type: [Object, String],
+      default: "first"
+    }
+  },
+  emits: [
+    ON_TRAP_FOCUS_EVT,
+    ON_RELEASE_FOCUS_EVT,
+    "focusin",
+    "focusout",
+    "focusout-prevented",
+    "release-requested"
+  ],
+  setup(props, { emit }) {
+    const forwardRef = ref();
+    let lastFocusBeforeTrapped;
+    let lastFocusAfterTrapped;
+    const { focusReason: focusReason2 } = useFocusReason();
+    useEscapeKeydown((event) => {
+      if (props.trapped && !focusLayer.paused) {
+        emit("release-requested", event);
+      }
+    });
+    const focusLayer = {
+      paused: false,
+      pause() {
+        this.paused = true;
+      },
+      resume() {
+        this.paused = false;
+      }
+    };
+    const onKeydown = (e) => {
+      if (!props.loop && !props.trapped)
+        return;
+      if (focusLayer.paused)
+        return;
+      const { code, altKey, ctrlKey, metaKey, currentTarget, shiftKey } = e;
+      const { loop } = props;
+      const isTabbing = code === EVENT_CODE.tab && !altKey && !ctrlKey && !metaKey;
+      const currentFocusingEl = document.activeElement;
+      if (isTabbing && currentFocusingEl) {
+        const container = currentTarget;
+        const [first, last] = getEdges(container);
+        const isTabbable = first && last;
+        if (!isTabbable) {
+          if (currentFocusingEl === container) {
+            const focusoutPreventedEvent = createFocusOutPreventedEvent({
+              focusReason: focusReason2.value
+            });
+            emit("focusout-prevented", focusoutPreventedEvent);
+            if (!focusoutPreventedEvent.defaultPrevented) {
+              e.preventDefault();
+            }
+          }
+        } else {
+          if (!shiftKey && currentFocusingEl === last) {
+            const focusoutPreventedEvent = createFocusOutPreventedEvent({
+              focusReason: focusReason2.value
+            });
+            emit("focusout-prevented", focusoutPreventedEvent);
+            if (!focusoutPreventedEvent.defaultPrevented) {
+              e.preventDefault();
+              if (loop)
+                tryFocus(first, true);
+            }
+          } else if (shiftKey && [first, container].includes(currentFocusingEl)) {
+            const focusoutPreventedEvent = createFocusOutPreventedEvent({
+              focusReason: focusReason2.value
+            });
+            emit("focusout-prevented", focusoutPreventedEvent);
+            if (!focusoutPreventedEvent.defaultPrevented) {
+              e.preventDefault();
+              if (loop)
+                tryFocus(last, true);
+            }
+          }
+        }
+      }
+    };
+    provide(FOCUS_TRAP_INJECTION_KEY, {
+      focusTrapRef: forwardRef,
+      onKeydown
+    });
+    watch(() => props.focusTrapEl, (focusTrapEl) => {
+      if (focusTrapEl) {
+        forwardRef.value = focusTrapEl;
+      }
+    }, { immediate: true });
+    watch([forwardRef], ([forwardRef2], [oldForwardRef]) => {
+      if (forwardRef2) {
+        forwardRef2.addEventListener("keydown", onKeydown);
+        forwardRef2.addEventListener("focusin", onFocusIn);
+        forwardRef2.addEventListener("focusout", onFocusOut);
+      }
+      if (oldForwardRef) {
+        oldForwardRef.removeEventListener("keydown", onKeydown);
+        oldForwardRef.removeEventListener("focusin", onFocusIn);
+        oldForwardRef.removeEventListener("focusout", onFocusOut);
+      }
+    });
+    const trapOnFocus = (e) => {
+      emit(ON_TRAP_FOCUS_EVT, e);
+    };
+    const releaseOnFocus = (e) => emit(ON_RELEASE_FOCUS_EVT, e);
+    const onFocusIn = (e) => {
+      const trapContainer = unref(forwardRef);
+      if (!trapContainer)
+        return;
+      const target = e.target;
+      const relatedTarget = e.relatedTarget;
+      const isFocusedInTrap = target && trapContainer.contains(target);
+      if (!props.trapped) {
+        const isPrevFocusedInTrap = relatedTarget && trapContainer.contains(relatedTarget);
+        if (!isPrevFocusedInTrap) {
+          lastFocusBeforeTrapped = relatedTarget;
+        }
+      }
+      if (isFocusedInTrap)
+        emit("focusin", e);
+      if (focusLayer.paused)
+        return;
+      if (props.trapped) {
+        if (isFocusedInTrap) {
+          lastFocusAfterTrapped = target;
+        } else {
+          tryFocus(lastFocusAfterTrapped, true);
+        }
+      }
+    };
+    const onFocusOut = (e) => {
+      const trapContainer = unref(forwardRef);
+      if (focusLayer.paused || !trapContainer)
+        return;
+      if (props.trapped) {
+        const relatedTarget = e.relatedTarget;
+        if (!isNil(relatedTarget) && !trapContainer.contains(relatedTarget)) {
+          setTimeout(() => {
+            if (!focusLayer.paused && props.trapped) {
+              const focusoutPreventedEvent = createFocusOutPreventedEvent({
+                focusReason: focusReason2.value
+              });
+              emit("focusout-prevented", focusoutPreventedEvent);
+              if (!focusoutPreventedEvent.defaultPrevented) {
+                tryFocus(lastFocusAfterTrapped, true);
+              }
+            }
+          }, 0);
+        }
+      } else {
+        const target = e.target;
+        const isFocusedInTrap = target && trapContainer.contains(target);
+        if (!isFocusedInTrap)
+          emit("focusout", e);
+      }
+    };
+    async function startTrap() {
+      await nextTick();
+      const trapContainer = unref(forwardRef);
+      if (trapContainer) {
+        focusableStack.push(focusLayer);
+        const prevFocusedElement = trapContainer.contains(document.activeElement) ? lastFocusBeforeTrapped : document.activeElement;
+        lastFocusBeforeTrapped = prevFocusedElement;
+        const isPrevFocusContained = trapContainer.contains(prevFocusedElement);
+        if (!isPrevFocusContained) {
+          const focusEvent = new Event(FOCUS_AFTER_TRAPPED, FOCUS_AFTER_TRAPPED_OPTS);
+          trapContainer.addEventListener(FOCUS_AFTER_TRAPPED, trapOnFocus);
+          trapContainer.dispatchEvent(focusEvent);
+          if (!focusEvent.defaultPrevented) {
+            nextTick(() => {
+              let focusStartEl = props.focusStartEl;
+              if (!isString$1(focusStartEl)) {
+                tryFocus(focusStartEl);
+                if (document.activeElement !== focusStartEl) {
+                  focusStartEl = "first";
+                }
+              }
+              if (focusStartEl === "first") {
+                focusFirstDescendant(obtainAllFocusableElements(trapContainer), true);
+              }
+              if (document.activeElement === prevFocusedElement || focusStartEl === "container") {
+                tryFocus(trapContainer);
+              }
+            });
+          }
+        }
+      }
+    }
+    function stopTrap() {
+      const trapContainer = unref(forwardRef);
+      if (trapContainer) {
+        trapContainer.removeEventListener(FOCUS_AFTER_TRAPPED, trapOnFocus);
+        const releasedEvent = new CustomEvent(FOCUS_AFTER_RELEASED, {
+          ...FOCUS_AFTER_TRAPPED_OPTS,
+          detail: {
+            focusReason: focusReason2.value
+          }
+        });
+        trapContainer.addEventListener(FOCUS_AFTER_RELEASED, releaseOnFocus);
+        trapContainer.dispatchEvent(releasedEvent);
+        if (!releasedEvent.defaultPrevented && (focusReason2.value == "keyboard" || !isFocusCausedByUserEvent() || trapContainer.contains(document.activeElement))) {
+          tryFocus(lastFocusBeforeTrapped != null ? lastFocusBeforeTrapped : document.body);
+        }
+        trapContainer.removeEventListener(FOCUS_AFTER_RELEASED, releaseOnFocus);
+        focusableStack.remove(focusLayer);
+      }
+    }
+    onMounted(() => {
+      if (props.trapped) {
+        startTrap();
+      }
+      watch(() => props.trapped, (trapped) => {
+        if (trapped) {
+          startTrap();
+        } else {
+          stopTrap();
+        }
+      });
+    });
+    onBeforeUnmount(() => {
+      if (props.trapped) {
+        stopTrap();
+      }
+      if (forwardRef.value) {
+        forwardRef.value.removeEventListener("keydown", onKeydown);
+        forwardRef.value.removeEventListener("focusin", onFocusIn);
+        forwardRef.value.removeEventListener("focusout", onFocusOut);
+        forwardRef.value = void 0;
+      }
+    });
+    return {
+      onKeydown
+    };
+  }
+});
+function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  return renderSlot(_ctx.$slots, "default", { handleKeydown: _ctx.onKeydown });
+}
+var ElFocusTrap = _export_sfc(_sfc_main$8, [["render", _sfc_render], ["__file", "focus-trap.vue"]]);
+var teleportProps = buildProps({
+  to: {
+    type: definePropType([String, Object]),
+    required: true
+  },
+  disabled: Boolean
+});
+var _sfc_main$7 = defineComponent({
+  __name: "teleport",
+  props: teleportProps,
+  setup(__props) {
+    return (_ctx, _cache) => {
+      return _ctx.disabled ? renderSlot(_ctx.$slots, "default", { key: 0 }) : (openBlock(), createBlock(Teleport, {
+        key: 1,
+        to: _ctx.to
+      }, [
+        renderSlot(_ctx.$slots, "default")
+      ], 8, ["to"]));
+    };
+  }
+});
+var Teleport2 = _export_sfc(_sfc_main$7, [["__file", "teleport.vue"]]);
+var ElTeleport = withInstall(Teleport2);
+var breadcrumbKey = Symbol("breadcrumbKey");
+var breadcrumbProps = buildProps({
+  separator: {
+    type: String,
+    default: "/"
+  },
+  separatorIcon: {
+    type: iconPropType
+  }
+});
+var __default__$8 = defineComponent({
+  name: "ElBreadcrumb"
+});
+var _sfc_main$6 = defineComponent({
+  ...__default__$8,
+  props: breadcrumbProps,
+  setup(__props) {
+    const props = __props;
+    const { t } = useLocale();
+    const ns = useNamespace("breadcrumb");
+    const breadcrumb = ref();
+    provide(breadcrumbKey, props);
+    onMounted(() => {
+      const items = breadcrumb.value.querySelectorAll(`.${ns.e("item")}`);
+      if (items.length) {
+        items[items.length - 1].setAttribute("aria-current", "page");
+      }
+    });
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock("div", {
+        ref_key: "breadcrumb",
+        ref: breadcrumb,
+        class: normalizeClass(unref(ns).b()),
+        "aria-label": unref(t)("el.breadcrumb.label"),
+        role: "navigation"
+      }, [
+        renderSlot(_ctx.$slots, "default")
+      ], 10, ["aria-label"]);
+    };
+  }
+});
+var Breadcrumb = _export_sfc(_sfc_main$6, [["__file", "breadcrumb.vue"]]);
+var breadcrumbItemProps = buildProps({
+  to: {
+    type: definePropType([String, Object]),
+    default: ""
+  },
+  replace: Boolean
+});
+var __default__$7 = defineComponent({
+  name: "ElBreadcrumbItem"
+});
+var _sfc_main$5 = defineComponent({
+  ...__default__$7,
+  props: breadcrumbItemProps,
+  setup(__props) {
+    const props = __props;
+    const instance = getCurrentInstance();
+    const breadcrumbContext = inject(breadcrumbKey, void 0);
+    const ns = useNamespace("breadcrumb");
+    const router = instance.appContext.config.globalProperties.$router;
+    const link = ref();
+    const onClick = () => {
+      if (!props.to || !router)
+        return;
+      props.replace ? router.replace(props.to) : router.push(props.to);
+    };
+    return (_ctx, _cache) => {
+      var _a2, _b;
+      return openBlock(), createElementBlock("span", {
+        class: normalizeClass(unref(ns).e("item"))
+      }, [
+        createBaseVNode("span", {
+          ref_key: "link",
+          ref: link,
+          class: normalizeClass([unref(ns).e("inner"), unref(ns).is("link", !!_ctx.to)]),
+          role: "link",
+          onClick
+        }, [
+          renderSlot(_ctx.$slots, "default")
+        ], 2),
+        ((_a2 = unref(breadcrumbContext)) == null ? void 0 : _a2.separatorIcon) ? (openBlock(), createBlock(unref(ElIcon), {
+          key: 0,
+          class: normalizeClass(unref(ns).e("separator"))
+        }, {
+          default: withCtx(() => [
+            (openBlock(), createBlock(resolveDynamicComponent(unref(breadcrumbContext).separatorIcon)))
+          ]),
+          _: 1
+        }, 8, ["class"])) : (openBlock(), createElementBlock("span", {
+          key: 1,
+          class: normalizeClass(unref(ns).e("separator")),
+          role: "presentation"
+        }, toDisplayString((_b = unref(breadcrumbContext)) == null ? void 0 : _b.separator), 3))
+      ], 2);
+    };
+  }
+});
+var BreadcrumbItem = _export_sfc(_sfc_main$5, [["__file", "breadcrumb-item.vue"]]);
+var ElBreadcrumb = withInstall(Breadcrumb, {
+  BreadcrumbItem
+});
+var ElBreadcrumbItem = withNoopInstall(BreadcrumbItem);
+var useDeprecated = ({ from: from2, replacement, scope, version: version2, ref: ref2, type = "API" }, condition) => {
+  watch(() => unref(condition), (val) => {
+    if (val) {
+      debugWarn(scope, `[${type}] ${from2} is about to be deprecated in version ${version2}, please use ${replacement} instead.
+For more detail, please visit: ${ref2}
+`);
+    }
+  }, {
+    immediate: true
+  });
+};
+function getDefaultExportFromCjs(x2) {
+  return x2 && x2.__esModule && Object.prototype.hasOwnProperty.call(x2, "default") ? x2["default"] : x2;
+}
+var PatchFlags = ((PatchFlags2) => {
+  PatchFlags2[PatchFlags2["TEXT"] = 1] = "TEXT";
+  PatchFlags2[PatchFlags2["CLASS"] = 2] = "CLASS";
+  PatchFlags2[PatchFlags2["STYLE"] = 4] = "STYLE";
+  PatchFlags2[PatchFlags2["PROPS"] = 8] = "PROPS";
+  PatchFlags2[PatchFlags2["FULL_PROPS"] = 16] = "FULL_PROPS";
+  PatchFlags2[PatchFlags2["HYDRATE_EVENTS"] = 32] = "HYDRATE_EVENTS";
+  PatchFlags2[PatchFlags2["STABLE_FRAGMENT"] = 64] = "STABLE_FRAGMENT";
+  PatchFlags2[PatchFlags2["KEYED_FRAGMENT"] = 128] = "KEYED_FRAGMENT";
+  PatchFlags2[PatchFlags2["UNKEYED_FRAGMENT"] = 256] = "UNKEYED_FRAGMENT";
+  PatchFlags2[PatchFlags2["NEED_PATCH"] = 512] = "NEED_PATCH";
+  PatchFlags2[PatchFlags2["DYNAMIC_SLOTS"] = 1024] = "DYNAMIC_SLOTS";
+  PatchFlags2[PatchFlags2["HOISTED"] = -1] = "HOISTED";
+  PatchFlags2[PatchFlags2["BAIL"] = -2] = "BAIL";
+  return PatchFlags2;
+})(PatchFlags || {});
+var isInContainer = (el, container) => {
+  if (!isClient || !el || !container)
+    return false;
+  const elRect = el.getBoundingClientRect();
+  let containerRect;
+  if (container instanceof Element) {
+    containerRect = container.getBoundingClientRect();
+  } else {
+    containerRect = {
+      top: 0,
+      right: window.innerWidth,
+      bottom: window.innerHeight,
+      left: 0
+    };
+  }
+  return elRect.top < containerRect.bottom && elRect.bottom > containerRect.top && elRect.right > containerRect.left && elRect.left < containerRect.right;
+};
+var useSameTarget = (handleClick) => {
+  if (!handleClick) {
+    return { onClick: NOOP, onMousedown: NOOP, onMouseup: NOOP };
+  }
+  let mousedownTarget = false;
+  let mouseupTarget = false;
+  const onClick = (e) => {
+    if (mousedownTarget && mouseupTarget) {
+      handleClick(e);
+    }
+    mousedownTarget = mouseupTarget = false;
+  };
+  const onMousedown = (e) => {
+    mousedownTarget = e.target === e.currentTarget;
+  };
+  const onMouseup = (e) => {
+    mouseupTarget = e.target === e.currentTarget;
+  };
+  return { onClick, onMousedown, onMouseup };
+};
+var overlayProps = buildProps({
+  mask: {
+    type: Boolean,
+    default: true
+  },
+  customMaskEvent: Boolean,
+  overlayClass: {
+    type: definePropType([
+      String,
+      Array,
+      Object
+    ])
+  },
+  zIndex: {
+    type: definePropType([String, Number])
+  }
+});
+var overlayEmits = {
+  click: (evt) => evt instanceof MouseEvent
+};
+var BLOCK = "overlay";
+var Overlay = defineComponent({
+  name: "ElOverlay",
+  props: overlayProps,
+  emits: overlayEmits,
+  setup(props, { slots, emit }) {
+    const ns = useNamespace(BLOCK);
+    const onMaskClick = (e) => {
+      emit("click", e);
+    };
+    const { onClick, onMousedown, onMouseup } = useSameTarget(props.customMaskEvent ? void 0 : onMaskClick);
+    return () => {
+      return props.mask ? createVNode("div", {
+        class: [ns.b(), props.overlayClass],
+        style: {
+          zIndex: props.zIndex
+        },
+        onClick,
+        onMousedown,
+        onMouseup
+      }, [renderSlot(slots, "default")], PatchFlags.STYLE | PatchFlags.CLASS | PatchFlags.PROPS, ["onClick", "onMouseup", "onMousedown"]) : h("div", {
+        class: props.overlayClass,
+        style: {
+          zIndex: props.zIndex,
+          position: "fixed",
+          top: "0px",
+          right: "0px",
+          bottom: "0px",
+          left: "0px"
+        }
+      }, [renderSlot(slots, "default")]);
+    };
+  }
+});
+var ElOverlay = Overlay;
+var dialogInjectionKey = Symbol("dialogInjectionKey");
+var dialogContentProps = buildProps({
+  center: Boolean,
+  alignCenter: Boolean,
+  closeIcon: {
+    type: iconPropType
+  },
+  draggable: Boolean,
+  overflow: Boolean,
+  fullscreen: Boolean,
+  showClose: {
+    type: Boolean,
+    default: true
+  },
+  title: {
+    type: String,
+    default: ""
+  },
+  ariaLevel: {
+    type: String,
+    default: "2"
+  }
+});
+var dialogContentEmits = {
+  close: () => true
+};
+var useDraggable = (targetRef, dragRef, draggable, overflow) => {
+  let transform2 = {
+    offsetX: 0,
+    offsetY: 0
+  };
+  const onMousedown = (e) => {
+    const downX = e.clientX;
+    const downY = e.clientY;
+    const { offsetX, offsetY } = transform2;
+    const targetRect = targetRef.value.getBoundingClientRect();
+    const targetLeft = targetRect.left;
+    const targetTop = targetRect.top;
+    const targetWidth = targetRect.width;
+    const targetHeight = targetRect.height;
+    const clientWidth = document.documentElement.clientWidth;
+    const clientHeight = document.documentElement.clientHeight;
+    const minLeft = -targetLeft + offsetX;
+    const minTop = -targetTop + offsetY;
+    const maxLeft = clientWidth - targetLeft - targetWidth + offsetX;
+    const maxTop = clientHeight - targetTop - targetHeight + offsetY;
+    const onMousemove = (e2) => {
+      let moveX = offsetX + e2.clientX - downX;
+      let moveY = offsetY + e2.clientY - downY;
+      if (!(overflow == null ? void 0 : overflow.value)) {
+        moveX = Math.min(Math.max(moveX, minLeft), maxLeft);
+        moveY = Math.min(Math.max(moveY, minTop), maxTop);
+      }
+      transform2 = {
+        offsetX: moveX,
+        offsetY: moveY
+      };
+      if (targetRef.value) {
+        targetRef.value.style.transform = `translate(${addUnit(moveX)}, ${addUnit(moveY)})`;
+      }
+    };
+    const onMouseup = () => {
+      document.removeEventListener("mousemove", onMousemove);
+      document.removeEventListener("mouseup", onMouseup);
+    };
+    document.addEventListener("mousemove", onMousemove);
+    document.addEventListener("mouseup", onMouseup);
+  };
+  const onDraggable = () => {
+    if (dragRef.value && targetRef.value) {
+      dragRef.value.addEventListener("mousedown", onMousedown);
+    }
+  };
+  const offDraggable = () => {
+    if (dragRef.value && targetRef.value) {
+      dragRef.value.removeEventListener("mousedown", onMousedown);
+    }
+  };
+  const resetPosition = () => {
+    transform2 = {
+      offsetX: 0,
+      offsetY: 0
+    };
+    if (targetRef.value) {
+      targetRef.value.style.transform = "none";
+    }
+  };
+  onMounted(() => {
+    watchEffect(() => {
+      if (draggable.value) {
+        onDraggable();
+      } else {
+        offDraggable();
+      }
+    });
+  });
+  onBeforeUnmount(() => {
+    offDraggable();
+  });
+  return {
+    resetPosition
+  };
+};
+var composeRefs = (...refs) => {
+  return (el) => {
+    refs.forEach((ref2) => {
+      if (isFunction$1(ref2)) {
+        ref2(el);
+      } else {
+        ref2.value = el;
+      }
+    });
+  };
+};
+var __default__$6 = defineComponent({ name: "ElDialogContent" });
+var _sfc_main$4 = defineComponent({
+  ...__default__$6,
+  props: dialogContentProps,
+  emits: dialogContentEmits,
+  setup(__props, { expose }) {
+    const props = __props;
+    const { t } = useLocale();
+    const { Close } = CloseComponents;
+    const { dialogRef, headerRef, bodyId, ns, style } = inject(dialogInjectionKey);
+    const { focusTrapRef } = inject(FOCUS_TRAP_INJECTION_KEY);
+    const dialogKls = computed(() => [
+      ns.b(),
+      ns.is("fullscreen", props.fullscreen),
+      ns.is("draggable", props.draggable),
+      ns.is("align-center", props.alignCenter),
+      { [ns.m("center")]: props.center }
+    ]);
+    const composedDialogRef = composeRefs(focusTrapRef, dialogRef);
+    const draggable = computed(() => props.draggable);
+    const overflow = computed(() => props.overflow);
+    const { resetPosition } = useDraggable(dialogRef, headerRef, draggable, overflow);
+    expose({
+      resetPosition
+    });
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock("div", {
+        ref: unref(composedDialogRef),
+        class: normalizeClass(unref(dialogKls)),
+        style: normalizeStyle(unref(style)),
+        tabindex: "-1"
+      }, [
+        createBaseVNode("header", {
+          ref_key: "headerRef",
+          ref: headerRef,
+          class: normalizeClass([unref(ns).e("header"), { "show-close": _ctx.showClose }])
+        }, [
+          renderSlot(_ctx.$slots, "header", {}, () => [
+            createBaseVNode("span", {
+              role: "heading",
+              "aria-level": _ctx.ariaLevel,
+              class: normalizeClass(unref(ns).e("title"))
+            }, toDisplayString(_ctx.title), 11, ["aria-level"])
+          ]),
+          _ctx.showClose ? (openBlock(), createElementBlock("button", {
+            key: 0,
+            "aria-label": unref(t)("el.dialog.close"),
+            class: normalizeClass(unref(ns).e("headerbtn")),
+            type: "button",
+            onClick: ($event) => _ctx.$emit("close")
+          }, [
+            createVNode(unref(ElIcon), {
+              class: normalizeClass(unref(ns).e("close"))
+            }, {
+              default: withCtx(() => [
+                (openBlock(), createBlock(resolveDynamicComponent(_ctx.closeIcon || unref(Close))))
+              ]),
+              _: 1
+            }, 8, ["class"])
+          ], 10, ["aria-label", "onClick"])) : createCommentVNode("v-if", true)
+        ], 2),
+        createBaseVNode("div", {
+          id: unref(bodyId),
+          class: normalizeClass(unref(ns).e("body"))
+        }, [
+          renderSlot(_ctx.$slots, "default")
+        ], 10, ["id"]),
+        _ctx.$slots.footer ? (openBlock(), createElementBlock("footer", {
+          key: 0,
+          class: normalizeClass(unref(ns).e("footer"))
+        }, [
+          renderSlot(_ctx.$slots, "footer")
+        ], 2)) : createCommentVNode("v-if", true)
+      ], 6);
+    };
+  }
+});
+var ElDialogContent = _export_sfc(_sfc_main$4, [["__file", "dialog-content.vue"]]);
+var dialogProps = buildProps({
+  ...dialogContentProps,
+  appendToBody: Boolean,
+  appendTo: {
+    type: definePropType([String, Object]),
+    default: "body"
+  },
+  beforeClose: {
+    type: definePropType(Function)
+  },
+  destroyOnClose: Boolean,
+  closeOnClickModal: {
+    type: Boolean,
+    default: true
+  },
+  closeOnPressEscape: {
+    type: Boolean,
+    default: true
+  },
+  lockScroll: {
+    type: Boolean,
+    default: true
+  },
+  modal: {
+    type: Boolean,
+    default: true
+  },
+  openDelay: {
+    type: Number,
+    default: 0
+  },
+  closeDelay: {
+    type: Number,
+    default: 0
+  },
+  top: {
+    type: String
+  },
+  modelValue: Boolean,
+  modalClass: String,
+  width: {
+    type: [String, Number]
+  },
+  zIndex: {
+    type: Number
+  },
+  trapFocus: Boolean,
+  headerAriaLevel: {
+    type: String,
+    default: "2"
+  }
+});
+var dialogEmits = {
+  open: () => true,
+  opened: () => true,
+  close: () => true,
+  closed: () => true,
+  [UPDATE_MODEL_EVENT]: (value) => isBoolean(value),
+  openAutoFocus: () => true,
+  closeAutoFocus: () => true
+};
+var useLockscreen = (trigger, options = {}) => {
+  if (!isRef(trigger)) {
+    throwError("[useLockscreen]", "You need to pass a ref param to this function");
+  }
+  const ns = options.ns || useNamespace("popup");
+  const hiddenCls = computed(() => ns.bm("parent", "hidden"));
+  if (!isClient || hasClass$1(document.body, hiddenCls.value)) {
+    return;
+  }
+  let scrollBarWidth2 = 0;
+  let withoutHiddenClass = false;
+  let bodyWidth = "0";
+  const cleanup = () => {
+    setTimeout(() => {
+      if (typeof document === "undefined")
+        return;
+      removeClass$1(document == null ? void 0 : document.body, hiddenCls.value);
+      if (withoutHiddenClass && document) {
+        document.body.style.width = bodyWidth;
+      }
+    }, 200);
+  };
+  watch(trigger, (val) => {
+    if (!val) {
+      cleanup();
+      return;
+    }
+    withoutHiddenClass = !hasClass$1(document.body, hiddenCls.value);
+    if (withoutHiddenClass) {
+      bodyWidth = document.body.style.width;
+    }
+    scrollBarWidth2 = getScrollBarWidth(ns.namespace.value);
+    const bodyHasOverflow = document.documentElement.clientHeight < document.body.scrollHeight;
+    const bodyOverflowY = getStyle(document.body, "overflowY");
+    if (scrollBarWidth2 > 0 && (bodyHasOverflow || bodyOverflowY === "scroll") && withoutHiddenClass) {
+      document.body.style.width = `calc(100% - ${scrollBarWidth2}px)`;
+    }
+    addClass$1(document.body, hiddenCls.value);
+  });
+  onScopeDispose(() => cleanup());
+};
+var useDialog = (props, targetRef) => {
+  var _a2;
+  const instance = getCurrentInstance();
+  const emit = instance.emit;
+  const { nextZIndex } = useZIndex();
+  let lastPosition = "";
+  const titleId = useId();
+  const bodyId = useId();
+  const visible2 = ref(false);
+  const closed = ref(false);
+  const rendered = ref(false);
+  const zIndex2 = ref((_a2 = props.zIndex) != null ? _a2 : nextZIndex());
+  let openTimer = void 0;
+  let closeTimer = void 0;
+  const namespace = useGlobalConfig("namespace", defaultNamespace);
+  const style = computed(() => {
+    const style2 = {};
+    const varPrefix = `--${namespace.value}-dialog`;
+    if (!props.fullscreen) {
+      if (props.top) {
+        style2[`${varPrefix}-margin-top`] = props.top;
+      }
+      if (props.width) {
+        style2[`${varPrefix}-width`] = addUnit(props.width);
+      }
+    }
+    return style2;
+  });
+  const overlayDialogStyle = computed(() => {
+    if (props.alignCenter) {
+      return { display: "flex" };
+    }
+    return {};
+  });
+  function afterEnter() {
+    emit("opened");
+  }
+  function afterLeave() {
+    emit("closed");
+    emit(UPDATE_MODEL_EVENT, false);
+    if (props.destroyOnClose) {
+      rendered.value = false;
+    }
+  }
+  function beforeLeave() {
+    emit("close");
+  }
+  function open2() {
+    closeTimer == null ? void 0 : closeTimer();
+    openTimer == null ? void 0 : openTimer();
+    if (props.openDelay && props.openDelay > 0) {
+      ({ stop: openTimer } = useTimeoutFn(() => doOpen(), props.openDelay));
+    } else {
+      doOpen();
+    }
+  }
+  function close2() {
+    openTimer == null ? void 0 : openTimer();
+    closeTimer == null ? void 0 : closeTimer();
+    if (props.closeDelay && props.closeDelay > 0) {
+      ({ stop: closeTimer } = useTimeoutFn(() => doClose(), props.closeDelay));
+    } else {
+      doClose();
+    }
+  }
+  function handleClose() {
+    function hide2(shouldCancel) {
+      if (shouldCancel)
+        return;
+      closed.value = true;
+      visible2.value = false;
+    }
+    if (props.beforeClose) {
+      props.beforeClose(hide2);
+    } else {
+      close2();
+    }
+  }
+  function onModalClick() {
+    if (props.closeOnClickModal) {
+      handleClose();
+    }
+  }
+  function doOpen() {
+    if (!isClient)
+      return;
+    visible2.value = true;
+  }
+  function doClose() {
+    visible2.value = false;
+  }
+  function onOpenAutoFocus() {
+    emit("openAutoFocus");
+  }
+  function onCloseAutoFocus() {
+    emit("closeAutoFocus");
+  }
+  function onFocusoutPrevented(event) {
+    var _a22;
+    if (((_a22 = event.detail) == null ? void 0 : _a22.focusReason) === "pointer") {
+      event.preventDefault();
+    }
+  }
+  if (props.lockScroll) {
+    useLockscreen(visible2);
+  }
+  function onCloseRequested() {
+    if (props.closeOnPressEscape) {
+      handleClose();
+    }
+  }
+  watch(() => props.modelValue, (val) => {
+    if (val) {
+      closed.value = false;
+      open2();
+      rendered.value = true;
+      zIndex2.value = isUndefined$1(props.zIndex) ? nextZIndex() : zIndex2.value++;
+      nextTick(() => {
+        emit("open");
+        if (targetRef.value) {
+          targetRef.value.scrollTop = 0;
+        }
+      });
+    } else {
+      if (visible2.value) {
+        close2();
+      }
+    }
+  });
+  watch(() => props.fullscreen, (val) => {
+    if (!targetRef.value)
+      return;
+    if (val) {
+      lastPosition = targetRef.value.style.transform;
+      targetRef.value.style.transform = "";
+    } else {
+      targetRef.value.style.transform = lastPosition;
+    }
+  });
+  onMounted(() => {
+    if (props.modelValue) {
+      visible2.value = true;
+      rendered.value = true;
+      open2();
+    }
+  });
+  return {
+    afterEnter,
+    afterLeave,
+    beforeLeave,
+    handleClose,
+    onModalClick,
+    close: close2,
+    doClose,
+    onOpenAutoFocus,
+    onCloseAutoFocus,
+    onCloseRequested,
+    onFocusoutPrevented,
+    titleId,
+    bodyId,
+    closed,
+    style,
+    overlayDialogStyle,
+    rendered,
+    visible: visible2,
+    zIndex: zIndex2
+  };
+};
+var __default__$5 = defineComponent({
+  name: "ElDialog",
+  inheritAttrs: false
+});
+var _sfc_main$3 = defineComponent({
+  ...__default__$5,
+  props: dialogProps,
+  emits: dialogEmits,
+  setup(__props, { expose }) {
+    const props = __props;
+    const slots = useSlots();
+    useDeprecated({
+      scope: "el-dialog",
+      from: "the title slot",
+      replacement: "the header slot",
+      version: "3.0.0",
+      ref: "https://element-plus.org/en-US/component/dialog.html#slots"
+    }, computed(() => !!slots.title));
+    const ns = useNamespace("dialog");
+    const dialogRef = ref();
+    const headerRef = ref();
+    const dialogContentRef = ref();
+    const {
+      visible: visible2,
+      titleId,
+      bodyId,
+      style,
+      overlayDialogStyle,
+      rendered,
+      zIndex: zIndex2,
+      afterEnter,
+      afterLeave,
+      beforeLeave,
+      handleClose,
+      onModalClick,
+      onOpenAutoFocus,
+      onCloseAutoFocus,
+      onCloseRequested,
+      onFocusoutPrevented
+    } = useDialog(props, dialogRef);
+    provide(dialogInjectionKey, {
+      dialogRef,
+      headerRef,
+      bodyId,
+      ns,
+      rendered,
+      style
+    });
+    const overlayEvent = useSameTarget(onModalClick);
+    const draggable = computed(() => props.draggable && !props.fullscreen);
+    const resetPosition = () => {
+      var _a2;
+      (_a2 = dialogContentRef.value) == null ? void 0 : _a2.resetPosition();
+    };
+    expose({
+      visible: visible2,
+      dialogContentRef,
+      resetPosition
+    });
+    return (_ctx, _cache) => {
+      return openBlock(), createBlock(unref(ElTeleport), {
+        to: _ctx.appendTo,
+        disabled: _ctx.appendTo !== "body" ? false : !_ctx.appendToBody
+      }, {
+        default: withCtx(() => [
+          createVNode(Transition, {
+            name: "dialog-fade",
+            onAfterEnter: unref(afterEnter),
+            onAfterLeave: unref(afterLeave),
+            onBeforeLeave: unref(beforeLeave),
+            persisted: ""
+          }, {
+            default: withCtx(() => [
+              withDirectives(createVNode(unref(ElOverlay), {
+                "custom-mask-event": "",
+                mask: _ctx.modal,
+                "overlay-class": _ctx.modalClass,
+                "z-index": unref(zIndex2)
+              }, {
+                default: withCtx(() => [
+                  createBaseVNode("div", {
+                    role: "dialog",
+                    "aria-modal": "true",
+                    "aria-label": _ctx.title || void 0,
+                    "aria-labelledby": !_ctx.title ? unref(titleId) : void 0,
+                    "aria-describedby": unref(bodyId),
+                    class: normalizeClass(`${unref(ns).namespace.value}-overlay-dialog`),
+                    style: normalizeStyle(unref(overlayDialogStyle)),
+                    onClick: unref(overlayEvent).onClick,
+                    onMousedown: unref(overlayEvent).onMousedown,
+                    onMouseup: unref(overlayEvent).onMouseup
+                  }, [
+                    createVNode(unref(ElFocusTrap), {
+                      loop: "",
+                      trapped: unref(visible2),
+                      "focus-start-el": "container",
+                      onFocusAfterTrapped: unref(onOpenAutoFocus),
+                      onFocusAfterReleased: unref(onCloseAutoFocus),
+                      onFocusoutPrevented: unref(onFocusoutPrevented),
+                      onReleaseRequested: unref(onCloseRequested)
+                    }, {
+                      default: withCtx(() => [
+                        unref(rendered) ? (openBlock(), createBlock(ElDialogContent, mergeProps({
+                          key: 0,
+                          ref_key: "dialogContentRef",
+                          ref: dialogContentRef
+                        }, _ctx.$attrs, {
+                          center: _ctx.center,
+                          "align-center": _ctx.alignCenter,
+                          "close-icon": _ctx.closeIcon,
+                          draggable: unref(draggable),
+                          overflow: _ctx.overflow,
+                          fullscreen: _ctx.fullscreen,
+                          "show-close": _ctx.showClose,
+                          title: _ctx.title,
+                          "aria-level": _ctx.headerAriaLevel,
+                          onClose: unref(handleClose)
+                        }), createSlots({
+                          header: withCtx(() => [
+                            !_ctx.$slots.title ? renderSlot(_ctx.$slots, "header", {
+                              key: 0,
+                              close: unref(handleClose),
+                              titleId: unref(titleId),
+                              titleClass: unref(ns).e("title")
+                            }) : renderSlot(_ctx.$slots, "title", { key: 1 })
+                          ]),
+                          default: withCtx(() => [
+                            renderSlot(_ctx.$slots, "default")
+                          ]),
+                          _: 2
+                        }, [
+                          _ctx.$slots.footer ? {
+                            name: "footer",
+                            fn: withCtx(() => [
+                              renderSlot(_ctx.$slots, "footer")
+                            ])
+                          } : void 0
+                        ]), 1040, ["center", "align-center", "close-icon", "draggable", "overflow", "fullscreen", "show-close", "title", "aria-level", "onClose"])) : createCommentVNode("v-if", true)
+                      ]),
+                      _: 3
+                    }, 8, ["trapped", "onFocusAfterTrapped", "onFocusAfterReleased", "onFocusoutPrevented", "onReleaseRequested"])
+                  ], 46, ["aria-label", "aria-labelledby", "aria-describedby", "onClick", "onMousedown", "onMouseup"])
+                ]),
+                _: 3
+              }, 8, ["mask", "overlay-class", "z-index"]), [
+                [vShow, unref(visible2)]
+              ])
+            ]),
+            _: 3
+          }, 8, ["onAfterEnter", "onAfterLeave", "onBeforeLeave"])
+        ]),
+        _: 3
+      }, 8, ["to", "disabled"]);
+    };
+  }
+});
+var Dialog = _export_sfc(_sfc_main$3, [["__file", "dialog.vue"]]);
+var ElDialog = withInstall(Dialog);
+var dividerProps = buildProps({
+  direction: {
+    type: String,
+    values: ["horizontal", "vertical"],
+    default: "horizontal"
+  },
+  contentPosition: {
+    type: String,
+    values: ["left", "center", "right"],
+    default: "center"
+  },
+  borderStyle: {
+    type: definePropType(String),
+    default: "solid"
+  }
+});
+var __default__$4 = defineComponent({
+  name: "ElDivider"
+});
+var _sfc_main$2 = defineComponent({
+  ...__default__$4,
+  props: dividerProps,
+  setup(__props) {
+    const props = __props;
+    const ns = useNamespace("divider");
+    const dividerStyle = computed(() => {
+      return ns.cssVar({
+        "border-style": props.borderStyle
+      });
+    });
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock("div", {
+        class: normalizeClass([unref(ns).b(), unref(ns).m(_ctx.direction)]),
+        style: normalizeStyle(unref(dividerStyle)),
+        role: "separator"
+      }, [
+        _ctx.$slots.default && _ctx.direction !== "vertical" ? (openBlock(), createElementBlock("div", {
+          key: 0,
+          class: normalizeClass([unref(ns).e("text"), unref(ns).is(_ctx.contentPosition)])
+        }, [
+          renderSlot(_ctx.$slots, "default")
+        ], 2)) : createCommentVNode("v-if", true)
+      ], 6);
+    };
+  }
+});
+var Divider = _export_sfc(_sfc_main$2, [["__file", "divider.vue"]]);
+var ElDivider = withInstall(Divider);
+var imageViewerProps = buildProps({
+  urlList: {
+    type: definePropType(Array),
+    default: () => mutable([])
+  },
+  zIndex: {
+    type: Number
+  },
+  initialIndex: {
+    type: Number,
+    default: 0
+  },
+  infinite: {
+    type: Boolean,
+    default: true
+  },
+  hideOnClickModal: Boolean,
+  teleported: Boolean,
+  closeOnPressEscape: {
+    type: Boolean,
+    default: true
+  },
+  zoomRate: {
+    type: Number,
+    default: 1.2
+  },
+  minScale: {
+    type: Number,
+    default: 0.2
+  },
+  maxScale: {
+    type: Number,
+    default: 7
+  },
+  crossorigin: {
+    type: definePropType(String)
+  }
+});
+var imageViewerEmits = {
+  close: () => true,
+  switch: (index) => isNumber$1(index),
+  rotate: (deg) => isNumber$1(deg)
+};
+var __default__$3 = defineComponent({
+  name: "ElImageViewer"
+});
+var _sfc_main$1 = defineComponent({
+  ...__default__$3,
+  props: imageViewerProps,
+  emits: imageViewerEmits,
+  setup(__props, { expose, emit }) {
+    var _a2;
+    const props = __props;
+    const modes = {
+      CONTAIN: {
+        name: "contain",
+        icon: markRaw(full_screen_default)
+      },
+      ORIGINAL: {
+        name: "original",
+        icon: markRaw(scale_to_original_default)
+      }
+    };
+    const { t } = useLocale();
+    const ns = useNamespace("image-viewer");
+    const { nextZIndex } = useZIndex();
+    const wrapper = ref();
+    const imgRefs = ref([]);
+    const scopeEventListener = effectScope();
+    const loading = ref(true);
+    const activeIndex = ref(props.initialIndex);
+    const mode = shallowRef(modes.CONTAIN);
+    const transform2 = ref({
+      scale: 1,
+      deg: 0,
+      offsetX: 0,
+      offsetY: 0,
+      enableTransition: false
+    });
+    const zIndex2 = ref((_a2 = props.zIndex) != null ? _a2 : nextZIndex());
+    const isSingle = computed(() => {
+      const { urlList } = props;
+      return urlList.length <= 1;
+    });
+    const isFirst = computed(() => {
+      return activeIndex.value === 0;
+    });
+    const isLast = computed(() => {
+      return activeIndex.value === props.urlList.length - 1;
+    });
+    const currentImg = computed(() => {
+      return props.urlList[activeIndex.value];
+    });
+    const arrowPrevKls = computed(() => [
+      ns.e("btn"),
+      ns.e("prev"),
+      ns.is("disabled", !props.infinite && isFirst.value)
+    ]);
+    const arrowNextKls = computed(() => [
+      ns.e("btn"),
+      ns.e("next"),
+      ns.is("disabled", !props.infinite && isLast.value)
+    ]);
+    const imgStyle = computed(() => {
+      const { scale, deg, offsetX, offsetY, enableTransition } = transform2.value;
+      let translateX = offsetX / scale;
+      let translateY = offsetY / scale;
+      const radian = deg * Math.PI / 180;
+      const cosRadian = Math.cos(radian);
+      const sinRadian = Math.sin(radian);
+      translateX = translateX * cosRadian + translateY * sinRadian;
+      translateY = translateY * cosRadian - offsetX / scale * sinRadian;
+      const style = {
+        transform: `scale(${scale}) rotate(${deg}deg) translate(${translateX}px, ${translateY}px)`,
+        transition: enableTransition ? "transform .3s" : ""
+      };
+      if (mode.value.name === modes.CONTAIN.name) {
+        style.maxWidth = style.maxHeight = "100%";
+      }
+      return style;
+    });
+    function hide2() {
+      unregisterEventListener();
+      emit("close");
+    }
+    function registerEventListener() {
+      const keydownHandler = throttle$1((e) => {
+        switch (e.code) {
+          case EVENT_CODE.esc:
+            props.closeOnPressEscape && hide2();
+            break;
+          case EVENT_CODE.space:
+            toggleMode();
+            break;
+          case EVENT_CODE.left:
+            prev2();
+            break;
+          case EVENT_CODE.up:
+            handleActions("zoomIn");
+            break;
+          case EVENT_CODE.right:
+            next2();
+            break;
+          case EVENT_CODE.down:
+            handleActions("zoomOut");
+            break;
+        }
+      });
+      const mousewheelHandler = throttle$1((e) => {
+        const delta = e.deltaY || e.deltaX;
+        handleActions(delta < 0 ? "zoomIn" : "zoomOut", {
+          zoomRate: props.zoomRate,
+          enableTransition: false
+        });
+      });
+      scopeEventListener.run(() => {
+        useEventListener(document, "keydown", keydownHandler);
+        useEventListener(document, "wheel", mousewheelHandler);
+      });
+    }
+    function unregisterEventListener() {
+      scopeEventListener.stop();
+    }
+    function handleImgLoad() {
+      loading.value = false;
+    }
+    function handleImgError(e) {
+      loading.value = false;
+      e.target.alt = t("el.image.error");
+    }
+    function handleMouseDown(e) {
+      if (loading.value || e.button !== 0 || !wrapper.value)
+        return;
+      transform2.value.enableTransition = false;
+      const { offsetX, offsetY } = transform2.value;
+      const startX = e.pageX;
+      const startY = e.pageY;
+      const dragHandler = throttle$1((ev) => {
+        transform2.value = {
+          ...transform2.value,
+          offsetX: offsetX + ev.pageX - startX,
+          offsetY: offsetY + ev.pageY - startY
+        };
+      });
+      const removeMousemove = useEventListener(document, "mousemove", dragHandler);
+      useEventListener(document, "mouseup", () => {
+        removeMousemove();
+      });
+      e.preventDefault();
+    }
+    function reset() {
+      transform2.value = {
+        scale: 1,
+        deg: 0,
+        offsetX: 0,
+        offsetY: 0,
+        enableTransition: false
+      };
+    }
+    function toggleMode() {
+      if (loading.value)
+        return;
+      const modeNames = keysOf(modes);
+      const modeValues = Object.values(modes);
+      const currentMode = mode.value.name;
+      const index = modeValues.findIndex((i) => i.name === currentMode);
+      const nextIndex = (index + 1) % modeNames.length;
+      mode.value = modes[modeNames[nextIndex]];
+      reset();
+    }
+    function setActiveItem(index) {
+      const len = props.urlList.length;
+      activeIndex.value = (index + len) % len;
+    }
+    function prev2() {
+      if (isFirst.value && !props.infinite)
+        return;
+      setActiveItem(activeIndex.value - 1);
+    }
+    function next2() {
+      if (isLast.value && !props.infinite)
+        return;
+      setActiveItem(activeIndex.value + 1);
+    }
+    function handleActions(action, options = {}) {
+      if (loading.value)
+        return;
+      const { minScale, maxScale } = props;
+      const { zoomRate, rotateDeg, enableTransition } = {
+        zoomRate: props.zoomRate,
+        rotateDeg: 90,
+        enableTransition: true,
+        ...options
+      };
+      switch (action) {
+        case "zoomOut":
+          if (transform2.value.scale > minScale) {
+            transform2.value.scale = Number.parseFloat((transform2.value.scale / zoomRate).toFixed(3));
+          }
+          break;
+        case "zoomIn":
+          if (transform2.value.scale < maxScale) {
+            transform2.value.scale = Number.parseFloat((transform2.value.scale * zoomRate).toFixed(3));
+          }
+          break;
+        case "clockwise":
+          transform2.value.deg += rotateDeg;
+          emit("rotate", transform2.value.deg);
+          break;
+        case "anticlockwise":
+          transform2.value.deg -= rotateDeg;
+          emit("rotate", transform2.value.deg);
+          break;
+      }
+      transform2.value.enableTransition = enableTransition;
+    }
+    function onFocusoutPrevented(event) {
+      var _a22;
+      if (((_a22 = event.detail) == null ? void 0 : _a22.focusReason) === "pointer") {
+        event.preventDefault();
+      }
+    }
+    function onCloseRequested() {
+      if (props.closeOnPressEscape) {
+        hide2();
+      }
+    }
+    watch(currentImg, () => {
+      nextTick(() => {
+        const $img = imgRefs.value[0];
+        if (!($img == null ? void 0 : $img.complete)) {
+          loading.value = true;
+        }
+      });
+    });
+    watch(activeIndex, (val) => {
+      reset();
+      emit("switch", val);
+    });
+    onMounted(() => {
+      registerEventListener();
+    });
+    expose({
+      setActiveItem
+    });
+    return (_ctx, _cache) => {
+      return openBlock(), createBlock(unref(ElTeleport), {
+        to: "body",
+        disabled: !_ctx.teleported
+      }, {
+        default: withCtx(() => [
+          createVNode(Transition, {
+            name: "viewer-fade",
+            appear: ""
+          }, {
+            default: withCtx(() => [
+              createBaseVNode("div", {
+                ref_key: "wrapper",
+                ref: wrapper,
+                tabindex: -1,
+                class: normalizeClass(unref(ns).e("wrapper")),
+                style: normalizeStyle({ zIndex: zIndex2.value })
+              }, [
+                createVNode(unref(ElFocusTrap), {
+                  loop: "",
+                  trapped: "",
+                  "focus-trap-el": wrapper.value,
+                  "focus-start-el": "container",
+                  onFocusoutPrevented,
+                  onReleaseRequested: onCloseRequested
+                }, {
+                  default: withCtx(() => [
+                    createBaseVNode("div", {
+                      class: normalizeClass(unref(ns).e("mask")),
+                      onClick: withModifiers(($event) => _ctx.hideOnClickModal && hide2(), ["self"])
+                    }, null, 10, ["onClick"]),
+                    createCommentVNode(" CLOSE "),
+                    createBaseVNode("span", {
+                      class: normalizeClass([unref(ns).e("btn"), unref(ns).e("close")]),
+                      onClick: hide2
+                    }, [
+                      createVNode(unref(ElIcon), null, {
+                        default: withCtx(() => [
+                          createVNode(unref(close_default))
+                        ]),
+                        _: 1
+                      })
+                    ], 2),
+                    createCommentVNode(" ARROW "),
+                    !unref(isSingle) ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [
+                      createBaseVNode("span", {
+                        class: normalizeClass(unref(arrowPrevKls)),
+                        onClick: prev2
+                      }, [
+                        createVNode(unref(ElIcon), null, {
+                          default: withCtx(() => [
+                            createVNode(unref(arrow_left_default))
+                          ]),
+                          _: 1
+                        })
+                      ], 2),
+                      createBaseVNode("span", {
+                        class: normalizeClass(unref(arrowNextKls)),
+                        onClick: next2
+                      }, [
+                        createVNode(unref(ElIcon), null, {
+                          default: withCtx(() => [
+                            createVNode(unref(arrow_right_default))
+                          ]),
+                          _: 1
+                        })
+                      ], 2)
+                    ], 64)) : createCommentVNode("v-if", true),
+                    createCommentVNode(" ACTIONS "),
+                    createBaseVNode("div", {
+                      class: normalizeClass([unref(ns).e("btn"), unref(ns).e("actions")])
+                    }, [
+                      createBaseVNode("div", {
+                        class: normalizeClass(unref(ns).e("actions__inner"))
+                      }, [
+                        createVNode(unref(ElIcon), {
+                          onClick: ($event) => handleActions("zoomOut")
+                        }, {
+                          default: withCtx(() => [
+                            createVNode(unref(zoom_out_default))
+                          ]),
+                          _: 1
+                        }, 8, ["onClick"]),
+                        createVNode(unref(ElIcon), {
+                          onClick: ($event) => handleActions("zoomIn")
+                        }, {
+                          default: withCtx(() => [
+                            createVNode(unref(zoom_in_default))
+                          ]),
+                          _: 1
+                        }, 8, ["onClick"]),
+                        createBaseVNode("i", {
+                          class: normalizeClass(unref(ns).e("actions__divider"))
+                        }, null, 2),
+                        createVNode(unref(ElIcon), { onClick: toggleMode }, {
+                          default: withCtx(() => [
+                            (openBlock(), createBlock(resolveDynamicComponent(unref(mode).icon)))
+                          ]),
+                          _: 1
+                        }),
+                        createBaseVNode("i", {
+                          class: normalizeClass(unref(ns).e("actions__divider"))
+                        }, null, 2),
+                        createVNode(unref(ElIcon), {
+                          onClick: ($event) => handleActions("anticlockwise")
+                        }, {
+                          default: withCtx(() => [
+                            createVNode(unref(refresh_left_default))
+                          ]),
+                          _: 1
+                        }, 8, ["onClick"]),
+                        createVNode(unref(ElIcon), {
+                          onClick: ($event) => handleActions("clockwise")
+                        }, {
+                          default: withCtx(() => [
+                            createVNode(unref(refresh_right_default))
+                          ]),
+                          _: 1
+                        }, 8, ["onClick"])
+                      ], 2)
+                    ], 2),
+                    createCommentVNode(" CANVAS "),
+                    createBaseVNode("div", {
+                      class: normalizeClass(unref(ns).e("canvas"))
+                    }, [
+                      (openBlock(true), createElementBlock(Fragment, null, renderList(_ctx.urlList, (url, i) => {
+                        return withDirectives((openBlock(), createElementBlock("img", {
+                          ref_for: true,
+                          ref: (el) => imgRefs.value[i] = el,
+                          key: url,
+                          src: url,
+                          style: normalizeStyle(unref(imgStyle)),
+                          class: normalizeClass(unref(ns).e("img")),
+                          crossorigin: _ctx.crossorigin,
+                          onLoad: handleImgLoad,
+                          onError: handleImgError,
+                          onMousedown: handleMouseDown
+                        }, null, 46, ["src", "crossorigin"])), [
+                          [vShow, i === activeIndex.value]
+                        ]);
+                      }), 128))
+                    ], 2),
+                    renderSlot(_ctx.$slots, "default")
+                  ]),
+                  _: 3
+                }, 8, ["focus-trap-el"])
+              ], 6)
+            ]),
+            _: 3
+          })
+        ]),
+        _: 3
+      }, 8, ["disabled"]);
+    };
+  }
+});
+var ImageViewer = _export_sfc(_sfc_main$1, [["__file", "image-viewer.vue"]]);
+var ElImageViewer = withInstall(ImageViewer);
+var imageProps = buildProps({
+  hideOnClickModal: Boolean,
+  src: {
+    type: String,
+    default: ""
+  },
+  fit: {
+    type: String,
+    values: ["", "contain", "cover", "fill", "none", "scale-down"],
+    default: ""
+  },
+  loading: {
+    type: String,
+    values: ["eager", "lazy"]
+  },
+  lazy: Boolean,
+  scrollContainer: {
+    type: definePropType([String, Object])
+  },
+  previewSrcList: {
+    type: definePropType(Array),
+    default: () => mutable([])
+  },
+  previewTeleported: Boolean,
+  zIndex: {
+    type: Number
+  },
+  initialIndex: {
+    type: Number,
+    default: 0
+  },
+  infinite: {
+    type: Boolean,
+    default: true
+  },
+  closeOnPressEscape: {
+    type: Boolean,
+    default: true
+  },
+  zoomRate: {
+    type: Number,
+    default: 1.2
+  },
+  minScale: {
+    type: Number,
+    default: 0.2
+  },
+  maxScale: {
+    type: Number,
+    default: 7
+  },
+  crossorigin: {
+    type: definePropType(String)
+  }
+});
+var imageEmits = {
+  load: (evt) => evt instanceof Event,
+  error: (evt) => evt instanceof Event,
+  switch: (val) => isNumber$1(val),
+  close: () => true,
+  show: () => true
+};
+var __default__$2 = defineComponent({
+  name: "ElImage",
+  inheritAttrs: false
+});
+var _sfc_main = defineComponent({
+  ...__default__$2,
+  props: imageProps,
+  emits: imageEmits,
+  setup(__props, { emit }) {
+    const props = __props;
+    let prevOverflow = "";
+    const { t } = useLocale();
+    const ns = useNamespace("image");
+    const rawAttrs = useAttrs();
+    const containerAttrs = computed(() => {
+      return fromPairs(Object.entries(rawAttrs).filter(([key]) => /^(data-|on[A-Z])/i.test(key) || ["id", "style"].includes(key)));
+    });
+    const imgAttrs = useAttrs2({
+      excludeListeners: true,
+      excludeKeys: computed(() => {
+        return Object.keys(containerAttrs.value);
+      })
+    });
+    const imageSrc = ref();
+    const hasLoadError = ref(false);
+    const isLoading = ref(true);
+    const showViewer = ref(false);
+    const container = ref();
+    const _scrollContainer = ref();
+    const supportLoading = isClient && "loading" in HTMLImageElement.prototype;
+    let stopScrollListener;
+    let stopWheelListener;
+    const imageKls = computed(() => [
+      ns.e("inner"),
+      preview.value && ns.e("preview"),
+      isLoading.value && ns.is("loading")
+    ]);
+    const imageStyle = computed(() => {
+      const { fit } = props;
+      if (isClient && fit) {
+        return { objectFit: fit };
+      }
+      return {};
+    });
+    const preview = computed(() => {
+      const { previewSrcList } = props;
+      return isArray$1(previewSrcList) && previewSrcList.length > 0;
+    });
+    const imageIndex = computed(() => {
+      const { previewSrcList, initialIndex } = props;
+      let previewIndex = initialIndex;
+      if (initialIndex > previewSrcList.length - 1) {
+        previewIndex = 0;
+      }
+      return previewIndex;
+    });
+    const isManual = computed(() => {
+      if (props.loading === "eager")
+        return false;
+      return !supportLoading && props.loading === "lazy" || props.lazy;
+    });
+    const loadImage2 = () => {
+      if (!isClient)
+        return;
+      isLoading.value = true;
+      hasLoadError.value = false;
+      imageSrc.value = props.src;
+    };
+    function handleLoad(event) {
+      isLoading.value = false;
+      hasLoadError.value = false;
+      emit("load", event);
+    }
+    function handleError(event) {
+      isLoading.value = false;
+      hasLoadError.value = true;
+      emit("error", event);
+    }
+    function handleLazyLoad() {
+      if (isInContainer(container.value, _scrollContainer.value)) {
+        loadImage2();
+        removeLazyLoadListener();
+      }
+    }
+    const lazyLoadHandler = useThrottleFn(handleLazyLoad, 200, true);
+    async function addLazyLoadListener() {
+      var _a2;
+      if (!isClient)
+        return;
+      await nextTick();
+      const { scrollContainer } = props;
+      if (isElement(scrollContainer)) {
+        _scrollContainer.value = scrollContainer;
+      } else if (isString$1(scrollContainer) && scrollContainer !== "") {
+        _scrollContainer.value = (_a2 = document.querySelector(scrollContainer)) != null ? _a2 : void 0;
+      } else if (container.value) {
+        _scrollContainer.value = getScrollContainer(container.value);
+      }
+      if (_scrollContainer.value) {
+        stopScrollListener = useEventListener(_scrollContainer, "scroll", lazyLoadHandler);
+        setTimeout(() => handleLazyLoad(), 100);
+      }
+    }
+    function removeLazyLoadListener() {
+      if (!isClient || !_scrollContainer.value || !lazyLoadHandler)
+        return;
+      stopScrollListener == null ? void 0 : stopScrollListener();
+      _scrollContainer.value = void 0;
+    }
+    function wheelHandler(e) {
+      if (!e.ctrlKey)
+        return;
+      if (e.deltaY < 0) {
+        e.preventDefault();
+        return false;
+      } else if (e.deltaY > 0) {
+        e.preventDefault();
+        return false;
+      }
+    }
+    function clickHandler() {
+      if (!preview.value)
+        return;
+      stopWheelListener = useEventListener("wheel", wheelHandler, {
+        passive: false
+      });
+      prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      showViewer.value = true;
+      emit("show");
+    }
+    function closeViewer() {
+      stopWheelListener == null ? void 0 : stopWheelListener();
+      document.body.style.overflow = prevOverflow;
+      showViewer.value = false;
+      emit("close");
+    }
+    function switchViewer(val) {
+      emit("switch", val);
+    }
+    watch(() => props.src, () => {
+      if (isManual.value) {
+        isLoading.value = true;
+        hasLoadError.value = false;
+        removeLazyLoadListener();
+        addLazyLoadListener();
+      } else {
+        loadImage2();
+      }
+    });
+    onMounted(() => {
+      if (isManual.value) {
+        addLazyLoadListener();
+      } else {
+        loadImage2();
+      }
+    });
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock("div", mergeProps({
+        ref_key: "container",
+        ref: container
+      }, unref(containerAttrs), {
+        class: [unref(ns).b(), _ctx.$attrs.class]
+      }), [
+        hasLoadError.value ? renderSlot(_ctx.$slots, "error", { key: 0 }, () => [
+          createBaseVNode("div", {
+            class: normalizeClass(unref(ns).e("error"))
+          }, toDisplayString(unref(t)("el.image.error")), 3)
+        ]) : (openBlock(), createElementBlock(Fragment, { key: 1 }, [
+          imageSrc.value !== void 0 ? (openBlock(), createElementBlock("img", mergeProps({ key: 0 }, unref(imgAttrs), {
+            src: imageSrc.value,
+            loading: _ctx.loading,
+            style: unref(imageStyle),
+            class: unref(imageKls),
+            crossorigin: _ctx.crossorigin,
+            onClick: clickHandler,
+            onLoad: handleLoad,
+            onError: handleError
+          }), null, 16, ["src", "loading", "crossorigin"])) : createCommentVNode("v-if", true),
+          isLoading.value ? (openBlock(), createElementBlock("div", {
+            key: 1,
+            class: normalizeClass(unref(ns).e("wrapper"))
+          }, [
+            renderSlot(_ctx.$slots, "placeholder", {}, () => [
+              createBaseVNode("div", {
+                class: normalizeClass(unref(ns).e("placeholder"))
+              }, null, 2)
+            ])
+          ], 2)) : createCommentVNode("v-if", true)
+        ], 64)),
+        unref(preview) ? (openBlock(), createElementBlock(Fragment, { key: 2 }, [
+          showViewer.value ? (openBlock(), createBlock(unref(ElImageViewer), {
+            key: 0,
+            "z-index": _ctx.zIndex,
+            "initial-index": unref(imageIndex),
+            infinite: _ctx.infinite,
+            "zoom-rate": _ctx.zoomRate,
+            "min-scale": _ctx.minScale,
+            "max-scale": _ctx.maxScale,
+            "url-list": _ctx.previewSrcList,
+            crossorigin: _ctx.crossorigin,
+            "hide-on-click-modal": _ctx.hideOnClickModal,
+            teleported: _ctx.previewTeleported,
+            "close-on-press-escape": _ctx.closeOnPressEscape,
+            onClose: closeViewer,
+            onSwitch: switchViewer
+          }, {
+            default: withCtx(() => [
+              _ctx.$slots.viewer ? (openBlock(), createElementBlock("div", { key: 0 }, [
+                renderSlot(_ctx.$slots, "viewer")
+              ])) : createCommentVNode("v-if", true)
+            ]),
+            _: 3
+          }, 8, ["z-index", "initial-index", "infinite", "zoom-rate", "min-scale", "max-scale", "url-list", "crossorigin", "hide-on-click-modal", "teleported", "close-on-press-escape"])) : createCommentVNode("v-if", true)
+        ], 64)) : createCommentVNode("v-if", true)
+      ], 16);
+    };
+  }
+});
+var Image$2 = _export_sfc(_sfc_main, [["__file", "image.vue"]]);
+var ElImage = withInstall(Image$2);
+var _hoisted_1 = ["href"];
+var __default__$1 = {
+  name: "ElBreadcrumb"
+};
+var script$1 = Object.assign(__default__$1, {
+  props: {
+    data: Array,
+    defaultPath: {
+      type: String,
+      default: ""
+    },
+    separator: {
+      type: String,
+      default: "/"
+    },
+    isDivider: {
+      type: Boolean,
+      default: false
+    }
+  },
+  setup(__props) {
+    const props = __props;
+    function generatePath(text) {
+      let path = props.defaultPath;
+      const words = text.split(" ");
+      for (let i = 0; i < words.length; i++) {
+        path += "/" + words[i].toLowerCase();
+      }
+      return path;
+    }
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock(
+        Fragment,
+        null,
+        [
+          createVNode(unref(ElBreadcrumb), { separator: __props.separator }, {
+            default: withCtx(() => [
+              (openBlock(true), createElementBlock(
+                Fragment,
+                null,
+                renderList(__props.data, (item, index) => {
+                  return openBlock(), createBlock(
+                    unref(ElBreadcrumbItem),
+                    { key: index },
+                    {
+                      default: withCtx(() => [
+                        createBaseVNode("a", {
+                          href: generatePath(item.path)
+                        }, toDisplayString(item.text), 9, _hoisted_1)
+                      ]),
+                      _: 2
+                      /* DYNAMIC */
+                    },
+                    1024
+                    /* DYNAMIC_SLOTS */
+                  );
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
+            ]),
+            _: 1
+            /* STABLE */
+          }, 8, ["separator"]),
+          __props.isDivider ? (openBlock(), createBlock(unref(ElDivider), { key: 0 })) : createCommentVNode("v-if", true)
+        ],
+        64
+        /* STABLE_FRAGMENT */
+      );
+    };
+  }
+});
+script$1.__file = "src/components/Breadcrumb/breadcrumb.vue";
+script$1.install = (app) => {
+  app.component(script$1.name, script$1);
+};
 var CONSTANTS = {
   CHANGE_THEME: "changeTheme",
   CHANGE_LAYOUT: "changeLayout",
@@ -275,44 +3835,6 @@ var initRootNodePositionMap = {
   [CONSTANTS.INIT_ROOT_NODE_POSITION.BOTTOM]: 1,
   [CONSTANTS.INIT_ROOT_NODE_POSITION.CENTER]: 0.5
 };
-var layoutList = [
-  {
-    name: "逻辑结构图",
-    value: CONSTANTS.LAYOUT.LOGICAL_STRUCTURE
-  },
-  {
-    name: "向左逻辑结构图",
-    value: CONSTANTS.LAYOUT.LOGICAL_STRUCTURE_LEFT
-  },
-  {
-    name: "思维导图",
-    value: CONSTANTS.LAYOUT.MIND_MAP
-  },
-  {
-    name: "组织结构图",
-    value: CONSTANTS.LAYOUT.ORGANIZATION_STRUCTURE
-  },
-  {
-    name: "目录组织图",
-    value: CONSTANTS.LAYOUT.CATALOG_ORGANIZATION
-  },
-  {
-    name: "时间轴",
-    value: CONSTANTS.LAYOUT.TIMELINE
-  },
-  {
-    name: "时间轴2",
-    value: CONSTANTS.LAYOUT.TIMELINE2
-  },
-  {
-    name: "竖向时间轴",
-    value: CONSTANTS.LAYOUT.VERTICAL_TIMELINE
-  },
-  {
-    name: "鱼骨图",
-    value: CONSTANTS.LAYOUT.FISHBONE
-  }
-];
 var layoutValueList = [
   CONSTANTS.LAYOUT.LOGICAL_STRUCTURE,
   CONSTANTS.LAYOUT.LOGICAL_STRUCTURE_LEFT,
@@ -401,8 +3923,6 @@ var richTextSupportStyleList = [
   "textDecoration",
   "color"
 ];
-
-// node_modules/simple-mind-map/src/core/view/View.js
 var View = class {
   //  构造函数
   constructor(opt = {}) {
@@ -483,10 +4003,10 @@ var View = class {
           });
         }
         switch (true) {
-          case dirs.includes(CONSTANTS.DIR.UP || CONSTANTS.DIR.LEFT):
+          case dirs.includes(CONSTANTS.DIR.UP):
             mousewheelZoomActionReverse ? this.enlarge(cx2, cy2, isTouchPad) : this.narrow(cx2, cy2, isTouchPad);
             break;
-          case dirs.includes(CONSTANTS.DIR.DOWN || CONSTANTS.DIR.RIGHT):
+          case dirs.includes(CONSTANTS.DIR.DOWN):
             mousewheelZoomActionReverse ? this.narrow(cx2, cy2, isTouchPad) : this.enlarge(cx2, cy2, isTouchPad);
             break;
         }
@@ -682,13 +4202,10 @@ var View = class {
       flag = 1;
     } else {
       let newWidth = 0;
-      let newHeight = 0;
       if (drawRatio > elRatio) {
         newWidth = elWidth;
-        newHeight = elWidth / drawRatio;
         flag = 2;
       } else {
-        newHeight = elHeight;
         newWidth = elHeight * drawRatio;
         flag = 3;
       }
@@ -787,11 +4304,193 @@ var View = class {
     }
   }
 };
-var View_default = View;
-
-// node_modules/simple-mind-map/src/core/event/Event.js
-var import_eventemitter3 = __toESM(require_eventemitter3());
-var Event = class extends import_eventemitter3.default {
+var eventemitter3 = { exports: {} };
+var hasRequiredEventemitter3;
+function requireEventemitter3() {
+  if (hasRequiredEventemitter3)
+    return eventemitter3.exports;
+  hasRequiredEventemitter3 = 1;
+  (function(module2) {
+    var has = Object.prototype.hasOwnProperty, prefix = "~";
+    function Events() {
+    }
+    if (Object.create) {
+      Events.prototype = /* @__PURE__ */ Object.create(null);
+      if (!new Events().__proto__)
+        prefix = false;
+    }
+    function EE(fn, context, once) {
+      this.fn = fn;
+      this.context = context;
+      this.once = once || false;
+    }
+    function addListener(emitter, event, fn, context, once) {
+      if (typeof fn !== "function") {
+        throw new TypeError("The listener must be a function");
+      }
+      var listener = new EE(fn, context || emitter, once), evt = prefix ? prefix + event : event;
+      if (!emitter._events[evt])
+        emitter._events[evt] = listener, emitter._eventsCount++;
+      else if (!emitter._events[evt].fn)
+        emitter._events[evt].push(listener);
+      else
+        emitter._events[evt] = [emitter._events[evt], listener];
+      return emitter;
+    }
+    function clearEvent(emitter, evt) {
+      if (--emitter._eventsCount === 0)
+        emitter._events = new Events();
+      else
+        delete emitter._events[evt];
+    }
+    function EventEmitter2() {
+      this._events = new Events();
+      this._eventsCount = 0;
+    }
+    EventEmitter2.prototype.eventNames = function eventNames() {
+      var names2 = [], events, name2;
+      if (this._eventsCount === 0)
+        return names2;
+      for (name2 in events = this._events) {
+        if (has.call(events, name2))
+          names2.push(prefix ? name2.slice(1) : name2);
+      }
+      if (Object.getOwnPropertySymbols) {
+        return names2.concat(Object.getOwnPropertySymbols(events));
+      }
+      return names2;
+    };
+    EventEmitter2.prototype.listeners = function listeners(event) {
+      var evt = prefix ? prefix + event : event, handlers = this._events[evt];
+      if (!handlers)
+        return [];
+      if (handlers.fn)
+        return [handlers.fn];
+      for (var i = 0, l = handlers.length, ee = new Array(l); i < l; i++) {
+        ee[i] = handlers[i].fn;
+      }
+      return ee;
+    };
+    EventEmitter2.prototype.listenerCount = function listenerCount(event) {
+      var evt = prefix ? prefix + event : event, listeners = this._events[evt];
+      if (!listeners)
+        return 0;
+      if (listeners.fn)
+        return 1;
+      return listeners.length;
+    };
+    EventEmitter2.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
+      var evt = prefix ? prefix + event : event;
+      if (!this._events[evt])
+        return false;
+      var listeners = this._events[evt], len = arguments.length, args, i;
+      if (listeners.fn) {
+        if (listeners.once)
+          this.removeListener(event, listeners.fn, void 0, true);
+        switch (len) {
+          case 1:
+            return listeners.fn.call(listeners.context), true;
+          case 2:
+            return listeners.fn.call(listeners.context, a1), true;
+          case 3:
+            return listeners.fn.call(listeners.context, a1, a2), true;
+          case 4:
+            return listeners.fn.call(listeners.context, a1, a2, a3), true;
+          case 5:
+            return listeners.fn.call(listeners.context, a1, a2, a3, a4), true;
+          case 6:
+            return listeners.fn.call(listeners.context, a1, a2, a3, a4, a5), true;
+        }
+        for (i = 1, args = new Array(len - 1); i < len; i++) {
+          args[i - 1] = arguments[i];
+        }
+        listeners.fn.apply(listeners.context, args);
+      } else {
+        var length2 = listeners.length, j;
+        for (i = 0; i < length2; i++) {
+          if (listeners[i].once)
+            this.removeListener(event, listeners[i].fn, void 0, true);
+          switch (len) {
+            case 1:
+              listeners[i].fn.call(listeners[i].context);
+              break;
+            case 2:
+              listeners[i].fn.call(listeners[i].context, a1);
+              break;
+            case 3:
+              listeners[i].fn.call(listeners[i].context, a1, a2);
+              break;
+            case 4:
+              listeners[i].fn.call(listeners[i].context, a1, a2, a3);
+              break;
+            default:
+              if (!args)
+                for (j = 1, args = new Array(len - 1); j < len; j++) {
+                  args[j - 1] = arguments[j];
+                }
+              listeners[i].fn.apply(listeners[i].context, args);
+          }
+        }
+      }
+      return true;
+    };
+    EventEmitter2.prototype.on = function on2(event, fn, context) {
+      return addListener(this, event, fn, context, false);
+    };
+    EventEmitter2.prototype.once = function once(event, fn, context) {
+      return addListener(this, event, fn, context, true);
+    };
+    EventEmitter2.prototype.removeListener = function removeListener(event, fn, context, once) {
+      var evt = prefix ? prefix + event : event;
+      if (!this._events[evt])
+        return this;
+      if (!fn) {
+        clearEvent(this, evt);
+        return this;
+      }
+      var listeners = this._events[evt];
+      if (listeners.fn) {
+        if (listeners.fn === fn && (!once || listeners.once) && (!context || listeners.context === context)) {
+          clearEvent(this, evt);
+        }
+      } else {
+        for (var i = 0, events = [], length2 = listeners.length; i < length2; i++) {
+          if (listeners[i].fn !== fn || once && !listeners[i].once || context && listeners[i].context !== context) {
+            events.push(listeners[i]);
+          }
+        }
+        if (events.length)
+          this._events[evt] = events.length === 1 ? events[0] : events;
+        else
+          clearEvent(this, evt);
+      }
+      return this;
+    };
+    EventEmitter2.prototype.removeAllListeners = function removeAllListeners(event) {
+      var evt;
+      if (event) {
+        evt = prefix ? prefix + event : event;
+        if (this._events[evt])
+          clearEvent(this, evt);
+      } else {
+        this._events = new Events();
+        this._eventsCount = 0;
+      }
+      return this;
+    };
+    EventEmitter2.prototype.off = EventEmitter2.prototype.removeListener;
+    EventEmitter2.prototype.addListener = EventEmitter2.prototype.on;
+    EventEmitter2.prefixed = prefix;
+    EventEmitter2.EventEmitter = EventEmitter2;
+    {
+      module2.exports = EventEmitter2;
+    }
+  })(eventemitter3);
+  return eventemitter3.exports;
+}
+var eventemitter3Exports = requireEventemitter3();
+var EventEmitter = getDefaultExportFromCjs(eventemitter3Exports);
+var Event$1 = class Event2 extends EventEmitter {
   //  构造函数
   constructor(opt = {}) {
     super();
@@ -957,9 +4656,6 @@ var Event = class extends import_eventemitter3.default {
     this.emit("svg_mouseleave", e);
   }
 };
-var Event_default = Event;
-
-// node_modules/deepmerge/dist/es.js
 var isMergeableObject = function isMergeableObject2(value) {
   return isNonNullObject(value) && !isSpecial(value);
 };
@@ -1034,9 +4730,6 @@ deepmerge.all = function deepmergeAll(array2, optionsArgument) {
   });
 };
 var deepmerge_1 = deepmerge;
-var es_default = deepmerge_1;
-
-// node_modules/uuid/dist/esm-browser/rng.js
 var getRandomValues;
 var rnds8 = new Uint8Array(16);
 function rng() {
@@ -1048,17 +4741,6 @@ function rng() {
   }
   return getRandomValues(rnds8);
 }
-
-// node_modules/uuid/dist/esm-browser/regex.js
-var regex_default = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
-
-// node_modules/uuid/dist/esm-browser/validate.js
-function validate(uuid) {
-  return typeof uuid === "string" && regex_default.test(uuid);
-}
-var validate_default = validate;
-
-// node_modules/uuid/dist/esm-browser/stringify.js
 var byteToHex = [];
 for (let i = 0; i < 256; ++i) {
   byteToHex.push((i + 256).toString(16).slice(1));
@@ -1066,332 +4748,20 @@ for (let i = 0; i < 256; ++i) {
 function unsafeStringify(arr, offset = 0) {
   return byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + "-" + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + "-" + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + "-" + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + "-" + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]];
 }
-
-// node_modules/uuid/dist/esm-browser/parse.js
-function parse(uuid) {
-  if (!validate_default(uuid)) {
-    throw TypeError("Invalid UUID");
-  }
-  let v;
-  const arr = new Uint8Array(16);
-  arr[0] = (v = parseInt(uuid.slice(0, 8), 16)) >>> 24;
-  arr[1] = v >>> 16 & 255;
-  arr[2] = v >>> 8 & 255;
-  arr[3] = v & 255;
-  arr[4] = (v = parseInt(uuid.slice(9, 13), 16)) >>> 8;
-  arr[5] = v & 255;
-  arr[6] = (v = parseInt(uuid.slice(14, 18), 16)) >>> 8;
-  arr[7] = v & 255;
-  arr[8] = (v = parseInt(uuid.slice(19, 23), 16)) >>> 8;
-  arr[9] = v & 255;
-  arr[10] = (v = parseInt(uuid.slice(24, 36), 16)) / 1099511627776 & 255;
-  arr[11] = v / 4294967296 & 255;
-  arr[12] = v >>> 24 & 255;
-  arr[13] = v >>> 16 & 255;
-  arr[14] = v >>> 8 & 255;
-  arr[15] = v & 255;
-  return arr;
-}
-var parse_default = parse;
-
-// node_modules/uuid/dist/esm-browser/v35.js
-function stringToBytes(str) {
-  str = unescape(encodeURIComponent(str));
-  const bytes = [];
-  for (let i = 0; i < str.length; ++i) {
-    bytes.push(str.charCodeAt(i));
-  }
-  return bytes;
-}
-var DNS = "6ba7b810-9dad-11d1-80b4-00c04fd430c8";
-var URL = "6ba7b811-9dad-11d1-80b4-00c04fd430c8";
-function v35(name, version, hashfunc) {
-  function generateUUID(value, namespace, buf, offset) {
-    var _namespace;
-    if (typeof value === "string") {
-      value = stringToBytes(value);
-    }
-    if (typeof namespace === "string") {
-      namespace = parse_default(namespace);
-    }
-    if (((_namespace = namespace) === null || _namespace === void 0 ? void 0 : _namespace.length) !== 16) {
-      throw TypeError("Namespace must be array-like (16 iterable integer values, 0-255)");
-    }
-    let bytes = new Uint8Array(16 + value.length);
-    bytes.set(namespace);
-    bytes.set(value, namespace.length);
-    bytes = hashfunc(bytes);
-    bytes[6] = bytes[6] & 15 | version;
-    bytes[8] = bytes[8] & 63 | 128;
-    if (buf) {
-      offset = offset || 0;
-      for (let i = 0; i < 16; ++i) {
-        buf[offset + i] = bytes[i];
-      }
-      return buf;
-    }
-    return unsafeStringify(bytes);
-  }
-  try {
-    generateUUID.name = name;
-  } catch (err) {
-  }
-  generateUUID.DNS = DNS;
-  generateUUID.URL = URL;
-  return generateUUID;
-}
-
-// node_modules/uuid/dist/esm-browser/md5.js
-function md5(bytes) {
-  if (typeof bytes === "string") {
-    const msg = unescape(encodeURIComponent(bytes));
-    bytes = new Uint8Array(msg.length);
-    for (let i = 0; i < msg.length; ++i) {
-      bytes[i] = msg.charCodeAt(i);
-    }
-  }
-  return md5ToHexEncodedArray(wordsToMd5(bytesToWords(bytes), bytes.length * 8));
-}
-function md5ToHexEncodedArray(input) {
-  const output = [];
-  const length32 = input.length * 32;
-  const hexTab = "0123456789abcdef";
-  for (let i = 0; i < length32; i += 8) {
-    const x2 = input[i >> 5] >>> i % 32 & 255;
-    const hex2 = parseInt(hexTab.charAt(x2 >>> 4 & 15) + hexTab.charAt(x2 & 15), 16);
-    output.push(hex2);
-  }
-  return output;
-}
-function getOutputLength(inputLength8) {
-  return (inputLength8 + 64 >>> 9 << 4) + 14 + 1;
-}
-function wordsToMd5(x2, len) {
-  x2[len >> 5] |= 128 << len % 32;
-  x2[getOutputLength(len) - 1] = len;
-  let a = 1732584193;
-  let b = -271733879;
-  let c = -1732584194;
-  let d = 271733878;
-  for (let i = 0; i < x2.length; i += 16) {
-    const olda = a;
-    const oldb = b;
-    const oldc = c;
-    const oldd = d;
-    a = md5ff(a, b, c, d, x2[i], 7, -680876936);
-    d = md5ff(d, a, b, c, x2[i + 1], 12, -389564586);
-    c = md5ff(c, d, a, b, x2[i + 2], 17, 606105819);
-    b = md5ff(b, c, d, a, x2[i + 3], 22, -1044525330);
-    a = md5ff(a, b, c, d, x2[i + 4], 7, -176418897);
-    d = md5ff(d, a, b, c, x2[i + 5], 12, 1200080426);
-    c = md5ff(c, d, a, b, x2[i + 6], 17, -1473231341);
-    b = md5ff(b, c, d, a, x2[i + 7], 22, -45705983);
-    a = md5ff(a, b, c, d, x2[i + 8], 7, 1770035416);
-    d = md5ff(d, a, b, c, x2[i + 9], 12, -1958414417);
-    c = md5ff(c, d, a, b, x2[i + 10], 17, -42063);
-    b = md5ff(b, c, d, a, x2[i + 11], 22, -1990404162);
-    a = md5ff(a, b, c, d, x2[i + 12], 7, 1804603682);
-    d = md5ff(d, a, b, c, x2[i + 13], 12, -40341101);
-    c = md5ff(c, d, a, b, x2[i + 14], 17, -1502002290);
-    b = md5ff(b, c, d, a, x2[i + 15], 22, 1236535329);
-    a = md5gg(a, b, c, d, x2[i + 1], 5, -165796510);
-    d = md5gg(d, a, b, c, x2[i + 6], 9, -1069501632);
-    c = md5gg(c, d, a, b, x2[i + 11], 14, 643717713);
-    b = md5gg(b, c, d, a, x2[i], 20, -373897302);
-    a = md5gg(a, b, c, d, x2[i + 5], 5, -701558691);
-    d = md5gg(d, a, b, c, x2[i + 10], 9, 38016083);
-    c = md5gg(c, d, a, b, x2[i + 15], 14, -660478335);
-    b = md5gg(b, c, d, a, x2[i + 4], 20, -405537848);
-    a = md5gg(a, b, c, d, x2[i + 9], 5, 568446438);
-    d = md5gg(d, a, b, c, x2[i + 14], 9, -1019803690);
-    c = md5gg(c, d, a, b, x2[i + 3], 14, -187363961);
-    b = md5gg(b, c, d, a, x2[i + 8], 20, 1163531501);
-    a = md5gg(a, b, c, d, x2[i + 13], 5, -1444681467);
-    d = md5gg(d, a, b, c, x2[i + 2], 9, -51403784);
-    c = md5gg(c, d, a, b, x2[i + 7], 14, 1735328473);
-    b = md5gg(b, c, d, a, x2[i + 12], 20, -1926607734);
-    a = md5hh(a, b, c, d, x2[i + 5], 4, -378558);
-    d = md5hh(d, a, b, c, x2[i + 8], 11, -2022574463);
-    c = md5hh(c, d, a, b, x2[i + 11], 16, 1839030562);
-    b = md5hh(b, c, d, a, x2[i + 14], 23, -35309556);
-    a = md5hh(a, b, c, d, x2[i + 1], 4, -1530992060);
-    d = md5hh(d, a, b, c, x2[i + 4], 11, 1272893353);
-    c = md5hh(c, d, a, b, x2[i + 7], 16, -155497632);
-    b = md5hh(b, c, d, a, x2[i + 10], 23, -1094730640);
-    a = md5hh(a, b, c, d, x2[i + 13], 4, 681279174);
-    d = md5hh(d, a, b, c, x2[i], 11, -358537222);
-    c = md5hh(c, d, a, b, x2[i + 3], 16, -722521979);
-    b = md5hh(b, c, d, a, x2[i + 6], 23, 76029189);
-    a = md5hh(a, b, c, d, x2[i + 9], 4, -640364487);
-    d = md5hh(d, a, b, c, x2[i + 12], 11, -421815835);
-    c = md5hh(c, d, a, b, x2[i + 15], 16, 530742520);
-    b = md5hh(b, c, d, a, x2[i + 2], 23, -995338651);
-    a = md5ii(a, b, c, d, x2[i], 6, -198630844);
-    d = md5ii(d, a, b, c, x2[i + 7], 10, 1126891415);
-    c = md5ii(c, d, a, b, x2[i + 14], 15, -1416354905);
-    b = md5ii(b, c, d, a, x2[i + 5], 21, -57434055);
-    a = md5ii(a, b, c, d, x2[i + 12], 6, 1700485571);
-    d = md5ii(d, a, b, c, x2[i + 3], 10, -1894986606);
-    c = md5ii(c, d, a, b, x2[i + 10], 15, -1051523);
-    b = md5ii(b, c, d, a, x2[i + 1], 21, -2054922799);
-    a = md5ii(a, b, c, d, x2[i + 8], 6, 1873313359);
-    d = md5ii(d, a, b, c, x2[i + 15], 10, -30611744);
-    c = md5ii(c, d, a, b, x2[i + 6], 15, -1560198380);
-    b = md5ii(b, c, d, a, x2[i + 13], 21, 1309151649);
-    a = md5ii(a, b, c, d, x2[i + 4], 6, -145523070);
-    d = md5ii(d, a, b, c, x2[i + 11], 10, -1120210379);
-    c = md5ii(c, d, a, b, x2[i + 2], 15, 718787259);
-    b = md5ii(b, c, d, a, x2[i + 9], 21, -343485551);
-    a = safeAdd(a, olda);
-    b = safeAdd(b, oldb);
-    c = safeAdd(c, oldc);
-    d = safeAdd(d, oldd);
-  }
-  return [a, b, c, d];
-}
-function bytesToWords(input) {
-  if (input.length === 0) {
-    return [];
-  }
-  const length8 = input.length * 8;
-  const output = new Uint32Array(getOutputLength(length8));
-  for (let i = 0; i < length8; i += 8) {
-    output[i >> 5] |= (input[i / 8] & 255) << i % 32;
-  }
-  return output;
-}
-function safeAdd(x2, y2) {
-  const lsw = (x2 & 65535) + (y2 & 65535);
-  const msw = (x2 >> 16) + (y2 >> 16) + (lsw >> 16);
-  return msw << 16 | lsw & 65535;
-}
-function bitRotateLeft(num, cnt) {
-  return num << cnt | num >>> 32 - cnt;
-}
-function md5cmn(q, a, b, x2, s, t) {
-  return safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x2, t)), s), b);
-}
-function md5ff(a, b, c, d, x2, s, t) {
-  return md5cmn(b & c | ~b & d, a, b, x2, s, t);
-}
-function md5gg(a, b, c, d, x2, s, t) {
-  return md5cmn(b & d | c & ~d, a, b, x2, s, t);
-}
-function md5hh(a, b, c, d, x2, s, t) {
-  return md5cmn(b ^ c ^ d, a, b, x2, s, t);
-}
-function md5ii(a, b, c, d, x2, s, t) {
-  return md5cmn(c ^ (b | ~d), a, b, x2, s, t);
-}
-var md5_default = md5;
-
-// node_modules/uuid/dist/esm-browser/v3.js
-var v3 = v35("v3", 48, md5_default);
-
-// node_modules/uuid/dist/esm-browser/native.js
 var randomUUID = typeof crypto !== "undefined" && crypto.randomUUID && crypto.randomUUID.bind(crypto);
-var native_default = {
+var native = {
   randomUUID
 };
-
-// node_modules/uuid/dist/esm-browser/v4.js
 function v4(options, buf, offset) {
-  if (native_default.randomUUID && !buf && !options) {
-    return native_default.randomUUID();
+  if (native.randomUUID && !buf && !options) {
+    return native.randomUUID();
   }
   options = options || {};
   const rnds = options.random || (options.rng || rng)();
   rnds[6] = rnds[6] & 15 | 64;
   rnds[8] = rnds[8] & 63 | 128;
-  if (buf) {
-    offset = offset || 0;
-    for (let i = 0; i < 16; ++i) {
-      buf[offset + i] = rnds[i];
-    }
-    return buf;
-  }
   return unsafeStringify(rnds);
 }
-var v4_default = v4;
-
-// node_modules/uuid/dist/esm-browser/sha1.js
-function f(s, x2, y2, z) {
-  switch (s) {
-    case 0:
-      return x2 & y2 ^ ~x2 & z;
-    case 1:
-      return x2 ^ y2 ^ z;
-    case 2:
-      return x2 & y2 ^ x2 & z ^ y2 & z;
-    case 3:
-      return x2 ^ y2 ^ z;
-  }
-}
-function ROTL(x2, n) {
-  return x2 << n | x2 >>> 32 - n;
-}
-function sha1(bytes) {
-  const K = [1518500249, 1859775393, 2400959708, 3395469782];
-  const H = [1732584193, 4023233417, 2562383102, 271733878, 3285377520];
-  if (typeof bytes === "string") {
-    const msg = unescape(encodeURIComponent(bytes));
-    bytes = [];
-    for (let i = 0; i < msg.length; ++i) {
-      bytes.push(msg.charCodeAt(i));
-    }
-  } else if (!Array.isArray(bytes)) {
-    bytes = Array.prototype.slice.call(bytes);
-  }
-  bytes.push(128);
-  const l = bytes.length / 4 + 2;
-  const N = Math.ceil(l / 16);
-  const M = new Array(N);
-  for (let i = 0; i < N; ++i) {
-    const arr = new Uint32Array(16);
-    for (let j = 0; j < 16; ++j) {
-      arr[j] = bytes[i * 64 + j * 4] << 24 | bytes[i * 64 + j * 4 + 1] << 16 | bytes[i * 64 + j * 4 + 2] << 8 | bytes[i * 64 + j * 4 + 3];
-    }
-    M[i] = arr;
-  }
-  M[N - 1][14] = (bytes.length - 1) * 8 / Math.pow(2, 32);
-  M[N - 1][14] = Math.floor(M[N - 1][14]);
-  M[N - 1][15] = (bytes.length - 1) * 8 & 4294967295;
-  for (let i = 0; i < N; ++i) {
-    const W = new Uint32Array(80);
-    for (let t = 0; t < 16; ++t) {
-      W[t] = M[i][t];
-    }
-    for (let t = 16; t < 80; ++t) {
-      W[t] = ROTL(W[t - 3] ^ W[t - 8] ^ W[t - 14] ^ W[t - 16], 1);
-    }
-    let a = H[0];
-    let b = H[1];
-    let c = H[2];
-    let d = H[3];
-    let e = H[4];
-    for (let t = 0; t < 80; ++t) {
-      const s = Math.floor(t / 20);
-      const T = ROTL(a, 5) + f(s, b, c, d) + e + K[s] + W[t] >>> 0;
-      e = d;
-      d = c;
-      c = ROTL(b, 30) >>> 0;
-      b = a;
-      a = T;
-    }
-    H[0] = H[0] + a >>> 0;
-    H[1] = H[1] + b >>> 0;
-    H[2] = H[2] + c >>> 0;
-    H[3] = H[3] + d >>> 0;
-    H[4] = H[4] + e >>> 0;
-  }
-  return [H[0] >> 24 & 255, H[0] >> 16 & 255, H[0] >> 8 & 255, H[0] & 255, H[1] >> 24 & 255, H[1] >> 16 & 255, H[1] >> 8 & 255, H[1] & 255, H[2] >> 24 & 255, H[2] >> 16 & 255, H[2] >> 8 & 255, H[2] & 255, H[3] >> 24 & 255, H[3] >> 16 & 255, H[3] >> 8 & 255, H[3] & 255, H[4] >> 24 & 255, H[4] >> 16 & 255, H[4] >> 8 & 255, H[4] & 255];
-}
-var sha1_default = sha1;
-
-// node_modules/uuid/dist/esm-browser/v5.js
-var v5 = v35("v5", 80, sha1_default);
-
-// node_modules/simple-mind-map/src/utils/mersenneTwister.js
 function MersenneTwister(seed) {
   this.N = 624;
   this.M = 397;
@@ -1436,28 +4806,26 @@ MersenneTwister.prototype.genrand_int32 = function() {
   y2 ^= y2 >>> 18;
   return y2 >>> 0;
 };
-
-// node_modules/@svgdotjs/svg.js/dist/svg.esm.js
 var methods$1 = {};
 var names = [];
-function registerMethods(name, m) {
-  if (Array.isArray(name)) {
-    for (const _name of name) {
+function registerMethods(name2, m) {
+  if (Array.isArray(name2)) {
+    for (const _name of name2) {
       registerMethods(_name, m);
     }
     return;
   }
-  if (typeof name === "object") {
-    for (const _name in name) {
-      registerMethods(_name, name[_name]);
+  if (typeof name2 === "object") {
+    for (const _name in name2) {
+      registerMethods(_name, name2[_name]);
     }
     return;
   }
   addMethodNames(Object.getOwnPropertyNames(m));
-  methods$1[name] = Object.assign(methods$1[name] || {}, m);
+  methods$1[name2] = Object.assign(methods$1[name2] || {}, m);
 }
-function getMethodsFor(name) {
-  return methods$1[name] || {};
+function getMethodsFor(name2) {
+  return methods$1[name2] || {};
 }
 function getMethodNames() {
   return [...new Set(names)];
@@ -1465,7 +4833,7 @@ function getMethodNames() {
 function addMethodNames(_names) {
   names.push(..._names);
 }
-function map(array2, block) {
+function map$1(array2, block) {
   let i;
   const il = array2.length;
   const result = [];
@@ -1525,12 +4893,7 @@ function getOrigin(o, element) {
   const condX = typeof ox === "string";
   const condY = typeof oy === "string";
   if (condX || condY) {
-    const {
-      height: height2,
-      width: width2,
-      x: x2,
-      y: y2
-    } = element.bbox();
+    const { height: height2, width: width2, x: x2, y: y2 } = element.bbox();
     if (condX) {
       ox = ox.includes("left") ? x2 : ox.includes("right") ? x2 + width2 : x2 + width2 / 2;
     }
@@ -1549,7 +4912,7 @@ var globals = {
   window: typeof window === "undefined" ? null : window,
   document: typeof document === "undefined" ? null : document
 };
-var Base = class {
+var Base$1 = class Base {
   // constructor (node/*, {extensions = []} */) {
   //   // this.tags = []
   //   //
@@ -1561,11 +4924,11 @@ var Base = class {
 };
 var elements = {};
 var root = "___SYMBOL___ROOT___";
-function create(name, ns = svg) {
-  return globals.document.createElementNS(ns, name);
+function create(name2, ns = svg) {
+  return globals.document.createElementNS(ns, name2);
 }
 function makeInstance(element, isHTML = false) {
-  if (element instanceof Base)
+  if (element instanceof Base$1)
     return element;
   if (typeof element === "object") {
     return adopter(element);
@@ -1582,13 +4945,13 @@ function makeInstance(element, isHTML = false) {
   wrapper.removeChild(wrapper.firstChild);
   return element;
 }
-function nodeOrNew(name, node) {
-  return node && node.ownerDocument && node instanceof node.ownerDocument.defaultView.Node ? node : create(name);
+function nodeOrNew(name2, node) {
+  return node && node.ownerDocument && node instanceof node.ownerDocument.defaultView.Node ? node : create(name2);
 }
 function adopt(node) {
   if (!node)
     return null;
-  if (node.instance instanceof Base)
+  if (node.instance instanceof Base$1)
     return node.instance;
   if (node.nodeName === "#document-fragment") {
     return new elements.Fragment(node);
@@ -1602,19 +4965,19 @@ function adopt(node) {
   return new elements[className](node);
 }
 var adopter = adopt;
-function register(element, name = element.name, asRoot = false) {
-  elements[name] = element;
+function register(element, name2 = element.name, asRoot = false) {
+  elements[name2] = element;
   if (asRoot)
     elements[root] = element;
   addMethodNames(Object.getOwnPropertyNames(element.prototype));
   return element;
 }
-function getClass(name) {
-  return elements[name];
+function getClass(name2) {
+  return elements[name2];
 }
 var did = 1e3;
-function eid(name) {
-  return "Svgjs" + capitalize(name) + did++;
+function eid(name2) {
+  return "Svgjs" + capitalize(name2) + did++;
 }
 function assignNewId(node) {
   for (let i = node.children.length - 1; i >= 0; i--) {
@@ -1734,27 +5097,27 @@ function classes() {
   const attr2 = this.attr("class");
   return attr2 == null ? [] : attr2.trim().split(delimiter);
 }
-function hasClass(name) {
-  return this.classes().indexOf(name) !== -1;
+function hasClass(name2) {
+  return this.classes().indexOf(name2) !== -1;
 }
-function addClass(name) {
-  if (!this.hasClass(name)) {
+function addClass(name2) {
+  if (!this.hasClass(name2)) {
     const array2 = this.classes();
-    array2.push(name);
+    array2.push(name2);
     this.attr("class", array2.join(" "));
   }
   return this;
 }
-function removeClass(name) {
-  if (this.hasClass(name)) {
+function removeClass(name2) {
+  if (this.hasClass(name2)) {
     this.attr("class", this.classes().filter(function(c) {
-      return c !== name;
+      return c !== name2;
     }).join(" "));
   }
   return this;
 }
-function toggleClass(name) {
-  return this.hasClass(name) ? this.removeClass(name) : this.addClass(name);
+function toggleClass(name2) {
+  return this.hasClass(name2) ? this.removeClass(name2) : this.addClass(name2);
 }
 registerMethods("Dom", {
   classes,
@@ -1776,9 +5139,9 @@ function css(style, val) {
   }
   if (arguments.length < 2) {
     if (Array.isArray(style)) {
-      for (const name of style) {
-        const cased = camelCase(name);
-        ret[name] = this.node.style[cased];
+      for (const name2 of style) {
+        const cased = camelCase(name2);
+        ret[name2] = this.node.style[cased];
       }
       return ret;
     }
@@ -1786,8 +5149,8 @@ function css(style, val) {
       return this.node.style[camelCase(style)];
     }
     if (typeof style === "object") {
-      for (const name in style) {
-        this.node.style[camelCase(name)] = style[name] == null || isBlank.test(style[name]) ? "" : style[name];
+      for (const name2 in style) {
+        this.node.style[camelCase(name2)] = style[name2] == null || isBlank.test(style[name2]) ? "" : style[name2];
       }
     }
   }
@@ -1813,7 +5176,7 @@ registerMethods("Dom", {
 });
 function data(a, v, r) {
   if (a == null) {
-    return this.data(map(filter(this.node.attributes, (el) => el.nodeName.indexOf("data-") === 0), (el) => el.nodeName.slice(5)));
+    return this.data(map$1(filter(this.node.attributes, (el) => el.nodeName.indexOf("data-") === 0), (el) => el.nodeName.slice(5)));
   } else if (a instanceof Array) {
     const data2 = {};
     for (const key of a) {
@@ -1831,13 +5194,14 @@ function data(a, v, r) {
       return this.attr("data-" + a);
     }
   } else {
-    this.attr("data-" + a, v === null ? null : r === true || typeof v === "string" || typeof v === "number" ? v : JSON.stringify(v));
+    this.attr(
+      "data-" + a,
+      v === null ? null : r === true || typeof v === "string" || typeof v === "number" ? v : JSON.stringify(v)
+    );
   }
   return this;
 }
-registerMethods("Dom", {
-  data
-});
+registerMethods("Dom", { data });
 function remember(k, v) {
   if (typeof arguments[0] === "object") {
     for (const key in k) {
@@ -1863,13 +5227,17 @@ function forget() {
 function memory() {
   return this._memory = this._memory || {};
 }
-registerMethods("Dom", {
-  remember,
-  forget,
-  memory
-});
+registerMethods("Dom", { remember, forget, memory });
 function sixDigitHex(hex2) {
-  return hex2.length === 4 ? ["#", hex2.substring(1, 2), hex2.substring(1, 2), hex2.substring(2, 3), hex2.substring(2, 3), hex2.substring(3, 4), hex2.substring(3, 4)].join("") : hex2;
+  return hex2.length === 4 ? [
+    "#",
+    hex2.substring(1, 2),
+    hex2.substring(1, 2),
+    hex2.substring(2, 3),
+    hex2.substring(2, 3),
+    hex2.substring(3, 4),
+    hex2.substring(3, 4)
+  ].join("") : hex2;
 }
 function componentHex(component) {
   const integer = Math.round(component);
@@ -1886,48 +5254,7 @@ function is(object, space) {
   return true;
 }
 function getParameters(a, b) {
-  const params = is(a, "rgb") ? {
-    _a: a.r,
-    _b: a.g,
-    _c: a.b,
-    _d: 0,
-    space: "rgb"
-  } : is(a, "xyz") ? {
-    _a: a.x,
-    _b: a.y,
-    _c: a.z,
-    _d: 0,
-    space: "xyz"
-  } : is(a, "hsl") ? {
-    _a: a.h,
-    _b: a.s,
-    _c: a.l,
-    _d: 0,
-    space: "hsl"
-  } : is(a, "lab") ? {
-    _a: a.l,
-    _b: a.a,
-    _c: a.b,
-    _d: 0,
-    space: "lab"
-  } : is(a, "lch") ? {
-    _a: a.l,
-    _b: a.c,
-    _c: a.h,
-    _d: 0,
-    space: "lch"
-  } : is(a, "cmyk") ? {
-    _a: a.c,
-    _b: a.m,
-    _c: a.y,
-    _d: a.k,
-    space: "cmyk"
-  } : {
-    _a: 0,
-    _b: 0,
-    _c: 0,
-    space: "rgb"
-  };
+  const params = is(a, "rgb") ? { _a: a.r, _b: a.g, _c: a.b, _d: 0, space: "rgb" } : is(a, "xyz") ? { _a: a.x, _b: a.y, _c: a.z, _d: 0, space: "xyz" } : is(a, "hsl") ? { _a: a.h, _b: a.s, _c: a.l, _d: 0, space: "hsl" } : is(a, "lab") ? { _a: a.l, _b: a.a, _c: a.b, _d: 0, space: "lab" } : is(a, "lch") ? { _a: a.l, _b: a.c, _c: a.h, _d: 0, space: "lch" } : is(a, "cmyk") ? { _a: a.c, _b: a.m, _c: a.y, _d: a.k, space: "cmyk" } : { _a: 0, _b: 0, _c: 0, space: "rgb" };
   params.space = b || params.space;
   return params;
 }
@@ -1967,17 +5294,12 @@ var Color = class _Color {
   Generating random colors
   */
   static random(mode = "vibrant", t, u) {
-    const {
-      random,
-      round,
-      sin,
-      PI: pi
-    } = Math;
+    const { random, round, sin, PI: pi } = Math;
     if (mode === "vibrant") {
       const l = (81 - 57) * random() + 57;
       const c = (83 - 45) * random() + 45;
-      const h = 360 * random();
-      const color = new _Color(l, c, h, "lch");
+      const h2 = 360 * random();
+      const color = new _Color(l, c, h2, "lch");
       return color;
     } else if (mode === "sine") {
       t = t == null ? random() : t;
@@ -1989,14 +5311,14 @@ var Color = class _Color {
     } else if (mode === "pastel") {
       const l = (94 - 86) * random() + 86;
       const c = (26 - 9) * random() + 9;
-      const h = 360 * random();
-      const color = new _Color(l, c, h, "lch");
+      const h2 = 360 * random();
+      const color = new _Color(l, c, h2, "lch");
       return color;
     } else if (mode === "dark") {
       const l = 10 + 10 * random();
       const c = (125 - 75) * random() + 86;
-      const h = 360 * random();
-      const color = new _Color(l, c, h, "lch");
+      const h2 = 360 * random();
+      const color = new _Color(l, c, h2, "lch");
       return color;
     } else if (mode === "rgb") {
       const r = 255 * random();
@@ -2023,12 +5345,8 @@ var Color = class _Color {
     return typeof color === "string" && (isHex.test(color) || isRgb.test(color));
   }
   cmyk() {
-    const {
-      _a,
-      _b,
-      _c
-    } = this.rgb();
-    const [r, g, b] = [_a, _b, _c].map((v) => v / 255);
+    const { _a: _a2, _b, _c } = this.rgb();
+    const [r, g, b] = [_a2, _b, _c].map((v) => v / 255);
     const k = Math.min(1 - r, 1 - g, 1 - b);
     if (k === 1) {
       return new _Color(0, 0, 0, 1, "cmyk");
@@ -2040,20 +5358,16 @@ var Color = class _Color {
     return color;
   }
   hsl() {
-    const {
-      _a,
-      _b,
-      _c
-    } = this.rgb();
-    const [r, g, b] = [_a, _b, _c].map((v) => v / 255);
+    const { _a: _a2, _b, _c } = this.rgb();
+    const [r, g, b] = [_a2, _b, _c].map((v) => v / 255);
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
     const l = (max + min) / 2;
     const isGrey = max === min;
     const delta = max - min;
     const s = isGrey ? 0 : l > 0.5 ? delta / (2 - max - min) : delta / (max + min);
-    const h = isGrey ? 0 : max === r ? ((g - b) / delta + (g < b ? 6 : 0)) / 6 : max === g ? ((b - r) / delta + 2) / 6 : max === b ? ((r - g) / delta + 4) / 6 : 0;
-    const color = new _Color(360 * h, 100 * s, 100 * l, "hsl");
+    const h2 = isGrey ? 0 : max === r ? ((g - b) / delta + (g < b ? 6 : 0)) / 6 : max === g ? ((b - r) / delta + 2) / 6 : max === b ? ((r - g) / delta + 4) / 6 : 0;
+    const color = new _Color(360 * h2, 100 * s, 100 * l, "hsl");
     return color;
   }
   init(a = 0, b = 0, c = 0, d = 0, space = "rgb") {
@@ -2066,88 +5380,31 @@ var Color = class _Color {
     if (typeof a === "number") {
       space = typeof d === "string" ? d : space;
       d = typeof d === "string" ? 0 : d;
-      Object.assign(this, {
-        _a: a,
-        _b: b,
-        _c: c,
-        _d: d,
-        space
-      });
+      Object.assign(this, { _a: a, _b: b, _c: c, _d: d, space });
     } else if (a instanceof Array) {
       this.space = b || (typeof a[3] === "string" ? a[3] : a[4]) || "rgb";
-      Object.assign(this, {
-        _a: a[0],
-        _b: a[1],
-        _c: a[2],
-        _d: a[3] || 0
-      });
+      Object.assign(this, { _a: a[0], _b: a[1], _c: a[2], _d: a[3] || 0 });
     } else if (a instanceof Object) {
       const values = getParameters(a, b);
       Object.assign(this, values);
     } else if (typeof a === "string") {
       if (isRgb.test(a)) {
         const noWhitespace = a.replace(whitespace, "");
-        const [_a2, _b2, _c2] = rgb.exec(noWhitespace).slice(1, 4).map((v) => parseInt(v));
-        Object.assign(this, {
-          _a: _a2,
-          _b: _b2,
-          _c: _c2,
-          _d: 0,
-          space: "rgb"
-        });
+        const [_a3, _b2, _c2] = rgb.exec(noWhitespace).slice(1, 4).map((v) => parseInt(v));
+        Object.assign(this, { _a: _a3, _b: _b2, _c: _c2, _d: 0, space: "rgb" });
       } else if (isHex.test(a)) {
         const hexParse = (v) => parseInt(v, 16);
-        const [, _a2, _b2, _c2] = hex.exec(sixDigitHex(a)).map(hexParse);
-        Object.assign(this, {
-          _a: _a2,
-          _b: _b2,
-          _c: _c2,
-          _d: 0,
-          space: "rgb"
-        });
+        const [, _a3, _b2, _c2] = hex.exec(sixDigitHex(a)).map(hexParse);
+        Object.assign(this, { _a: _a3, _b: _b2, _c: _c2, _d: 0, space: "rgb" });
       } else
         throw Error("Unsupported string format, can't construct Color");
     }
-    const {
-      _a,
-      _b,
-      _c,
-      _d
-    } = this;
-    const components = this.space === "rgb" ? {
-      r: _a,
-      g: _b,
-      b: _c
-    } : this.space === "xyz" ? {
-      x: _a,
-      y: _b,
-      z: _c
-    } : this.space === "hsl" ? {
-      h: _a,
-      s: _b,
-      l: _c
-    } : this.space === "lab" ? {
-      l: _a,
-      a: _b,
-      b: _c
-    } : this.space === "lch" ? {
-      l: _a,
-      c: _b,
-      h: _c
-    } : this.space === "cmyk" ? {
-      c: _a,
-      m: _b,
-      y: _c,
-      k: _d
-    } : {};
-    Object.assign(this, components);
+    const { _a: _a2, _b, _c, _d } = this;
+    const components2 = this.space === "rgb" ? { r: _a2, g: _b, b: _c } : this.space === "xyz" ? { x: _a2, y: _b, z: _c } : this.space === "hsl" ? { h: _a2, s: _b, l: _c } : this.space === "lab" ? { l: _a2, a: _b, b: _c } : this.space === "lch" ? { l: _a2, c: _b, h: _c } : this.space === "cmyk" ? { c: _a2, m: _b, y: _c, k: _d } : {};
+    Object.assign(this, components2);
   }
   lab() {
-    const {
-      x: x2,
-      y: y2,
-      z
-    } = this.xyz();
+    const { x: x2, y: y2, z } = this.xyz();
     const l = 116 * y2 - 16;
     const a = 500 * (x2 - y2);
     const b = 200 * (y2 - z);
@@ -2155,18 +5412,14 @@ var Color = class _Color {
     return color;
   }
   lch() {
-    const {
-      l,
-      a,
-      b
-    } = this.lab();
+    const { l, a, b } = this.lab();
     const c = Math.sqrt(a ** 2 + b ** 2);
-    let h = 180 * Math.atan2(b, a) / Math.PI;
-    if (h < 0) {
-      h *= -1;
-      h = 360 - h;
+    let h2 = 180 * Math.atan2(b, a) / Math.PI;
+    if (h2 < 0) {
+      h2 *= -1;
+      h2 = 360 - h2;
     }
-    const color = new _Color(l, c, h, "lch");
+    const color = new _Color(l, c, h2, "lch");
     return color;
   }
   /*
@@ -2176,25 +5429,14 @@ var Color = class _Color {
     if (this.space === "rgb") {
       return this;
     } else if (cieSpace(this.space)) {
-      let {
-        x: x2,
-        y: y2,
-        z
-      } = this;
+      let { x: x2, y: y2, z } = this;
       if (this.space === "lab" || this.space === "lch") {
-        let {
-          l,
-          a,
-          b: b2
-        } = this;
+        let { l, a, b: b2 } = this;
         if (this.space === "lch") {
-          const {
-            c,
-            h
-          } = this;
+          const { c, h: h2 } = this;
           const dToR = Math.PI / 180;
-          a = c * Math.cos(dToR * h);
-          b2 = c * Math.sin(dToR * h);
+          a = c * Math.cos(dToR * h2);
+          b2 = c * Math.sin(dToR * h2);
         }
         const yL = (l + 16) / 116;
         const xL = a / 500 + yL;
@@ -2217,12 +5459,8 @@ var Color = class _Color {
       const color = new _Color(255 * r, 255 * g, 255 * b);
       return color;
     } else if (this.space === "hsl") {
-      let {
-        h,
-        s,
-        l
-      } = this;
-      h /= 360;
+      let { h: h2, s, l } = this;
+      h2 /= 360;
       s /= 100;
       l /= 100;
       if (s === 0) {
@@ -2232,18 +5470,13 @@ var Color = class _Color {
       }
       const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
       const p = 2 * l - q;
-      const r = 255 * hueToRgb(p, q, h + 1 / 3);
-      const g = 255 * hueToRgb(p, q, h);
-      const b = 255 * hueToRgb(p, q, h - 1 / 3);
+      const r = 255 * hueToRgb(p, q, h2 + 1 / 3);
+      const g = 255 * hueToRgb(p, q, h2);
+      const b = 255 * hueToRgb(p, q, h2 - 1 / 3);
       const color = new _Color(r, g, b);
       return color;
     } else if (this.space === "cmyk") {
-      const {
-        c,
-        m,
-        y: y2,
-        k
-      } = this;
+      const { c, m, y: y2, k } = this;
       const r = 255 * (1 - Math.min(1, c * (1 - k) + k));
       const g = 255 * (1 - Math.min(1, m * (1 - k) + k));
       const b = 255 * (1 - Math.min(1, y2 * (1 - k) + k));
@@ -2254,14 +5487,8 @@ var Color = class _Color {
     }
   }
   toArray() {
-    const {
-      _a,
-      _b,
-      _c,
-      _d,
-      space
-    } = this;
-    return [_a, _b, _c, _d, space];
+    const { _a: _a2, _b, _c, _d, space } = this;
+    return [_a2, _b, _c, _d, space];
   }
   toHex() {
     const [r, g, b] = this._clamped().map(componentHex);
@@ -2276,11 +5503,7 @@ var Color = class _Color {
     return this.toHex();
   }
   xyz() {
-    const {
-      _a: r255,
-      _b: g255,
-      _c: b255
-    } = this.rgb();
+    const { _a: r255, _b: g255, _c: b255 } = this.rgb();
     const [r, g, b] = [r255, g255, b255].map((v) => v / 255);
     const rL = r > 0.04045 ? Math.pow((r + 0.055) / 1.055, 2.4) : r / 12.92;
     const gL = g > 0.04045 ? Math.pow((g + 0.055) / 1.055, 2.4) : g / 12.92;
@@ -2298,18 +5521,10 @@ var Color = class _Color {
   Input and Output methods
   */
   _clamped() {
-    const {
-      _a,
-      _b,
-      _c
-    } = this.rgb();
-    const {
-      max,
-      min,
-      round
-    } = Math;
+    const { _a: _a2, _b, _c } = this.rgb();
+    const { max, min, round } = Math;
     const format = (v) => max(0, min(round(v), 255));
-    return [_a, _b, _c].map(format);
+    return [_a2, _b, _c].map(format);
   }
   /*
   Constructing colors
@@ -2325,20 +5540,8 @@ var Point = class _Point {
     return new _Point(this);
   }
   init(x2, y2) {
-    const base = {
-      x: 0,
-      y: 0
-    };
-    const source = Array.isArray(x2) ? {
-      x: x2[0],
-      y: x2[1]
-    } : typeof x2 === "object" ? {
-      x: x2.x,
-      y: x2.y
-    } : {
-      x: x2,
-      y: y2
-    };
+    const base = { x: 0, y: 0 };
+    const source = Array.isArray(x2) ? { x: x2[0], y: x2[1] } : typeof x2 === "object" ? { x: x2.x, y: x2.y } : { x: x2, y: y2 };
     this.x = source.x == null ? base.x : source.x;
     this.y = source.y == null ? base.y : source.y;
     return this;
@@ -2354,10 +5557,7 @@ var Point = class _Point {
     if (!Matrix.isMatrixLike(m)) {
       m = new Matrix(m);
     }
-    const {
-      x: x2,
-      y: y2
-    } = this;
+    const { x: x2, y: y2 } = this;
     this.x = m.a * x2 + m.c * y2 + m.e;
     this.y = m.b * x2 + m.d * y2 + m.f;
     return this;
@@ -2367,7 +5567,7 @@ function point(x2, y2) {
   return new Point(x2, y2).transformO(this.screenCTM().inverseO());
 }
 function closeEnough(a, b, threshold) {
-  return Math.abs(b - a) < (threshold || 1e-6);
+  return Math.abs(b - a) < 1e-6;
 }
 var Matrix = class _Matrix {
   constructor(...args) {
@@ -2389,9 +5589,9 @@ var Matrix = class _Matrix {
     const position2 = new Point(o.position || o.px || o.positionX || NaN, o.py || o.positionY || NaN);
     const px = position2.x;
     const py = position2.y;
-    const translate = new Point(o.translate || o.tx || o.translateX, o.ty || o.translateY);
-    const tx = translate.x;
-    const ty = translate.y;
+    const translate2 = new Point(o.translate || o.tx || o.translateX, o.ty || o.translateY);
+    const tx = translate2.x;
+    const ty = translate2.y;
     const relative = new Point(o.relative || o.rx || o.relativeX, o.ry || o.relativeY);
     const rx2 = relative.x;
     const ry2 = relative.y;
@@ -2413,14 +5613,7 @@ var Matrix = class _Matrix {
     };
   }
   static fromArray(a) {
-    return {
-      a: a[0],
-      b: a[1],
-      c: a[2],
-      d: a[3],
-      e: a[4],
-      f: a[5]
-    };
+    return { a: a[0], b: a[1], c: a[2], d: a[3], e: a[4], f: a[5] };
   }
   static isMatrixLike(o) {
     return o.a != null || o.b != null || o.c != null || o.d != null || o.e != null || o.f != null;
@@ -2432,13 +5625,13 @@ var Matrix = class _Matrix {
     const c = l.a * r.c + l.c * r.d;
     const d = l.b * r.c + l.d * r.d;
     const e = l.e + l.a * r.e + l.c * r.f;
-    const f2 = l.f + l.b * r.e + l.d * r.f;
+    const f = l.f + l.b * r.e + l.d * r.f;
     o.a = a;
     o.b = b;
     o.c = c;
     o.d = d;
     o.e = e;
-    o.f = f2;
+    o.f = f;
     return o;
   }
   around(cx2, cy2, matrix) {
@@ -2461,7 +5654,7 @@ var Matrix = class _Matrix {
     const c = this.c;
     const d = this.d;
     const e = this.e;
-    const f2 = this.f;
+    const f = this.f;
     const determinant = a * d - b * c;
     const ccw = determinant > 0 ? 1 : -1;
     const sx = ccw * Math.sqrt(a * a + b * b);
@@ -2472,7 +5665,7 @@ var Matrix = class _Matrix {
     const lam = (a * c + b * d) / determinant;
     const sy = c * sx / (lam * a - b) || d * sx / (lam * b + a);
     const tx = e - cx2 + cx2 * ct * sx + cy2 * (lam * ct * sx - st * sy);
-    const ty = f2 - cy2 + cx2 * st * sx + cy2 * (lam * st * sx + ct * sy);
+    const ty = f - cy2 + cx2 * st * sx + cy2 * (lam * st * sx + ct * sy);
     return {
       // Return the affine parameters
       scaleX: sx,
@@ -2509,7 +5702,7 @@ var Matrix = class _Matrix {
   // Initialize
   init(source) {
     const base = _Matrix.fromArray([1, 0, 0, 1, 0, 0]);
-    source = source instanceof Element ? source.matrixify() : typeof source === "string" ? _Matrix.fromArray(source.split(delimiter).map(parseFloat)) : Array.isArray(source) ? _Matrix.fromArray(source) : typeof source === "object" && _Matrix.isMatrixLike(source) ? source : typeof source === "object" ? new _Matrix().transform(source) : arguments.length === 6 ? _Matrix.fromArray([].slice.call(arguments)) : base;
+    source = source instanceof Element$1 ? source.matrixify() : typeof source === "string" ? _Matrix.fromArray(source.split(delimiter).map(parseFloat)) : Array.isArray(source) ? _Matrix.fromArray(source) : typeof source === "object" && _Matrix.isMatrixLike(source) ? source : typeof source === "object" ? new _Matrix().transform(source) : arguments.length === 6 ? _Matrix.fromArray([].slice.call(arguments)) : base;
     this.a = source.a != null ? source.a : base.a;
     this.b = source.b != null ? source.b : base.b;
     this.c = source.c != null ? source.c : base.c;
@@ -2528,7 +5721,7 @@ var Matrix = class _Matrix {
     const c = this.c;
     const d = this.d;
     const e = this.e;
-    const f2 = this.f;
+    const f = this.f;
     const det = a * d - b * c;
     if (!det)
       throw new Error("Cannot invert " + this);
@@ -2536,8 +5729,8 @@ var Matrix = class _Matrix {
     const nb = -b / det;
     const nc = -c / det;
     const nd = a / det;
-    const ne = -(na * e + nc * f2);
-    const nf = -(nb * e + nd * f2);
+    const ne = -(na * e + nc * f);
+    const nf = -(nb * e + nd * f);
     this.a = na;
     this.b = nb;
     this.c = nc;
@@ -2571,20 +5764,13 @@ var Matrix = class _Matrix {
     r = radians(r);
     const cos = Math.cos(r);
     const sin = Math.sin(r);
-    const {
-      a,
-      b,
-      c,
-      d,
-      e,
-      f: f2
-    } = this;
+    const { a, b, c, d, e, f } = this;
     this.a = a * cos - b * sin;
     this.b = b * cos + a * sin;
     this.c = c * cos - d * sin;
     this.d = d * cos + c * sin;
-    this.e = e * cos - f2 * sin + cy2 * sin - cx2 * cos + cx2;
-    this.f = f2 * cos + e * sin - cx2 * sin - cy2 * cos + cy2;
+    this.e = e * cos - f * sin + cy2 * sin - cx2 * cos + cx2;
+    this.f = f * cos + e * sin - cx2 * sin - cy2 * cos + cy2;
     return this;
   }
   // Scale matrix
@@ -2597,20 +5783,13 @@ var Matrix = class _Matrix {
       cx2 = y2;
       y2 = x2;
     }
-    const {
-      a,
-      b,
-      c,
-      d,
-      e,
-      f: f2
-    } = this;
+    const { a, b, c, d, e, f } = this;
     this.a = a * x2;
     this.b = b * y2;
     this.c = c * x2;
     this.d = d * y2;
     this.e = e * x2 - cx2 * x2 + cx2;
-    this.f = f2 * y2 - cy2 * y2 + cy2;
+    this.f = f * y2 - cy2 * y2 + cy2;
     return this;
   }
   // Shear matrix
@@ -2618,17 +5797,10 @@ var Matrix = class _Matrix {
     return this.clone().shearO(a, cx2, cy2);
   }
   shearO(lx, cx2 = 0, cy2 = 0) {
-    const {
-      a,
-      b,
-      c,
-      d,
-      e,
-      f: f2
-    } = this;
+    const { a, b, c, d, e, f } = this;
     this.a = a + b * lx;
     this.c = c + d * lx;
-    this.e = e + f2 * lx - cy2 * lx;
+    this.e = e + f * lx - cy2 * lx;
     return this;
   }
   // Skew Matrix
@@ -2645,20 +5817,13 @@ var Matrix = class _Matrix {
     y2 = radians(y2);
     const lx = Math.tan(x2);
     const ly = Math.tan(y2);
-    const {
-      a,
-      b,
-      c,
-      d,
-      e,
-      f: f2
-    } = this;
+    const { a, b, c, d, e, f } = this;
     this.a = a + b * lx;
     this.b = b + a * ly;
     this.c = c + d * lx;
     this.d = d + c * ly;
-    this.e = e + f2 * lx - cy2 * lx;
-    this.f = f2 + e * ly - cx2 * ly;
+    this.e = e + f * lx - cy2 * lx;
+    this.f = f + e * ly - cx2 * ly;
     return this;
   }
   // SkewX
@@ -2684,10 +5849,7 @@ var Matrix = class _Matrix {
     }
     const t = _Matrix.formatTransforms(o);
     const current = this;
-    const {
-      x: ox,
-      y: oy
-    } = new Point(t.ox, t.oy).transform(current);
+    const { x: ox, y: oy } = new Point(t.ox, t.oy).transform(current);
     const transformer = new _Matrix().translateO(t.rx, t.ry).lmultiplyO(current).translateO(-ox, -oy).scaleO(t.scaleX, t.scaleY).skewO(t.skewX, t.skewY).shearO(t.shear).rotateO(t.theta).translateO(ox, oy);
     if (isFinite(t.px) || isFinite(t.py)) {
       const origin = new Point(ox, oy).transform(transformer);
@@ -2734,14 +5896,17 @@ register(Matrix, "Matrix");
 function parser() {
   if (!parser.nodes) {
     const svg2 = makeInstance().size(2, 0);
-    svg2.node.style.cssText = ["opacity: 0", "position: absolute", "left: -100%", "top: -100%", "overflow: hidden"].join(";");
+    svg2.node.style.cssText = [
+      "opacity: 0",
+      "position: absolute",
+      "left: -100%",
+      "top: -100%",
+      "overflow: hidden"
+    ].join(";");
     svg2.attr("focusable", "false");
     svg2.attr("aria-hidden", "true");
     const path = svg2.path().node;
-    parser.nodes = {
-      svg: svg2,
-      path
-    };
+    parser.nodes = { svg: svg2, path };
   }
   if (!parser.nodes.svg.node.parentNode) {
     const b = globals.document.body || globals.document.documentElement;
@@ -2807,7 +5972,12 @@ var Box = class _Box {
     let xMax = -Infinity;
     let yMin = Infinity;
     let yMax = -Infinity;
-    const pts = [new Point(this.x, this.y), new Point(this.x2, this.y), new Point(this.x, this.y2), new Point(this.x2, this.y2)];
+    const pts = [
+      new Point(this.x, this.y),
+      new Point(this.x2, this.y),
+      new Point(this.x, this.y2),
+      new Point(this.x2, this.y2)
+    ];
     pts.forEach(function(p) {
       p = p.transform(m);
       xMin = Math.min(xMin, p.x);
@@ -2815,7 +5985,12 @@ var Box = class _Box {
       yMin = Math.min(yMin, p.y);
       yMax = Math.max(yMax, p.y);
     });
-    return new _Box(xMin, yMin, xMax - xMin, yMax - yMin);
+    return new _Box(
+      xMin,
+      yMin,
+      xMax - xMin,
+      yMax - yMin
+    );
   }
 };
 function getBox(el, getBBoxFn, retry) {
@@ -2870,11 +6045,8 @@ registerMethods({
       return this.attr("viewBox", new Box(x2, y2, width2, height2));
     },
     zoom(level, point2) {
-      let {
-        width: width2,
-        height: height2
-      } = this.attr(["width", "height"]);
-      if (!width2 && !height2 || typeof width2 === "string" || typeof height2 === "string") {
+      let { width: width2, height: height2 } = this.attr(["width", "height"]);
+      if (!width2 && !height2 || (typeof width2 === "string" || typeof height2 === "string")) {
         width2 = this.node.clientWidth;
         height2 = this.node.clientHeight;
       }
@@ -2892,10 +6064,9 @@ registerMethods({
       if (zoomAmount === Infinity)
         zoomAmount = Number.MAX_SAFE_INTEGER / 100;
       point2 = point2 || new Point(width2 / 2 / zoomX + v.x, height2 / 2 / zoomY + v.y);
-      const box = new Box(v).transform(new Matrix({
-        scale: zoomAmount,
-        origin: point2
-      }));
+      const box = new Box(v).transform(
+        new Matrix({ scale: zoomAmount, origin: point2 })
+      );
       return this.viewbox(box);
     }
   }
@@ -2928,20 +6099,20 @@ extend([List], {
 });
 var reserved = ["toArray", "constructor", "each"];
 List.extend = function(methods2) {
-  methods2 = methods2.reduce((obj, name) => {
-    if (reserved.includes(name))
+  methods2 = methods2.reduce((obj, name2) => {
+    if (reserved.includes(name2))
       return obj;
-    if (name[0] === "_")
+    if (name2[0] === "_")
       return obj;
-    obj[name] = function(...attrs2) {
-      return this.each(name, ...attrs2);
+    obj[name2] = function(...attrs2) {
+      return this.each(name2, ...attrs2);
     };
     return obj;
   }, {});
   extend([List], methods2);
 };
 function baseFind(query, parent) {
-  return new List(map((parent || globals.document).querySelectorAll(query), function(node) {
+  return new List(map$1((parent || globals.document).querySelectorAll(query), function(node) {
     return adopt(node);
   }));
 }
@@ -3043,16 +6214,12 @@ function dispatch(node, event, data2, options) {
   if (event instanceof globals.window.Event) {
     n.dispatchEvent(event);
   } else {
-    event = new globals.window.CustomEvent(event, {
-      detail: data2,
-      cancelable: true,
-      ...options
-    });
+    event = new globals.window.CustomEvent(event, { detail: data2, cancelable: true, ...options });
     n.dispatchEvent(event);
   }
   return event;
 }
-var EventTarget = class extends Base {
+var EventTarget = class extends Base$1 {
   addEventListener() {
   }
   dispatch(event, data2, options) {
@@ -3312,7 +6479,7 @@ var Dom = class _Dom extends EventTarget {
   }
   // Returns all child elements
   children() {
-    return new List(map(this.node.children, function(node) {
+    return new List(map$1(this.node.children, function(node) {
       return adopt(node);
     }));
   }
@@ -3433,9 +6600,9 @@ var Dom = class _Dom extends EventTarget {
     }
     return element;
   }
-  round(precision = 2, map3 = null) {
+  round(precision = 2, map2 = null) {
     const factor = 10 ** precision;
-    const attrs2 = this.attr(map3);
+    const attrs2 = this.attr(map2);
     for (const i in attrs2) {
       if (typeof attrs2[i] === "number") {
         attrs2[i] = Math.round(attrs2[i] * factor) / factor;
@@ -3513,13 +6680,9 @@ var Dom = class _Dom extends EventTarget {
     return outerXML ? this.replace(fragment) && parent : this.add(fragment);
   }
 };
-extend(Dom, {
-  attr,
-  find,
-  findOne
-});
+extend(Dom, { attr, find, findOne });
 register(Dom, "Dom");
-var Element = class extends Dom {
+var Element$1 = class Element2 extends Dom {
   constructor(node, attrs2) {
     super(node, attrs2);
     this.dom = {};
@@ -3634,7 +6797,7 @@ var Element = class extends Dom {
     return this.attr("y", y2);
   }
 };
-extend(Element, {
+extend(Element$1, {
   bbox,
   rbox,
   inside,
@@ -3642,7 +6805,7 @@ extend(Element, {
   ctm,
   screenCTM
 });
-register(Element, "Element");
+register(Element$1, "Element");
 var sugar = {
   stroke: ["color", "width", "opacity", "linecap", "linejoin", "miterlimit", "dasharray", "dashoffset"],
   fill: ["color", "opacity", "rule"],
@@ -3657,7 +6820,7 @@ var sugar = {
     if (typeof o === "undefined") {
       return this.attr(m);
     }
-    if (typeof o === "string" || o instanceof Color || Color.isRgb(o) || o instanceof Element) {
+    if (typeof o === "string" || o instanceof Color || Color.isRgb(o) || o instanceof Element$1) {
       this.attr(m, o);
     } else {
       for (i = sugar[m].length - 1; i >= 0; i--) {
@@ -3672,62 +6835,34 @@ var sugar = {
 });
 registerMethods(["Element", "Runner"], {
   // Let the user set the matrix directly
-  matrix: function(mat, b, c, d, e, f2) {
+  matrix: function(mat, b, c, d, e, f) {
     if (mat == null) {
       return new Matrix(this);
     }
-    return this.attr("transform", new Matrix(mat, b, c, d, e, f2));
+    return this.attr("transform", new Matrix(mat, b, c, d, e, f));
   },
   // Map rotation to transform
   rotate: function(angle, cx2, cy2) {
-    return this.transform({
-      rotate: angle,
-      ox: cx2,
-      oy: cy2
-    }, true);
+    return this.transform({ rotate: angle, ox: cx2, oy: cy2 }, true);
   },
   // Map skew to transform
   skew: function(x2, y2, cx2, cy2) {
-    return arguments.length === 1 || arguments.length === 3 ? this.transform({
-      skew: x2,
-      ox: y2,
-      oy: cx2
-    }, true) : this.transform({
-      skew: [x2, y2],
-      ox: cx2,
-      oy: cy2
-    }, true);
+    return arguments.length === 1 || arguments.length === 3 ? this.transform({ skew: x2, ox: y2, oy: cx2 }, true) : this.transform({ skew: [x2, y2], ox: cx2, oy: cy2 }, true);
   },
   shear: function(lam, cx2, cy2) {
-    return this.transform({
-      shear: lam,
-      ox: cx2,
-      oy: cy2
-    }, true);
+    return this.transform({ shear: lam, ox: cx2, oy: cy2 }, true);
   },
   // Map scale to transform
   scale: function(x2, y2, cx2, cy2) {
-    return arguments.length === 1 || arguments.length === 3 ? this.transform({
-      scale: x2,
-      ox: y2,
-      oy: cx2
-    }, true) : this.transform({
-      scale: [x2, y2],
-      ox: cx2,
-      oy: cy2
-    }, true);
+    return arguments.length === 1 || arguments.length === 3 ? this.transform({ scale: x2, ox: y2, oy: cx2 }, true) : this.transform({ scale: [x2, y2], ox: cx2, oy: cy2 }, true);
   },
   // Map translate to transform
   translate: function(x2, y2) {
-    return this.transform({
-      translate: [x2, y2]
-    }, true);
+    return this.transform({ translate: [x2, y2] }, true);
   },
   // Map relative translations to transform
   relative: function(x2, y2) {
-    return this.transform({
-      relative: [x2, y2]
-    }, true);
+    return this.transform({ relative: [x2, y2] }, true);
   },
   // Map flip to transform
   flip: function(direction = "both", origin = "center") {
@@ -3735,10 +6870,7 @@ registerMethods(["Element", "Runner"], {
       origin = direction;
       direction = "both";
     }
-    return this.transform({
-      flip: direction,
-      origin
-    }, true);
+    return this.transform({ flip: direction, origin }, true);
   },
   // Opacity
   opacity: function(value) {
@@ -3773,12 +6905,27 @@ registerMethods(["Element", "Runner"], {
     return a === "leading" ? this.leading(v) : a === "anchor" ? this.attr("text-anchor", v) : a === "size" || a === "family" || a === "weight" || a === "stretch" || a === "variant" || a === "style" ? this.attr("font-" + a, v) : this.attr(a, v);
   }
 });
-var methods = ["click", "dblclick", "mousedown", "mouseup", "mouseover", "mouseout", "mousemove", "mouseenter", "mouseleave", "touchstart", "touchmove", "touchleave", "touchend", "touchcancel"].reduce(function(last, event) {
-  const fn = function(f2) {
-    if (f2 === null) {
+var methods = [
+  "click",
+  "dblclick",
+  "mousedown",
+  "mouseup",
+  "mouseover",
+  "mouseout",
+  "mousemove",
+  "mouseenter",
+  "mouseleave",
+  "touchstart",
+  "touchmove",
+  "touchleave",
+  "touchend",
+  "touchcancel"
+].reduce(function(last, event) {
+  const fn = function(f) {
+    if (f === null) {
       this.off(event);
     } else {
-      this.on(event, f2);
+      this.on(event, f);
     }
     return this;
   };
@@ -3792,9 +6939,12 @@ function untransform() {
 function matrixify() {
   const matrix = (this.attr("transform") || "").split(transforms).slice(0, -1).map(function(str) {
     const kv = str.trim().split("(");
-    return [kv[0], kv[1].split(delimiter).map(function(str2) {
-      return parseFloat(str2);
-    })];
+    return [
+      kv[0],
+      kv[1].split(delimiter).map(function(str2) {
+        return parseFloat(str2);
+      })
+    ];
   }).reverse().reduce(function(matrix2, transform2) {
     if (transform2[0] === "matrix") {
       return matrix2.lmultiply(Matrix.fromArray(transform2[1]));
@@ -3820,10 +6970,7 @@ function transform(o, relative) {
     return o == null ? decomposed : decomposed[o];
   }
   if (!Matrix.isMatrixLike(o)) {
-    o = {
-      ...o,
-      origin: getOrigin(o, this)
-    };
+    o = { ...o, origin: getOrigin(o, this) };
   }
   const cleanRelative = relative === true ? this : relative || false;
   const result = new Matrix(cleanRelative).transform(o);
@@ -3836,7 +6983,7 @@ registerMethods("Element", {
   toRoot,
   transform
 });
-var Container = class _Container extends Element {
+var Container = class _Container extends Element$1 {
   flatten(parent = this, index) {
     this.each(function() {
       if (this instanceof _Container) {
@@ -3866,9 +7013,9 @@ var Defs = class extends Container {
   }
 };
 register(Defs, "Defs");
-var Shape = class extends Element {
+var Shape$1 = class Shape extends Element$1 {
 };
-register(Shape, "Shape");
+register(Shape$1, "Shape");
 function rx(rx2) {
   return this.attr("rx", rx2);
 }
@@ -3893,18 +7040,18 @@ function width$2(width2) {
 function height$2(height2) {
   return height2 == null ? this.ry() * 2 : this.ry(new SVGNumber(height2).divide(2));
 }
-var circled = {
+var circled = Object.freeze({
   __proto__: null,
-  rx,
-  ry,
-  x: x$3,
-  y: y$3,
   cx: cx$1,
   cy: cy$1,
+  height: height$2,
+  rx,
+  ry,
   width: width$2,
-  height: height$2
-};
-var Ellipse = class extends Shape {
+  x: x$3,
+  y: y$3
+});
+var Ellipse = class extends Shape$1 {
   constructor(node, attrs2 = node) {
     super(nodeOrNew("ellipse", node), attrs2);
   }
@@ -3921,7 +7068,7 @@ registerMethods("Container", {
   })
 });
 register(Ellipse, "Ellipse");
-var Fragment = class extends Dom {
+var Fragment2 = class extends Dom {
   constructor(node = globals.document.createDocumentFragment()) {
     super(node);
   }
@@ -3940,33 +7087,24 @@ var Fragment = class extends Dom {
     return super.xml(xmlOrFn, false, ns);
   }
 };
-register(Fragment, "Fragment");
+register(Fragment2, "Fragment");
 function from(x2, y2) {
-  return (this._element || this).type === "radialGradient" ? this.attr({
-    fx: new SVGNumber(x2),
-    fy: new SVGNumber(y2)
-  }) : this.attr({
-    x1: new SVGNumber(x2),
-    y1: new SVGNumber(y2)
-  });
+  return (this._element || this).type === "radialGradient" ? this.attr({ fx: new SVGNumber(x2), fy: new SVGNumber(y2) }) : this.attr({ x1: new SVGNumber(x2), y1: new SVGNumber(y2) });
 }
 function to(x2, y2) {
-  return (this._element || this).type === "radialGradient" ? this.attr({
-    cx: new SVGNumber(x2),
-    cy: new SVGNumber(y2)
-  }) : this.attr({
-    x2: new SVGNumber(x2),
-    y2: new SVGNumber(y2)
-  });
+  return (this._element || this).type === "radialGradient" ? this.attr({ cx: new SVGNumber(x2), cy: new SVGNumber(y2) }) : this.attr({ x2: new SVGNumber(x2), y2: new SVGNumber(y2) });
 }
-var gradiented = {
+var gradiented = Object.freeze({
   __proto__: null,
   from,
   to
-};
+});
 var Gradient = class extends Container {
   constructor(type, attrs2) {
-    super(nodeOrNew(type + "Gradient", typeof type === "string" ? null : type), attrs2);
+    super(
+      nodeOrNew(type + "Gradient", typeof type === "string" ? null : type),
+      attrs2
+    );
   }
   // custom attr to handle transform
   attr(a, b, c) {
@@ -4067,7 +7205,7 @@ registerMethods({
   }
 });
 register(Pattern, "Pattern");
-var Image2 = class extends Shape {
+var Image$1 = class Image2 extends Shape$1 {
   constructor(node, attrs2 = node) {
     super(nodeOrNew("image", node), attrs2);
   }
@@ -4102,7 +7240,7 @@ registerAttrHook(function(attr2, val, _this) {
       val = _this.root().defs().image(val);
     }
   }
-  if (val instanceof Image2) {
+  if (val instanceof Image$1) {
     val = _this.root().defs().pattern(0, 0, (pattern) => {
       pattern.add(val);
     });
@@ -4113,11 +7251,11 @@ registerMethods({
   Container: {
     // create image element, load image and set its size
     image: wrapWithAttrCheck(function(source, callback) {
-      return this.put(new Image2()).size(0, 0).load(source, callback);
+      return this.put(new Image$1()).size(0, 0).load(source, callback);
     })
   }
 });
-register(Image2, "Image");
+register(Image$1, "Image");
 var PointArray = class extends SVGArray {
   // Get bounding box of points
   bbox() {
@@ -4220,22 +7358,25 @@ function height$1(height2) {
   const b = this.bbox();
   return height2 == null ? b.height : this.size(b.width, height2);
 }
-var pointed = {
+var pointed = Object.freeze({
   __proto__: null,
   MorphArray,
-  x: x$2,
-  y: y$2,
+  height: height$1,
   width: width$1,
-  height: height$1
-};
-var Line = class extends Shape {
+  x: x$2,
+  y: y$2
+});
+var Line = class extends Shape$1 {
   // Initialize node
   constructor(node, attrs2 = node) {
     super(nodeOrNew("line", node), attrs2);
   }
   // Get array
   array() {
-    return new PointArray([[this.attr("x1"), this.attr("y1")], [this.attr("x2"), this.attr("y2")]]);
+    return new PointArray([
+      [this.attr("x1"), this.attr("y1")],
+      [this.attr("x2"), this.attr("y2")]
+    ]);
   }
   // Move by left top corner
   move(x2, y2) {
@@ -4246,12 +7387,7 @@ var Line = class extends Shape {
     if (x1 == null) {
       return this.array();
     } else if (typeof y1 !== "undefined") {
-      x1 = {
-        x1,
-        y1,
-        x2,
-        y2
-      };
+      x1 = { x1, y1, x2, y2 };
     } else {
       x1 = new PointArray(x1).toLine();
     }
@@ -4268,7 +7404,10 @@ registerMethods({
   Container: {
     // Create a line element
     line: wrapWithAttrCheck(function(...args) {
-      return Line.prototype.plot.apply(this.put(new Line()), args[0] != null ? args : [0, 0, 0, 0]);
+      return Line.prototype.plot.apply(
+        this.put(new Line()),
+        args[0] != null ? args : [0, 0, 0, 0]
+      );
     })
   }
 });
@@ -4331,13 +7470,13 @@ registerMethods({
   }
 });
 register(Marker, "Marker");
-function makeSetterGetter(k, f2) {
+function makeSetterGetter(k, f) {
   return function(v) {
     if (v == null)
       return this[k];
     this[k] = v;
-    if (f2)
-      f2.call(this);
+    if (f)
+      f.call(this);
     return this;
   };
 }
@@ -4505,18 +7644,7 @@ extend(PID, {
   i: makeSetterGetter("I"),
   d: makeSetterGetter("D")
 });
-var segmentParameters = {
-  M: 2,
-  L: 2,
-  H: 1,
-  V: 1,
-  C: 6,
-  S: 4,
-  Q: 4,
-  T: 2,
-  A: 7,
-  Z: 0
-};
+var segmentParameters = { M: 2, L: 2, H: 1, V: 1, C: 6, S: 4, Q: 4, T: 2, A: 7, Z: 0 };
 var pathHandlers = {
   M: function(c, p, p0) {
     p.x = p0.x = c[0];
@@ -4962,7 +8090,16 @@ var TransformBag = class _TransformBag {
   }
   toArray() {
     const v = this;
-    return [v.scaleX, v.scaleY, v.shear, v.rotate, v.translateX, v.translateY, v.originX, v.originY];
+    return [
+      v.scaleX,
+      v.scaleY,
+      v.shear,
+      v.rotate,
+      v.translateX,
+      v.translateY,
+      v.originX,
+      v.originY
+    ];
   }
 };
 TransformBag.defaults = {
@@ -5037,7 +8174,11 @@ var ObjectBag = class {
     return obj;
   }
 };
-var morphableTypes = [NonMorphable, TransformBag, ObjectBag];
+var morphableTypes = [
+  NonMorphable,
+  TransformBag,
+  ObjectBag
+];
 function registerMorphableType(type = []) {
   morphableTypes.push(...[].concat(type));
 }
@@ -5061,7 +8202,7 @@ function makeMorphable() {
     }
   });
 }
-var Path = class extends Shape {
+var Path = class extends Shape$1 {
   // Initialize node
   constructor(node, attrs2 = node) {
     super(nodeOrNew("path", node), attrs2);
@@ -5132,15 +8273,15 @@ function size$1(width2, height2) {
   const p = proportionalSize(this, width2, height2);
   return this.attr("points", this.array().size(p.width, p.height));
 }
-var poly = {
+var poly = Object.freeze({
   __proto__: null,
   array,
   clear,
   move: move$2,
   plot,
   size: size$1
-};
-var Polygon = class extends Shape {
+});
+var Polygon = class extends Shape$1 {
   // Initialize node
   constructor(node, attrs2 = node) {
     super(nodeOrNew("polygon", node), attrs2);
@@ -5157,7 +8298,7 @@ registerMethods({
 extend(Polygon, pointed);
 extend(Polygon, poly);
 register(Polygon, "Polygon");
-var Polyline = class extends Shape {
+var Polyline = class extends Shape$1 {
   // Initialize node
   constructor(node, attrs2 = node) {
     super(nodeOrNew("polyline", node), attrs2);
@@ -5174,16 +8315,13 @@ registerMethods({
 extend(Polyline, pointed);
 extend(Polyline, poly);
 register(Polyline, "Polyline");
-var Rect = class extends Shape {
+var Rect = class extends Shape$1 {
   // Initialize node
   constructor(node, attrs2 = node) {
     super(nodeOrNew("rect", node), attrs2);
   }
 };
-extend(Rect, {
-  rx,
-  ry
-});
+extend(Rect, { rx, ry });
 registerMethods({
   Container: {
     // Create a rect element
@@ -5207,11 +8345,7 @@ var Queue = class {
     return this._last && this._last.value;
   }
   push(value) {
-    const item = typeof value.next !== "undefined" ? value : {
-      value,
-      next: null,
-      prev: null
-    };
+    const item = typeof value.next !== "undefined" ? value : { value, next: null, prev: null };
     if (this._last) {
       item.prev = this._last;
       this._last.next = item;
@@ -5254,9 +8388,7 @@ var Animator = {
   timer: () => globals.window.performance || globals.window.Date,
   transforms: [],
   frame(fn) {
-    const node = Animator.frames.push({
-      run: fn
-    });
+    const node = Animator.frames.push({ run: fn });
     if (Animator.nextDraw === null) {
       Animator.nextDraw = globals.window.requestAnimationFrame(Animator._draw);
     }
@@ -5265,10 +8397,7 @@ var Animator = {
   timeout(fn, delay) {
     delay = delay || 0;
     const time = Animator.timer().now() + delay;
-    const node = Animator.timeouts.push({
-      run: fn,
-      time
-    });
+    const node = Animator.timeouts.push({ run: fn, time });
     if (Animator.nextDraw === null) {
       Animator.nextDraw = globals.window.requestAnimationFrame(Animator._draw);
     }
@@ -5290,11 +8419,11 @@ var Animator = {
   cancelImmediate(node) {
     node != null && Animator.immediates.remove(node);
   },
-  _draw(now) {
+  _draw(now2) {
     let nextTimeout = null;
     const lastTimeout = Animator.timeouts.last();
     while (nextTimeout = Animator.timeouts.shift()) {
-      if (now >= nextTimeout.time) {
+      if (now2 >= nextTimeout.time) {
         nextTimeout.run();
       } else {
         Animator.timeouts.push(nextTimeout);
@@ -5305,7 +8434,7 @@ var Animator = {
     let nextFrame = null;
     const lastFrame = Animator.frames.last();
     while (nextFrame !== lastFrame && (nextFrame = Animator.frames.shift())) {
-      nextFrame.run(now);
+      nextFrame.run(now2);
     }
     let nextImmediate = null;
     while (nextImmediate = Animator.immediates.shift()) {
@@ -5318,18 +8447,13 @@ var makeSchedule = function(runnerInfo) {
   const start = runnerInfo.start;
   const duration = runnerInfo.runner.duration();
   const end = start + duration;
-  return {
-    start,
-    duration,
-    end,
-    runner: runnerInfo.runner
-  };
+  return { start, duration, end, runner: runnerInfo.runner };
 };
 var defaultSource = function() {
   const w = globals.window;
   return (w.performance || w.Date).now();
 };
-var Timeline = class extends EventTarget {
+var Timeline$1 = class Timeline extends EventTarget {
   // Construct a new timeline on the given element
   constructor(timeSource = defaultSource) {
     super();
@@ -5549,7 +8673,7 @@ registerMethods({
   Element: {
     timeline: function(timeline2) {
       if (timeline2 == null) {
-        this._timeline = this._timeline || new Timeline();
+        this._timeline = this._timeline || new Timeline$1();
         return this._timeline;
       } else {
         this._timeline = timeline2;
@@ -5721,7 +8845,7 @@ var Runner = class _Runner extends EventTarget {
     const r = this._reverse;
     let position2;
     if (p == null) {
-      const f2 = function(x3) {
+      const f = function(x3) {
         const swinging = s * Math.floor(x3 % (2 * (w + d)) / (w + d));
         const backwards = swinging && !r || !swinging && r;
         const uncliped = Math.pow(-1, backwards) * (x3 % (w + d)) / d + backwards;
@@ -5729,7 +8853,7 @@ var Runner = class _Runner extends EventTarget {
         return clipped;
       };
       const endTime = t * (w + d) - w;
-      position2 = x2 <= 0 ? Math.round(f2(1e-5)) : x2 < endTime ? f2(x2) : Math.round(f2(endTime - 1e-5));
+      position2 = x2 <= 0 ? Math.round(f(1e-5)) : x2 < endTime ? f(x2) : Math.round(f(endTime - 1e-5));
       return position2;
     }
     const loopsDone = Math.floor(this.loops());
@@ -5774,7 +8898,7 @@ var Runner = class _Runner extends EventTarget {
     return this;
   }
   schedule(timeline2, delay, when) {
-    if (!(timeline2 instanceof Timeline)) {
+    if (!(timeline2 instanceof Timeline$1)) {
       when = delay;
       delay = timeline2;
       timeline2 = this.timeline();
@@ -5910,7 +9034,10 @@ var FakeRunner = class {
 };
 extend([Runner, FakeRunner], {
   mergeWith(runner) {
-    return new FakeRunner(runner.transforms.lmultiply(this.transforms), runner.id);
+    return new FakeRunner(
+      runner.transforms.lmultiply(this.transforms),
+      runner.id
+    );
   }
 });
 var lmultiply = (last, curr) => last.lmultiplyO(curr);
@@ -6022,9 +9149,7 @@ extend(Runner, {
   },
   styleAttr(type, nameOrAttrs, val) {
     if (typeof nameOrAttrs === "string") {
-      return this.styleAttr(type, {
-        [nameOrAttrs]: val
-      });
+      return this.styleAttr(type, { [nameOrAttrs]: val });
     }
     let attrs2 = nameOrAttrs;
     if (this._tryRetarget(type, attrs2))
@@ -6110,14 +9235,8 @@ extend(Runner, {
     function run(pos) {
       if (!relative)
         this.clearTransform();
-      const {
-        x: x2,
-        y: y2
-      } = new Point(origin).transform(element._currentTransform(this));
-      let target = new Matrix({
-        ...transforms2,
-        origin: [x2, y2]
-      });
+      const { x: x2, y: y2 } = new Point(origin).transform(element._currentTransform(this));
+      let target = new Matrix({ ...transforms2, origin: [x2, y2] });
       let start = this._isDeclarative && current ? current : startTransform;
       if (affine) {
         target = target.decompose(x2, y2);
@@ -6151,10 +9270,7 @@ extend(Runner, {
       if ((newTransforms.origin || "center").toString() !== (transforms2.origin || "center").toString()) {
         origin = getOrigin(newTransforms, element);
       }
-      transforms2 = {
-        ...newTransforms,
-        origin
-      };
+      transforms2 = { ...newTransforms, origin };
     }
     this.queue(setup, run, retarget, true);
     this._isDeclarative && this._rememberMorpher("transform", morpher);
@@ -6292,12 +9408,7 @@ extend(Runner, {
     return this;
   }
 });
-extend(Runner, {
-  rx,
-  ry,
-  from,
-  to
-});
+extend(Runner, { rx, ry, from, to });
 register(Runner, "Runner");
 var Svg = class extends Container {
   constructor(node, attrs2 = node) {
@@ -6317,16 +9428,10 @@ var Svg = class extends Container {
   namespace() {
     if (!this.isRoot())
       return this.root().namespace();
-    return this.attr({
-      xmlns: svg,
-      version: "1.1"
-    }).attr("xmlns:xlink", xlink, xmlns).attr("xmlns:svgjs", svgjs, xmlns);
+    return this.attr({ xmlns: svg, version: "1.1" }).attr("xmlns:xlink", xlink, xmlns).attr("xmlns:svgjs", svgjs, xmlns);
   }
   removeNamespace() {
-    return this.attr({
-      xmlns: null,
-      version: null
-    }).attr("xmlns:xlink", null, xmlns).attr("xmlns:svgjs", null, xmlns);
+    return this.attr({ xmlns: null, version: null }).attr("xmlns:xlink", null, xmlns).attr("xmlns:svgjs", null, xmlns);
   }
   // Check if this is a root svg
   // If not, call root() from this element
@@ -6345,7 +9450,7 @@ registerMethods({
   }
 });
 register(Svg, "Svg", true);
-var Symbol2 = class extends Container {
+var Symbol$1 = class Symbol2 extends Container {
   // Initialize node
   constructor(node, attrs2 = node) {
     super(nodeOrNew("symbol", node), attrs2);
@@ -6354,11 +9459,11 @@ var Symbol2 = class extends Container {
 registerMethods({
   Container: {
     symbol: wrapWithAttrCheck(function() {
-      return this.put(new Symbol2());
+      return this.put(new Symbol$1());
     })
   }
 });
-register(Symbol2, "Symbol");
+register(Symbol$1, "Symbol");
 function plain(text) {
   if (this._build === false) {
     this.clear();
@@ -6412,22 +9517,22 @@ function build(build2) {
   this._build = !!build2;
   return this;
 }
-var textable = {
+var textable = Object.freeze({
   __proto__: null,
-  plain,
-  length,
-  x: x$1,
-  y: y$1,
-  move: move$1,
-  cx,
-  cy,
-  center,
+  amove,
   ax,
   ay,
-  amove,
-  build
-};
-var Text = class extends Shape {
+  build,
+  center,
+  cx,
+  cy,
+  length,
+  move: move$1,
+  plain,
+  x: x$1,
+  y: y$1
+});
+var Text = class extends Shape$1 {
   // Initialize node
   constructor(node, attrs2 = node) {
     super(nodeOrNew("text", node), attrs2);
@@ -6449,14 +9554,14 @@ var Text = class extends Shape {
       this._rebuild = rebuild;
     }
     if (this._rebuild) {
-      const self = this;
+      const self2 = this;
       let blankLineOffset = 0;
       const leading = this.dom.leading;
       this.each(function(i) {
         const fontSize = globals.window.getComputedStyle(this.node).getPropertyValue("font-size");
         const dy2 = leading * new SVGNumber(fontSize);
         if (this.dom.newLined) {
-          this.attr("x", self.attr("x"));
+          this.attr("x", self2.attr("x"));
           if (this.text() === "\n") {
             blankLineOffset += dy2;
           } else {
@@ -6520,7 +9625,7 @@ registerMethods({
   }
 });
 register(Text, "Text");
-var Tspan = class extends Shape {
+var Tspan = class extends Shape$1 {
   // Initialize node
   constructor(node, attrs2 = node) {
     super(nodeOrNew("tspan", node), attrs2);
@@ -6578,7 +9683,7 @@ registerMethods({
   }
 });
 register(Tspan, "Tspan");
-var Circle = class extends Shape {
+var Circle = class extends Shape$1 {
   constructor(node, attrs2 = node) {
     super(nodeOrNew("circle", node), attrs2);
   }
@@ -6597,14 +9702,7 @@ var Circle = class extends Shape {
     return this.radius(new SVGNumber(size2).divide(2));
   }
 };
-extend(Circle, {
-  x: x$3,
-  y: y$3,
-  cx: cx$1,
-  cy: cy$1,
-  width: width$2,
-  height: height$2
-});
+extend(Circle, { x: x$3, y: y$3, cx: cx$1, cy: cy$1, width: width$2, height: height$2 });
 registerMethods({
   Container: {
     // Create circle element
@@ -6652,7 +9750,7 @@ registerMethods({
   }
 });
 register(ClipPath, "ClipPath");
-var ForeignObject = class extends Element {
+var ForeignObject = class extends Element$1 {
   constructor(node, attrs2 = node) {
     super(nodeOrNew("foreignObject", node), attrs2);
   }
@@ -6721,7 +9819,7 @@ function y(y2, box = this.bbox()) {
     return box.y;
   return this.move(box.x, y2, box);
 }
-var containerGeometry = {
+var containerGeometry = Object.freeze({
   __proto__: null,
   dmove,
   dx,
@@ -6732,7 +9830,7 @@ var containerGeometry = {
   width,
   x,
   y
-};
+});
 var G = class extends Container {
   constructor(node, attrs2 = node) {
     super(nodeOrNew("g", node), attrs2);
@@ -6844,7 +9942,7 @@ registerMethods({
   }
 });
 register(Mask, "Mask");
-var Stop = class extends Element {
+var Stop = class extends Element$1 {
   constructor(node, attrs2 = node) {
     super(nodeOrNew("stop", node), attrs2);
   }
@@ -6887,7 +9985,7 @@ function cssRule(selector, rule) {
   ret += "}";
   return ret;
 }
-var Style = class extends Element {
+var Style$1 = class Style extends Element$1 {
   constructor(node, attrs2 = node) {
     super(nodeOrNew("style", node), attrs2);
   }
@@ -6895,9 +9993,9 @@ var Style = class extends Element {
     this.node.textContent += w;
     return this;
   }
-  font(name, src, params = {}) {
+  font(name2, src, params = {}) {
     return this.rule("@font-face", {
-      fontFamily: name,
+      fontFamily: name2,
       src,
       ...params
     });
@@ -6908,13 +10006,13 @@ var Style = class extends Element {
 };
 registerMethods("Dom", {
   style(selector, obj) {
-    return this.put(new Style()).rule(selector, obj);
+    return this.put(new Style$1()).rule(selector, obj);
   },
-  fontface(name, src, params) {
-    return this.put(new Style()).font(name, src, params);
+  fontface(name2, src, params) {
+    return this.put(new Style$1()).font(name2, src, params);
   }
 });
-register(Style, "Style");
+register(Style$1, "Style");
 var TextPath = class extends Text {
   // Initialize node
   constructor(node, attrs2 = node) {
@@ -6986,7 +10084,7 @@ registerMethods({
 });
 TextPath.prototype.MorphArray = PathArray;
 register(TextPath, "TextPath");
-var Use = class extends Shape {
+var Use = class extends Shape$1 {
   constructor(node, attrs2 = node) {
     super(nodeOrNew("use", node), attrs2);
   }
@@ -7005,26 +10103,52 @@ registerMethods({
 });
 register(Use, "Use");
 var SVG = makeInstance;
-extend([Svg, Symbol2, Image2, Pattern, Marker], getMethodsFor("viewbox"));
-extend([Line, Polyline, Polygon, Path], getMethodsFor("marker"));
+extend([
+  Svg,
+  Symbol$1,
+  Image$1,
+  Pattern,
+  Marker
+], getMethodsFor("viewbox"));
+extend([
+  Line,
+  Polyline,
+  Polygon,
+  Path
+], getMethodsFor("marker"));
 extend(Text, getMethodsFor("Text"));
 extend(Path, getMethodsFor("Path"));
 extend(Defs, getMethodsFor("Defs"));
-extend([Text, Tspan], getMethodsFor("Tspan"));
-extend([Rect, Ellipse, Gradient, Runner], getMethodsFor("radius"));
+extend([
+  Text,
+  Tspan
+], getMethodsFor("Tspan"));
+extend([
+  Rect,
+  Ellipse,
+  Gradient,
+  Runner
+], getMethodsFor("radius"));
 extend(EventTarget, getMethodsFor("EventTarget"));
 extend(Dom, getMethodsFor("Dom"));
-extend(Element, getMethodsFor("Element"));
-extend(Shape, getMethodsFor("Shape"));
-extend([Container, Fragment], getMethodsFor("Container"));
+extend(Element$1, getMethodsFor("Element"));
+extend(Shape$1, getMethodsFor("Shape"));
+extend([Container, Fragment2], getMethodsFor("Container"));
 extend(Gradient, getMethodsFor("Gradient"));
 extend(Runner, getMethodsFor("Runner"));
 List.extend(getMethodNames());
-registerMorphableType([SVGNumber, Color, Box, Matrix, SVGArray, PointArray, PathArray, Point]);
+registerMorphableType([
+  SVGNumber,
+  Color,
+  Box,
+  Matrix,
+  SVGArray,
+  PointArray,
+  PathArray,
+  Point
+]);
 makeMorphable();
-
-// node_modules/simple-mind-map/src/theme/default.js
-var default_default = {
+var defaultTheme = {
   // 节点内边距
   paddingX: 15,
   paddingY: 5,
@@ -7256,8 +10380,6 @@ var lineStyleProps = [
   "lineFlowDuration",
   "lineFlowForward"
 ];
-
-// node_modules/simple-mind-map/src/utils/index.js
 var walk = (root2, parent, beforeCallback, afterCallback, isRoot, layerIndex = 0, index = 0, ancestors = []) => {
   let stop = false;
   if (beforeCallback) {
@@ -7450,7 +10572,7 @@ var camelCaseToHyphen = (str) => {
     return args[1] + "-" + args[2].toLowerCase();
   });
 };
-var nextTick = function(fn, ctx) {
+var nextTick2 = function(fn, ctx) {
   let pending = false;
   let timerFunc = null;
   let handle = () => {
@@ -7534,7 +10656,7 @@ var getImageSize = (src) => {
   });
 };
 var createUid = () => {
-  return v4_default();
+  return v4();
 };
 var loadImage = (imgFile) => {
   return new Promise((resolve, reject) => {
@@ -7825,8 +10947,8 @@ var generateColorByContent = (str) => {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
   const rng2 = new MersenneTwister(hash);
-  const h = rng2.genrand_int32() % 360;
-  return "hsla(" + h + ", 50%, 50%, 1)";
+  const h2 = rng2.genrand_int32() % 360;
+  return "hsla(" + h2 + ", 50%, 50%, 1)";
 };
 var htmlEscape = (str) => {
   [
@@ -8097,7 +11219,7 @@ var getOnfullscreEnevt = () => {
     return "msfullscreenchange";
   }
 };
-var fullscrrenEvent = getOnfullscreEnevt();
+getOnfullscreEnevt();
 var createForeignObjectNode = ({ el, width: width2, height: height2 }) => {
   const foreignObject = new ForeignObject();
   if (width2 !== void 0) {
@@ -8128,7 +11250,7 @@ var sortNodeList = (nodeList) => {
   return nodeList;
 };
 var mergeTheme = (dest, source) => {
-  return es_default(dest, source, {
+  return deepmerge_1(dest, source, {
     arrayMerge: (destinationArray, sourceArray) => {
       return sourceArray;
     }
@@ -8145,8 +11267,6 @@ var getNodeRichTextStyles = (node) => {
   });
   return res;
 };
-
-// node_modules/simple-mind-map/src/core/render/node/Style.js
 var backgroundStyleProps = [
   "backgroundColor",
   "backgroundImage",
@@ -8485,9 +11605,6 @@ var Style2 = class _Style {
   }
 };
 Style2.cacheStyle = null;
-var Style_default = Style2;
-
-// node_modules/simple-mind-map/src/core/render/node/Shape.js
 var Shape2 = class {
   constructor(node) {
     this.node = node;
@@ -8745,8 +11862,6 @@ var shapeList = [
   CONSTANTS.SHAPE.ELLIPSE,
   CONSTANTS.SHAPE.CIRCLE
 ];
-
-// node_modules/simple-mind-map/src/core/render/node/nodeGeneralization.js
 function formatGetGeneralization() {
   const data2 = this.getData("generalization");
   return Array.isArray(data2) ? data2 : data2 ? [data2] : [];
@@ -8783,7 +11898,7 @@ function createGeneralizationNode() {
       cur.generalizationLine = this.lineDraw.path();
     }
     if (!cur.generalizationNode) {
-      cur.generalizationNode = new MindMapNode_default({
+      cur.generalizationNode = new MindMapNode({
         data: {
           inserting: item.inserting,
           data: item
@@ -8921,7 +12036,7 @@ function handleGeneralizationMouseenter() {
 function handleGeneralizationMouseleave() {
   this.mindMap.renderer.closeHighlightNode();
 }
-var nodeGeneralization_default = {
+var nodeGeneralizationMethods = {
   formatGetGeneralization,
   checkHasGeneralization,
   checkHasSelfGeneralization,
@@ -8937,20 +12052,16 @@ var nodeGeneralization_default = {
   handleGeneralizationMouseenter,
   handleGeneralizationMouseleave
 };
-
-// node_modules/simple-mind-map/src/svg/btns.js
 var open = `<svg t="1618141562310" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="13476" width="200" height="200"><path d="M475.136 327.168v147.968h-147.968v74.24h147.968v147.968h74.24v-147.968h147.968v-74.24h-147.968v-147.968h-74.24z m36.864-222.208c225.28 0 407.04 181.76 407.04 407.04s-181.76 407.04-407.04 407.04-407.04-181.76-407.04-407.04 181.76-407.04 407.04-407.04z m0-74.24c-265.216 0-480.768 215.552-480.768 480.768s215.552 480.768 480.768 480.768 480.768-215.552 480.768-480.768-215.552-480.768-480.768-480.768z" p-id="13477"></path></svg>`;
 var close = `<svg t="1618141589243" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="13611" width="200" height="200"><path d="M512 105.472c225.28 0 407.04 181.76 407.04 407.04s-181.76 407.04-407.04 407.04-407.04-181.76-407.04-407.04 181.76-407.04 407.04-407.04z m0-74.24c-265.216 0-480.768 215.552-480.768 480.768s215.552 480.768 480.768 480.768 480.768-215.552 480.768-480.768-215.552-480.768-480.768-480.768z" p-id="13612"></path><path d="M252.928 474.624h518.144v74.24h-518.144z" p-id="13613"></path></svg>`;
 var remove = `<svg width="14px" height="14px" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="13611" width="200" height="200"><path fill="#ffffff" d="M512 105.472c225.28 0 407.04 181.76 407.04 407.04s-181.76 407.04-407.04 407.04-407.04-181.76-407.04-407.04 181.76-407.04 407.04-407.04z m0-74.24c-265.216 0-480.768 215.552-480.768 480.768s215.552 480.768 480.768 480.768 480.768-215.552 480.768-480.768-215.552-480.768-480.768-480.768z" p-id="13612"></path><path fill="#ffffff" d="M252.928 474.624h518.144v74.24h-518.144z" p-id="13613"></path></svg>`;
 var imgAdjust = `<svg width="12px" height="12px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#ffffff" d="M1008.128 614.4a25.6 25.6 0 0 0-27.648 5.632l-142.848 142.848L259.072 186.88 401.92 43.52A25.6 25.6 0 0 0 384 0h-358.4a25.6 25.6 0 0 0-25.6 25.6v358.4a25.6 25.6 0 0 0 43.52 17.92l143.36-142.848 578.048 578.048-142.848 142.848a25.6 25.6 0 0 0 17.92 43.52h358.4a25.6 25.6 0 0 0 25.6-25.6v-358.4a25.6 25.6 0 0 0-15.872-25.088z"  /></svg>`;
-var btns_default = {
+var btnsSvg = {
   open,
   close,
   remove,
   imgAdjust
 };
-
-// node_modules/simple-mind-map/src/core/render/node/nodeExpandBtn.js
 function createExpandNodeContent() {
   if (this._openExpandNode) {
     return;
@@ -8966,13 +12077,13 @@ function createExpandNodeContent() {
       y: 2
     });
   } else {
-    this._openExpandNode = SVG(open2 || btns_default.open).size(
+    this._openExpandNode = SVG(open2 || btnsSvg.open).size(
       this.expandBtnSize,
       this.expandBtnSize
     );
     this._openExpandNode.x(0).y(-this.expandBtnSize / 2);
   }
-  this._closeExpandNode = SVG(close2 || btns_default.close).size(
+  this._closeExpandNode = SVG(close2 || btnsSvg.close).size(
     this.expandBtnSize,
     this.expandBtnSize
   );
@@ -9095,7 +12206,7 @@ function hideExpandBtn() {
     }, 0);
   }
 }
-var nodeExpandBtn_default = {
+var nodeExpandBtnMethods = {
   createExpandNodeContent,
   updateExpandBtnNode,
   updateExpandBtnPos,
@@ -9105,8 +12216,6 @@ var nodeExpandBtn_default = {
   hideExpandBtn,
   sumNode
 };
-
-// node_modules/simple-mind-map/src/core/render/node/nodeCommandWraps.js
 function setData(data2 = {}) {
   this.mindMap.execCommand("SET_NODE_DATA", this, data2);
 }
@@ -9125,8 +12234,8 @@ function setHyperlink(link, title) {
 function setNote(note2) {
   this.mindMap.execCommand("SET_NODE_NOTE", this, note2);
 }
-function setAttachment(url, name) {
-  this.mindMap.execCommand("SET_NODE_ATTACHMENT", this, url, name);
+function setAttachment(url, name2) {
+  this.mindMap.execCommand("SET_NODE_ATTACHMENT", this, url, name2);
 }
 function setTag(tag) {
   this.mindMap.execCommand("SET_NODE_TAG", this, tag);
@@ -9140,7 +12249,7 @@ function setStyle(prop, value) {
 function setStyles(style) {
   this.mindMap.execCommand("SET_NODE_STYLES", this, style);
 }
-var nodeCommandWraps_default = {
+var nodeCommandWrapsMethods = {
   setData,
   setText,
   setImage,
@@ -9153,8 +12262,6 @@ var nodeCommandWraps_default = {
   setStyle,
   setStyles
 };
-
-// node_modules/simple-mind-map/src/svg/icons.js
 var hyperlink = '<svg t="1624174958075" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7982" ><path d="M435.484444 251.733333v68.892445L295.822222 320.682667a168.504889 168.504889 0 0 0-2.844444 336.952889h142.506666v68.892444H295.822222a237.397333 237.397333 0 0 1 0-474.794667h139.662222z m248.945778 0a237.397333 237.397333 0 0 1 0 474.851556H544.654222v-69.006222l139.776 0.056889a168.504889 168.504889 0 0 0 2.844445-336.952889H544.597333V251.676444h139.776z m-25.827555 203.946667a34.474667 34.474667 0 0 1 0 68.892444H321.649778a34.474667 34.474667 0 0 1 0-68.892444h336.952889z" p-id="7983"></path></svg>';
 var note = '<svg t="1624195132675" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8792" ><path d="M152.768 985.984 152.768 49.856l434.56 0 66.816 0 234.048 267.392 0 66.816 0 601.92L152.768 985.984 152.768 985.984zM654.144 193.088l0 124.16 108.736 0L654.144 193.088 654.144 193.088zM821.312 384.064l-167.168 0L587.328 384.064 587.328 317.312 587.328 116.736 219.584 116.736 219.584 919.04l601.728 0L821.312 384.064 821.312 384.064zM386.688 517.888 319.808 517.888 319.808 450.944l66.816 0L386.624 517.888 386.688 517.888zM386.688 651.584 319.808 651.584 319.808 584.704l66.816 0L386.624 651.584 386.688 651.584zM386.688 785.344 319.808 785.344l0-66.88 66.816 0L386.624 785.344 386.688 785.344zM721.024 517.888 453.632 517.888 453.632 450.944l267.392 0L721.024 517.888 721.024 517.888zM654.144 651.584 453.632 651.584 453.632 584.704l200.512 0L654.144 651.584 654.144 651.584zM620.672 785.344l-167.04 0 0-66.88 167.04 0L620.672 785.344 620.672 785.344z" p-id="8793"></path></svg>';
 var attachment = '<svg t="1711935375590" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3864" xmlns:xlink="http://www.w3.org/1999/xlink" width="128" height="128"><path d="M516.373333 375.978667l136.576-136.576a147.797333 147.797333 0 0 1 208.853334-0.021334 147.690667 147.690667 0 0 1-0.042667 208.832l-204.8 204.778667v0.021333l-153.621333 153.6c-85.973333 85.973333-225.28 85.973333-311.253334 0.021334-85.994667-85.973333-85.973333-225.216 0.149334-311.36L431.146667 256.362667a21.333333 21.333333 0 0 0-30.165334-30.165334L162.069333 465.066667c-102.805333 102.826667-102.826667 269.056-0.149333 371.733333 102.613333 102.613333 268.970667 102.613333 371.584 0l153.6-153.642667h0.021333l0.021334-0.021333 204.778666-204.778667c74.325333-74.325333 74.346667-194.858667 0.021334-269.184-74.24-74.24-194.88-74.24-269.162667 0.042667l-136.576 136.554667-187.626667 187.626666a117.845333 117.845333 0 0 0-0.106666 166.826667 118.037333 118.037333 0 0 0 166.826666-0.106667l255.850667-255.829333a21.333333 21.333333 0 0 0-30.165333-30.165333L435.136 669.973333a75.370667 75.370667 0 0 1-106.496 0.106667 75.178667 75.178667 0 0 1 0.128-106.496l187.605333-187.605333z" p-id="3865"></path></svg>';
@@ -9428,8 +12535,8 @@ var nodeIconList = [
     ]
   }
 ];
-var getNodeIconListIcon = (name, extendIconList = []) => {
-  let arr = name.split("_");
+var getNodeIconListIcon = (name2, extendIconList = []) => {
+  let arr = name2.split("_");
   const iconList = mergerIconList([...nodeIconList, ...extendIconList]);
   let typeData = iconList.find((item) => {
     return item.type === arr[0];
@@ -9446,15 +12553,13 @@ var getNodeIconListIcon = (name, extendIconList = []) => {
     return "";
   }
 };
-var icons_default = {
+var iconsSvg = {
   hyperlink,
   note,
   attachment,
   nodeIconList,
   getNodeIconListIcon
 };
-
-// node_modules/simple-mind-map/src/core/render/node/nodeCreateContents.js
 var measureText = (text, style) => {
   const g = new G();
   const node = new Text().text(text);
@@ -9481,7 +12586,7 @@ function createImgNode() {
     return;
   }
   const imgSize = this.getImgShowSize();
-  const node = new Image2().load(img).size(...imgSize);
+  const node = new Image$1().load(img).size(...imgSize);
   const { defaultNodeImage } = this.mindMap.opt;
   if (defaultNodeImage) {
     const imgEl = new Image();
@@ -9529,7 +12634,7 @@ function createIconNode() {
   }
   let iconSize = this.mindMap.themeConfig.iconSize;
   return _data.icon.map((item) => {
-    let src = icons_default.getNodeIconListIcon(
+    let src = iconsSvg.getNodeIconListIcon(
       item,
       this.mindMap.opt.iconList || []
     );
@@ -9537,7 +12642,7 @@ function createIconNode() {
     if (/^<svg/.test(src)) {
       node = SVG(src);
     } else {
-      node = new Image2().load(src);
+      node = new Image$1().load(src);
     }
     node.size(iconSize, iconSize);
     node.on("click", (e) => {
@@ -9730,7 +12835,7 @@ function createHyperlinkNode() {
     node.add(SVG(`<title>${hyperlinkTitle}</title>`));
   }
   a.rect(iconSize, iconSize).fill({ color: "transparent" });
-  const iconNode = SVG(icon || icons_default.hyperlink).size(iconSize, iconSize);
+  const iconNode = SVG(icon || iconsSvg.hyperlink).size(iconSize, iconSize);
   this.style.iconNode(iconNode, style.color);
   a.add(iconNode);
   node.add(a);
@@ -9804,7 +12909,7 @@ function createNoteNode() {
   const iconSize = this.getNodeIconSize("noteIcon");
   const node = new SVG().attr("cursor", "pointer").addClass("smm-node-note").size(iconSize, iconSize);
   node.add(new Rect().size(iconSize, iconSize).fill({ color: "transparent" }));
-  const iconNode = SVG(icon || icons_default.note).size(iconSize, iconSize);
+  const iconNode = SVG(icon || iconsSvg.note).size(iconSize, iconSize);
   this.style.iconNode(iconNode, style.color);
   node.add(iconNode);
   if (!this.mindMap.opt.customNoteContentShow) {
@@ -9870,7 +12975,7 @@ function createAttachmentNode() {
     node.add(SVG(`<title>${attachmentName}</title>`));
   }
   node.add(new Rect().size(iconSize, iconSize).fill({ color: "transparent" }));
-  const iconNode = SVG(icon || icons_default.attachment).size(iconSize, iconSize);
+  const iconNode = SVG(icon || iconsSvg.attachment).size(iconSize, iconSize);
   this.style.iconNode(iconNode, style.color);
   node.add(iconNode);
   node.on("click", (e) => {
@@ -9923,7 +13028,7 @@ function measureCustomNodeContentSize(content) {
 function isUseCustomNodeContent() {
   return !!this._customNodeContent;
 }
-var nodeCreateContents_default = {
+var nodeCreateContentsMethods = {
   createImgNode,
   getImgShowSize,
   createIconNode,
@@ -9938,8 +13043,6 @@ var nodeCreateContents_default = {
   measureCustomNodeContentSize,
   isUseCustomNodeContent
 };
-
-// node_modules/simple-mind-map/src/core/render/node/nodeExpandBtnPlaceholderRect.js
 function renderExpandBtnPlaceholderRect() {
   if (!this.nodeData.children || this.nodeData.children.length <= 0 || this.isRoot) {
     return;
@@ -9985,13 +13088,11 @@ function updateExpandBtnPlaceholderRect() {
     }
   }
 }
-var nodeExpandBtnPlaceholderRect_default = {
+var nodeExpandBtnPlaceholderRectMethods = {
   renderExpandBtnPlaceholderRect,
   clearExpandBtnPlaceholderRect,
   updateExpandBtnPlaceholderRect
 };
-
-// node_modules/simple-mind-map/src/core/render/node/nodeModifyWidth.js
 function initDragHandle() {
   if (!this.checkEnableDragModifyNodeWidth()) {
     return;
@@ -10103,15 +13204,13 @@ function updateDragHandle() {
     });
   }
 }
-var nodeModifyWidth_default = {
+var nodeModifyWidthMethods = {
   initDragHandle,
   onDragMousemoveHandle,
   onDragMouseupHandle,
   createDragHandleNode,
   updateDragHandle
 };
-
-// node_modules/simple-mind-map/src/core/render/node/nodeCooperate.js
 function createUserListNode() {
   if (!this.mindMap.cooperate)
     return;
@@ -10136,7 +13235,7 @@ function createTextAvatar(item) {
 }
 function createImageAvatar(item) {
   const { avatarSize } = this.mindMap.opt.cooperateStyle;
-  return new Image2().load(item.avatar).size(avatarSize, avatarSize);
+  return new Image$1().load(item.avatar).size(avatarSize, avatarSize);
 }
 function updateUserListNode() {
   if (!this._userListGroup)
@@ -10195,7 +13294,7 @@ function emptyUser() {
   this.userList = [];
   this.updateUserListNode();
 }
-var nodeCooperate_default = {
+var nodeCooperateMethods = {
   createUserListNode,
   updateUserListNode,
   createTextAvatar,
@@ -10204,8 +13303,6 @@ var nodeCooperate_default = {
   removeUser,
   emptyUser
 };
-
-// node_modules/simple-mind-map/src/core/render/node/MindMapNode.js
 var MindMapNode = class _MindMapNode {
   //  构造函数
   constructor(opt = {}) {
@@ -10218,7 +13315,7 @@ var MindMapNode = class _MindMapNode {
     this.draw = this.mindMap.draw;
     this.nodeDraw = this.mindMap.nodeDraw;
     this.lineDraw = this.mindMap.lineDraw;
-    this.style = new Style_default(this);
+    this.style = new Style2(this);
     this.effectiveStyles = {};
     this.shapeInstance = new Shape2(this);
     this.shapePadding = {
@@ -10282,28 +13379,28 @@ var MindMapNode = class _MindMapNode {
     this.isHide = false;
     const proto = Object.getPrototypeOf(this);
     if (!proto.bindEvent) {
-      Object.keys(nodeGeneralization_default).forEach((item) => {
-        proto[item] = nodeGeneralization_default[item];
+      Object.keys(nodeGeneralizationMethods).forEach((item) => {
+        proto[item] = nodeGeneralizationMethods[item];
       });
-      Object.keys(nodeExpandBtn_default).forEach((item) => {
-        proto[item] = nodeExpandBtn_default[item];
+      Object.keys(nodeExpandBtnMethods).forEach((item) => {
+        proto[item] = nodeExpandBtnMethods[item];
       });
-      Object.keys(nodeExpandBtnPlaceholderRect_default).forEach((item) => {
-        proto[item] = nodeExpandBtnPlaceholderRect_default[item];
+      Object.keys(nodeExpandBtnPlaceholderRectMethods).forEach((item) => {
+        proto[item] = nodeExpandBtnPlaceholderRectMethods[item];
       });
-      Object.keys(nodeCommandWraps_default).forEach((item) => {
-        proto[item] = nodeCommandWraps_default[item];
+      Object.keys(nodeCommandWrapsMethods).forEach((item) => {
+        proto[item] = nodeCommandWrapsMethods[item];
       });
-      Object.keys(nodeCreateContents_default).forEach((item) => {
-        proto[item] = nodeCreateContents_default[item];
+      Object.keys(nodeCreateContentsMethods).forEach((item) => {
+        proto[item] = nodeCreateContentsMethods[item];
       });
       if (this.mindMap.cooperate) {
-        Object.keys(nodeCooperate_default).forEach((item) => {
-          proto[item] = nodeCooperate_default[item];
+        Object.keys(nodeCooperateMethods).forEach((item) => {
+          proto[item] = nodeCooperateMethods[item];
         });
       }
-      Object.keys(nodeModifyWidth_default).forEach((item) => {
-        proto[item] = nodeModifyWidth_default[item];
+      Object.keys(nodeModifyWidthMethods).forEach((item) => {
+        proto[item] = nodeModifyWidthMethods[item];
       });
       proto.bindEvent = true;
     }
@@ -10701,7 +13798,7 @@ var MindMapNode = class _MindMapNode {
     });
     this.group.on("mousedown", (e) => {
       const {
-        readonly,
+        readonly: readonly2,
         enableCtrlKeyNodeSelection,
         useLeftKeySelectionRightKeyDrag,
         mousedownEventPreventDefault
@@ -10709,7 +13806,7 @@ var MindMapNode = class _MindMapNode {
       if (mousedownEventPreventDefault) {
         e.preventDefault();
       }
-      if (!readonly) {
+      if (!readonly2) {
         if (this.isRoot) {
           if (e.which === 3 && !useLeftKeySelectionRightKeyDrag) {
             e.stopPropagation();
@@ -10720,7 +13817,7 @@ var MindMapNode = class _MindMapNode {
           }
         }
       }
-      if (!readonly && (e.ctrlKey || e.metaKey) && enableCtrlKeyNodeSelection) {
+      if (!readonly2 && (e.ctrlKey || e.metaKey) && enableCtrlKeyNodeSelection) {
         this.isMultipleChoice = true;
         const isActive = this.getData("isActive");
         if (!isActive)
@@ -10761,8 +13858,8 @@ var MindMapNode = class _MindMapNode {
       this.mindMap.emit("node_mouseleave", this, e);
     });
     this.group.on("dblclick", (e) => {
-      const { readonly, onlyOneEnableActiveNodeOnCooperate } = this.mindMap.opt;
-      if (readonly || e.ctrlKey || e.metaKey) {
+      const { readonly: readonly2, onlyOneEnableActiveNodeOnCooperate } = this.mindMap.opt;
+      if (readonly2 || e.ctrlKey || e.metaKey) {
         return;
       }
       e.stopPropagation();
@@ -10772,8 +13869,8 @@ var MindMapNode = class _MindMapNode {
       this.mindMap.emit("node_dblclick", this, e);
     });
     this.group.on("contextmenu", (e) => {
-      const { readonly, useLeftKeySelectionRightKeyDrag } = this.mindMap.opt;
-      if (readonly || e.ctrlKey) {
+      const { readonly: readonly2, useLeftKeySelectionRightKeyDrag } = this.mindMap.opt;
+      if (readonly2 || e.ctrlKey) {
         return;
       }
       e.stopPropagation();
@@ -11328,9 +14425,6 @@ var MindMapNode = class _MindMapNode {
     return this.checkEnableDragModifyNodeWidth() && this.customTextWidth !== void 0;
   }
 };
-var MindMapNode_default = MindMapNode;
-
-// node_modules/simple-mind-map/src/utils/Lru.js
 var Lru = class {
   constructor(max) {
     this.max = max || 1e3;
@@ -11366,8 +14460,6 @@ var Lru = class {
     this.pool = /* @__PURE__ */ new Map();
   }
 };
-
-// node_modules/simple-mind-map/src/layouts/Base.js
 var Base2 = class {
   //  构造函数
   constructor(renderer) {
@@ -11515,7 +14607,7 @@ var Base2 = class {
       this.checkGetGeneralizationChange(newNode, isResizeSource);
     } else {
       const newUid = uid || createUid();
-      newNode = new MindMapNode_default({
+      newNode = new MindMapNode({
         data: data2,
         uid: newUid,
         renderer: this.renderer,
@@ -11888,10 +14980,7 @@ var Base2 = class {
     }
   }
 };
-var Base_default = Base2;
-
-// node_modules/simple-mind-map/src/layouts/LogicalStructure.js
-var LogicalStructure = class extends Base_default {
+var LogicalStructure = class extends Base2 {
   //  构造函数
   constructor(opt = {}, layout) {
     super(opt);
@@ -11940,8 +15029,8 @@ var LogicalStructure = class extends Base_default {
       },
       (cur, parent, isRoot, layerIndex) => {
         let len = cur.data.expand === false ? 0 : cur._node.children.length;
-        cur._node.childrenAreaHeight = len ? cur._node.children.reduce((h, item) => {
-          return h + item.height;
+        cur._node.childrenAreaHeight = len ? cur._node.children.reduce((h2, item) => {
+          return h2 + item.height;
         }, 0) + (len + 1) * this.getMarginY(layerIndex + 1) : 0;
         let generalizationNodeHeight = cur._node.checkHasGeneralization() ? cur._node._generalizationNodeHeight + this.getMarginY(layerIndex + 1) : 0;
         cur._node.childrenAreaHeight2 = Math.max(
@@ -12181,10 +15270,7 @@ var LogicalStructure = class extends Base_default {
     }
   }
 };
-var LogicalStructure_default = LogicalStructure;
-
-// node_modules/simple-mind-map/src/layouts/MindMap.js
-var MindMap = class extends Base_default {
+var MindMap$1 = class MindMap extends Base2 {
   //  构造函数
   // 在逻辑结构图的基础上增加一个变量来记录生长方向，向左还是向右，同时在计算left的时候根据方向来计算、调整top时只考虑同方向的节点即可
   constructor(opt = {}) {
@@ -12515,10 +15601,7 @@ var MindMap = class extends Base_default {
     }
   }
 };
-var MindMap_default = MindMap;
-
-// node_modules/simple-mind-map/src/layouts/CatalogOrganization.js
-var CatalogOrganization = class extends Base_default {
+var CatalogOrganization = class extends Base2 {
   //  构造函数
   constructor(opt = {}) {
     super(opt);
@@ -12562,8 +15645,8 @@ var CatalogOrganization = class extends Base_default {
       (cur, parent, isRoot, layerIndex) => {
         if (isRoot) {
           let len = cur.data.expand === false ? 0 : cur._node.children.length;
-          cur._node.childrenAreaWidth = len ? cur._node.children.reduce((h, item) => {
-            return h + item.width;
+          cur._node.childrenAreaWidth = len ? cur._node.children.reduce((h2, item) => {
+            return h2 + item.width;
           }, 0) + (len + 1) * this.getMarginX(layerIndex + 1) : 0;
         }
       },
@@ -12620,8 +15703,8 @@ var CatalogOrganization = class extends Base_default {
         let len = node.children.length;
         if (parent && !parent.isRoot && len > 0) {
           let marginY = this.getMarginY(layerIndex + 1);
-          let totalHeight = node.children.reduce((h, item) => {
-            return h + this.getNodeHeightWithGeneralization(item) + (this.getNodeActChildrenLength(item) > 0 ? item.expandBtnSize : 0);
+          let totalHeight = node.children.reduce((h2, item) => {
+            return h2 + this.getNodeHeightWithGeneralization(item) + (this.getNodeActChildrenLength(item) > 0 ? item.expandBtnSize : 0);
           }, 0) + len * marginY;
           this.updateBrothersTop(node, totalHeight);
         }
@@ -12813,10 +15896,7 @@ var CatalogOrganization = class extends Base_default {
     rect.size(width2, expandBtnSize).x(0).y(height2);
   }
 };
-var CatalogOrganization_default = CatalogOrganization;
-
-// node_modules/simple-mind-map/src/layouts/OrganizationStructure.js
-var OrganizationStructure = class extends Base_default {
+var OrganizationStructure = class extends Base2 {
   //  构造函数
   constructor(opt = {}) {
     super(opt);
@@ -12864,8 +15944,8 @@ var OrganizationStructure = class extends Base_default {
       },
       (cur, parent, isRoot, layerIndex) => {
         let len = cur.data.expand === false ? 0 : cur._node.children.length;
-        cur._node.childrenAreaWidth = len ? cur._node.children.reduce((h, item) => {
-          return h + item.width;
+        cur._node.childrenAreaWidth = len ? cur._node.children.reduce((h2, item) => {
+          return h2 + item.width;
         }, 0) + (len + 1) * this.getMarginY(layerIndex + 1) : 0;
         let generalizationNodeWidth = cur._node.checkHasGeneralization() ? cur._node._generalizationNodeWidth + this.getMarginY(layerIndex + 1) : 0;
         cur._node.childrenAreaWidth2 = Math.max(
@@ -13082,10 +16162,7 @@ var OrganizationStructure = class extends Base_default {
     rect.size(width2, expandBtnSize).x(0).y(height2);
   }
 };
-var OrganizationStructure_default = OrganizationStructure;
-
-// node_modules/simple-mind-map/src/layouts/Timeline.js
-var Timeline2 = class extends Base_default {
+var Timeline2 = class extends Base2 {
   //  构造函数
   constructor(opt = {}, layout) {
     super(opt);
@@ -13186,8 +16263,8 @@ var Timeline2 = class extends Base_default {
         let len = node.children.length;
         if (parent && !parent.isRoot && len > 0) {
           let marginY = this.getMarginY(layerIndex + 1);
-          let totalHeight = node.children.reduce((h, item) => {
-            return h + item.height + (this.getNodeActChildrenLength(item) > 0 ? item.expandBtnSize : 0);
+          let totalHeight = node.children.reduce((h2, item) => {
+            return h2 + item.height + (this.getNodeActChildrenLength(item) > 0 ? item.expandBtnSize : 0);
           }, 0) + len * marginY;
           this.updateBrothersTop(node, totalHeight);
         }
@@ -13370,10 +16447,7 @@ var Timeline2 = class extends Base_default {
     }
   }
 };
-var Timeline_default = Timeline2;
-
-// node_modules/simple-mind-map/src/layouts/VerticalTimeline.js
-var VerticalTimeline = class extends Base_default {
+var VerticalTimeline = class extends Base2 {
   //  构造函数
   constructor(opt = {}, layout) {
     super(opt);
@@ -13427,8 +16501,8 @@ var VerticalTimeline = class extends Base_default {
           return;
         }
         let len = cur.data.expand === false ? 0 : cur._node.children.length;
-        cur._node.childrenAreaHeight = len ? cur._node.children.reduce((h, item) => {
-          return h + item.height;
+        cur._node.childrenAreaHeight = len ? cur._node.children.reduce((h2, item) => {
+          return h2 + item.height;
         }, 0) + (len + 1) * this.getMarginY(layerIndex + 1) : 0;
       },
       true,
@@ -13715,10 +16789,7 @@ var VerticalTimeline = class extends Base_default {
     }
   }
 };
-var VerticalTimeline_default = VerticalTimeline;
-
-// node_modules/simple-mind-map/src/layouts/fishboneUtils.js
-var fishboneUtils_default = {
+var utils = {
   top: {
     renderExpandBtn({
       node,
@@ -13782,8 +16853,8 @@ var fishboneUtils_default = {
       let len = node.children.length;
       let marginY = ctx.getMarginY(layerIndex + 1);
       if (parent && !parent.isRoot && len > 0) {
-        let totalHeight = node.children.reduce((h, item) => {
-          return h + item.height + (ctx.getNodeActChildrenLength(item) > 0 ? item.expandBtnSize : 0) + marginY;
+        let totalHeight = node.children.reduce((h2, item) => {
+          return h2 + item.height + (ctx.getNodeActChildrenLength(item) > 0 ? item.expandBtnSize : 0) + marginY;
         }, 0);
         ctx.updateBrothersTop(node, totalHeight);
       }
@@ -13865,8 +16936,8 @@ var fishboneUtils_default = {
       let marginY = ctx.getMarginY(layerIndex + 1);
       let len = node.children.length;
       if (layerIndex > 2 && len > 0) {
-        let totalHeight = node.children.reduce((h, item) => {
-          return h + item.height + (ctx.getNodeActChildrenLength(item) > 0 ? item.expandBtnSize : 0) + marginY;
+        let totalHeight = node.children.reduce((h2, item) => {
+          return h2 + item.height + (ctx.getNodeActChildrenLength(item) > 0 ? item.expandBtnSize : 0) + marginY;
         }, 0);
         ctx.updateBrothersTop(node, -totalHeight);
       }
@@ -13896,9 +16967,7 @@ var fishboneUtils_default = {
     }
   }
 };
-
-// node_modules/simple-mind-map/src/layouts/Fishbone.js
-var Fishbone = class extends Base_default {
+var Fishbone = class extends Base2 {
   //  构造函数
   constructor(opt = {}) {
     super(opt);
@@ -13978,9 +17047,9 @@ var Fishbone = class extends Base_default {
         }
         let params = { layerIndex, node, ctx: this };
         if (this.checkIsTop(node)) {
-          fishboneUtils_default.top.computedLeftTopValue(params);
+          utils.top.computedLeftTopValue(params);
         } else {
-          fishboneUtils_default.bottom.computedLeftTopValue(params);
+          utils.bottom.computedLeftTopValue(params);
         }
       },
       null,
@@ -13998,17 +17067,17 @@ var Fishbone = class extends Base_default {
         }
         let params = { node, parent, layerIndex, ctx: this };
         if (this.checkIsTop(node)) {
-          fishboneUtils_default.top.adjustLeftTopValueBefore(params);
+          utils.top.adjustLeftTopValueBefore(params);
         } else {
-          fishboneUtils_default.bottom.adjustLeftTopValueBefore(params);
+          utils.bottom.adjustLeftTopValueBefore(params);
         }
       },
       (node, parent) => {
         let params = { parent, node, ctx: this };
         if (this.checkIsTop(node)) {
-          fishboneUtils_default.top.adjustLeftTopValueAfter(params);
+          utils.top.adjustLeftTopValueAfter(params);
         } else {
-          fishboneUtils_default.bottom.adjustLeftTopValueAfter(params);
+          utils.bottom.adjustLeftTopValueAfter(params);
         }
         if (node.isRoot) {
           let topTotalLeft = 0;
@@ -14184,9 +17253,9 @@ var Fishbone = class extends Base_default {
           ctx: this
         };
         if (this.checkIsTop(node)) {
-          fishboneUtils_default.top.renderLine(params);
+          utils.top.renderLine(params);
         } else {
-          fishboneUtils_default.bottom.renderLine(params);
+          utils.bottom.renderLine(params);
         }
         node.style.line(line);
         node._lines.push(line);
@@ -14209,9 +17278,9 @@ var Fishbone = class extends Base_default {
         height: height2
       };
       if (this.checkIsTop(node)) {
-        fishboneUtils_default.top.renderExpandBtn(params);
+        utils.top.renderExpandBtn(params);
       } else {
-        fishboneUtils_default.bottom.renderExpandBtn(params);
+        utils.bottom.renderExpandBtn(params);
       }
     }
   }
@@ -14252,9 +17321,6 @@ var Fishbone = class extends Base_default {
     }
   }
 };
-var Fishbone_default = Fishbone;
-
-// node_modules/simple-mind-map/src/core/render/TextEdit.js
 var TextEdit = class {
   //  构造函数
   constructor(renderer) {
@@ -14654,27 +17720,25 @@ var TextEdit = class {
     return this.currentNode;
   }
 };
-
-// node_modules/simple-mind-map/src/core/render/Render.js
 var layouts = {
   // 逻辑结构图
-  [CONSTANTS.LAYOUT.LOGICAL_STRUCTURE]: LogicalStructure_default,
+  [CONSTANTS.LAYOUT.LOGICAL_STRUCTURE]: LogicalStructure,
   // 向左逻辑结构图
-  [CONSTANTS.LAYOUT.LOGICAL_STRUCTURE_LEFT]: LogicalStructure_default,
+  [CONSTANTS.LAYOUT.LOGICAL_STRUCTURE_LEFT]: LogicalStructure,
   // 思维导图
-  [CONSTANTS.LAYOUT.MIND_MAP]: MindMap_default,
+  [CONSTANTS.LAYOUT.MIND_MAP]: MindMap$1,
   // 目录组织图
-  [CONSTANTS.LAYOUT.CATALOG_ORGANIZATION]: CatalogOrganization_default,
+  [CONSTANTS.LAYOUT.CATALOG_ORGANIZATION]: CatalogOrganization,
   // 组织结构图
-  [CONSTANTS.LAYOUT.ORGANIZATION_STRUCTURE]: OrganizationStructure_default,
+  [CONSTANTS.LAYOUT.ORGANIZATION_STRUCTURE]: OrganizationStructure,
   // 时间轴
-  [CONSTANTS.LAYOUT.TIMELINE]: Timeline_default,
+  [CONSTANTS.LAYOUT.TIMELINE]: Timeline2,
   // 时间轴2
-  [CONSTANTS.LAYOUT.TIMELINE2]: Timeline_default,
+  [CONSTANTS.LAYOUT.TIMELINE2]: Timeline2,
   // 竖向时间轴
-  [CONSTANTS.LAYOUT.VERTICAL_TIMELINE]: VerticalTimeline_default,
+  [CONSTANTS.LAYOUT.VERTICAL_TIMELINE]: VerticalTimeline,
   // 鱼骨图
-  [CONSTANTS.LAYOUT.FISHBONE]: Fishbone_default
+  [CONSTANTS.LAYOUT.FISHBONE]: Fishbone
 };
 var Render = class {
   //  构造函数
@@ -14682,7 +17746,7 @@ var Render = class {
     this.opt = opt;
     this.mindMap = opt.mindMap;
     this.themeConfig = this.mindMap.themeConfig;
-    this.renderTree = this.mindMap.opt.data ? es_default({}, this.mindMap.opt.data) : null;
+    this.renderTree = this.mindMap.opt.data ? deepmerge_1({}, this.mindMap.opt.data) : null;
     this.reRender = false;
     this.isRendering = false;
     this.hasWaitRendering = false;
@@ -15165,8 +18229,6 @@ var Render = class {
         focusNewNode = true;
         inserting = false;
         break;
-      default:
-        break;
     }
     return {
       focusNewNode,
@@ -15566,14 +18628,12 @@ var Render = class {
       return;
     const clipboardData = event.clipboardData || event.originalEvent.clipboardData;
     const items = clipboardData.items;
-    let img = null;
-    let text = "";
     Array.from(items).forEach((item) => {
       if (item.type.indexOf("image") > -1) {
-        img = item.getAsFile();
+        item.getAsFile();
       }
       if (item.type.indexOf("text") > -1) {
-        text = clipboardData.getData("text");
+        clipboardData.getData("text");
       }
     });
     this.paste();
@@ -16069,10 +19129,10 @@ var Render = class {
     });
   }
   //  设置节点附件
-  setNodeAttachment(node, url, name = "") {
+  setNodeAttachment(node, url, name2 = "") {
     this.setNodeDataRender(node, {
       attachmentUrl: url,
-      attachmentName: name
+      attachmentName: name2
     });
   }
   //  设置节点标签
@@ -16424,15 +19484,10 @@ var Render = class {
     return !!this.mindMap.richText;
   }
 };
-var Render_default = Render;
-
-// node_modules/simple-mind-map/src/theme/index.js
-var theme_default = {
-  default: default_default
+var theme = {
+  default: defaultTheme
 };
-
-// node_modules/simple-mind-map/src/core/command/keyMap.js
-var map2 = {
+var map = {
   Backspace: 8,
   Tab: 9,
   Enter: 13,
@@ -16474,14 +19529,12 @@ var map2 = {
   ".": 190
 };
 for (let i = 0; i <= 9; i++) {
-  map2[i] = i + 48;
+  map[i] = i + 48;
 }
 "abcdefghijklmnopqrstuvwxyz".split("").forEach((n, index) => {
-  map2[n] = index + 65;
+  map[n] = index + 65;
 });
-var keyMap = map2;
-
-// node_modules/simple-mind-map/src/core/command/KeyCommand.js
+var keyMap = map;
 var KeyCommand = class {
   //  构造函数
   constructor(opt) {
@@ -16658,8 +19711,8 @@ var KeyCommand = class {
     key.split(/\s*\|\s*/).forEach((item) => {
       if (this.shortcutMap[item]) {
         if (fn) {
-          let index = this.shortcutMap[item].findIndex((f2) => {
-            return f2 === fn;
+          let index = this.shortcutMap[item].findIndex((f) => {
+            return f === fn;
           });
           if (index !== -1) {
             this.shortcutMap[item].splice(index, 1);
@@ -16680,67 +19733,77 @@ var KeyCommand = class {
     return res;
   }
 };
-
-// node_modules/simple-mind-map/package.json
-var package_default = {
-  name: "simple-mind-map",
-  version: "0.13.0",
-  description: "一个简单的web在线思维导图",
-  authors: [
-    {
-      name: "街角小林",
-      email: "1013335014@qq.com"
-    },
-    {
-      name: "理想青年实验室",
-      url: "http://lxqnsys.com/"
-    }
-  ],
-  types: "./types/index.d.ts",
-  typings: "./types/index.d.ts",
-  license: "MIT",
-  repository: {
-    type: "git",
-    url: "https://github.com/wanglin2/mind-map"
+var name = "simple-mind-map";
+var version = "0.13.0";
+var description = "一个简单的web在线思维导图";
+var authors = [
+  {
+    name: "街角小林",
+    email: "1013335014@qq.com"
   },
-  scripts: {
-    lint: "eslint src/",
-    format: "prettier --write .",
-    types: "npx -p typescript tsc index.js --declaration --allowJs --emitDeclarationOnly --outDir types --target es2017 --skipLibCheck & node ./bin/createPluginsTypeFiles.js",
-    wsServe: "node ./bin/wsServer.mjs"
-  },
-  module: "index.js",
-  main: "./dist/simpleMindMap.umd.min.js",
-  dependencies: {
-    "@svgdotjs/svg.js": "3.2.0",
-    deepmerge: "^1.5.2",
-    eventemitter3: "^4.0.7",
-    jszip: "^3.10.1",
-    katex: "^0.16.8",
-    "mdast-util-from-markdown": "^1.3.0",
-    "pdf-lib": "^1.17.1",
-    quill: "^2.0.3",
-    tern: "^0.24.3",
-    uuid: "^9.0.0",
-    ws: "^7.5.9",
-    "xml-js": "^1.6.11",
-    "y-webrtc": "^10.2.5",
-    yjs: "^13.6.8"
-  },
-  keywords: [
-    "javascript",
-    "svg",
-    "mind-map",
-    "mindMap",
-    "MindMap"
-  ],
-  devDependencies: {
-    eslint: "^8.25.0",
-    prettier: "^2.7.1"
+  {
+    name: "理想青年实验室",
+    url: "http://lxqnsys.com/"
   }
+];
+var types = "./types/index.d.ts";
+var typings = "./types/index.d.ts";
+var license = "MIT";
+var repository = {
+  type: "git",
+  url: "https://github.com/wanglin2/mind-map"
 };
-
-// node_modules/simple-mind-map/src/core/command/Command.js
+var scripts = {
+  lint: "eslint src/",
+  format: "prettier --write .",
+  types: "npx -p typescript tsc index.js --declaration --allowJs --emitDeclarationOnly --outDir types --target es2017 --skipLibCheck & node ./bin/createPluginsTypeFiles.js",
+  wsServe: "node ./bin/wsServer.mjs"
+};
+var module = "index.js";
+var main = "./dist/simpleMindMap.umd.min.js";
+var dependencies = {
+  "@svgdotjs/svg.js": "3.2.0",
+  deepmerge: "^1.5.2",
+  eventemitter3: "^4.0.7",
+  jszip: "^3.10.1",
+  katex: "^0.16.8",
+  "mdast-util-from-markdown": "^1.3.0",
+  "pdf-lib": "^1.17.1",
+  quill: "^2.0.3",
+  tern: "^0.24.3",
+  uuid: "^9.0.0",
+  ws: "^7.5.9",
+  "xml-js": "^1.6.11",
+  "y-webrtc": "^10.2.5",
+  yjs: "^13.6.8"
+};
+var keywords = [
+  "javascript",
+  "svg",
+  "mind-map",
+  "mindMap",
+  "MindMap"
+];
+var devDependencies = {
+  eslint: "^8.25.0",
+  prettier: "^2.7.1"
+};
+var pkg = {
+  name,
+  version,
+  description,
+  authors,
+  types,
+  typings,
+  license,
+  repository,
+  scripts,
+  module,
+  main,
+  dependencies,
+  keywords,
+  devDependencies
+};
 var Command = class {
   //  构造函数
   constructor(opt = {}) {
@@ -16782,14 +19845,14 @@ var Command = class {
     });
   }
   //  执行命令
-  exec(name, ...args) {
-    if (this.commands[name]) {
-      this.commands[name].forEach((fn) => {
+  exec(name2, ...args) {
+    if (this.commands[name2]) {
+      this.commands[name2].forEach((fn) => {
         fn(...args);
       });
-      this.mindMap.emit("afterExecCommand", name, ...args);
+      this.mindMap.emit("afterExecCommand", name2, ...args);
       if (["BACK", "FORWARD", "SET_NODE_ACTIVE", "CLEAR_ACTIVE_NODE"].includes(
-        name
+        name2
       )) {
         return;
       }
@@ -16797,27 +19860,27 @@ var Command = class {
     }
   }
   //  添加命令
-  add(name, fn) {
-    if (this.commands[name]) {
-      this.commands[name].push(fn);
+  add(name2, fn) {
+    if (this.commands[name2]) {
+      this.commands[name2].push(fn);
     } else {
-      this.commands[name] = [fn];
+      this.commands[name2] = [fn];
     }
   }
   //  移除命令
-  remove(name, fn) {
-    if (!this.commands[name]) {
+  remove(name2, fn) {
+    if (!this.commands[name2]) {
       return;
     }
     if (!fn) {
-      this.commands[name] = [];
-      delete this.commands[name];
+      this.commands[name2] = [];
+      delete this.commands[name2];
     } else {
-      let index = this.commands[name].find((item) => {
+      let index = this.commands[name2].find((item) => {
         return item === fn;
       });
       if (index !== -1) {
-        this.commands[name].splice(index, 1);
+        this.commands[name2].splice(index, 1);
       }
     }
   }
@@ -16889,7 +19952,7 @@ var Command = class {
     if (!this.mindMap.renderer.renderTree)
       return null;
     const res = copyRenderTree({}, this.mindMap.renderer.renderTree, true);
-    res.smmVersion = package_default.version;
+    res.smmVersion = pkg.version;
     return res;
   }
   // 移除节点数据中的uid
@@ -16956,37 +20019,34 @@ var Command = class {
     }
   }
 };
-var Command_default = Command;
-
-// node_modules/simple-mind-map/src/utils/BatchExecution.js
 var BatchExecution = class {
   //  构造函数
   constructor() {
     this.has = {};
     this.queue = [];
-    this.nextTick = nextTick(this.flush, this);
+    this.nextTick = nextTick2(this.flush, this);
   }
   //  添加任务
-  push(name, fn) {
-    if (this.has[name]) {
-      this.replaceTask(name, fn);
+  push(name2, fn) {
+    if (this.has[name2]) {
+      this.replaceTask(name2, fn);
       return;
     }
-    this.has[name] = true;
+    this.has[name2] = true;
     this.queue.push({
-      name,
+      name: name2,
       fn
     });
     this.nextTick();
   }
   // 替换任务
-  replaceTask(name, fn) {
+  replaceTask(name2, fn) {
     const index = this.queue.findIndex((item) => {
-      return item.name === name;
+      return item.name === name2;
     });
     if (index !== -1) {
       this.queue[index] = {
-        name,
+        name: name2,
         fn
       };
     }
@@ -16995,15 +20055,12 @@ var BatchExecution = class {
   flush() {
     let fns = this.queue.slice(0);
     this.queue = [];
-    fns.forEach(({ name, fn }) => {
-      this.has[name] = false;
+    fns.forEach(({ name: name2, fn }) => {
+      this.has[name2] = false;
       fn();
     });
   }
 };
-var BatchExecution_default = BatchExecution;
-
-// node_modules/simple-mind-map/src/constants/defaultOptions.js
 var defaultOpt = {
   // 【基本】
   // 容器元素，必传，必须为DOM元素
@@ -17490,8 +20547,6 @@ var defaultOpt = {
   maxImgResizeWidth: Infinity,
   maxImgResizeHeight: Infinity
 };
-
-// node_modules/simple-mind-map/index.js
 var MindMap2 = class _MindMap {
   //  构造函数
   /**
@@ -17500,7 +20555,7 @@ var MindMap2 = class _MindMap {
    */
   constructor(opt = {}) {
     _MindMap.instanceCount++;
-    this.opt = this.handleOpt(es_default(defaultOpt, opt));
+    this.opt = this.handleOpt(deepmerge_1(defaultOpt, opt));
     this.opt.data = this.handleData(this.opt.data);
     this.el = this.opt.el;
     if (!this.el)
@@ -17514,22 +20569,22 @@ var MindMap2 = class _MindMap {
     this.initContainer();
     this.initTheme();
     this.initCache();
-    this.event = new Event_default({
+    this.event = new Event$1({
       mindMap: this
     });
     this.keyCommand = new KeyCommand({
       mindMap: this
     });
-    this.command = new Command_default({
+    this.command = new Command({
       mindMap: this
     });
-    this.renderer = new Render_default({
+    this.renderer = new Render({
       mindMap: this
     });
-    this.view = new View_default({
+    this.view = new View({
       mindMap: this
     });
-    this.batchExecution = new BatchExecution_default();
+    this.batchExecution = new BatchExecution();
     _MindMap.pluginList.forEach((plugin) => {
       this.initPlugin(plugin);
     });
@@ -17545,7 +20600,7 @@ var MindMap2 = class _MindMap {
     if (!layoutValueList.includes(opt.layout)) {
       opt.layout = CONSTANTS.LAYOUT.LOGICAL_STRUCTURE;
     }
-    opt.theme = opt.theme && theme_default[opt.theme] ? opt.theme : "default";
+    opt.theme = opt.theme && theme[opt.theme] ? opt.theme : "default";
     return opt;
   }
   // 预处理节点数据
@@ -17683,19 +20738,19 @@ var MindMap2 = class _MindMap {
   //  设置主题
   initTheme() {
     this.themeConfig = mergeTheme(
-      theme_default[this.opt.theme] || theme_default.default,
+      theme[this.opt.theme] || theme.default,
       this.opt.themeConfig
     );
-    Style_default.setBackgroundStyle(this.el, this.themeConfig);
+    Style2.setBackgroundStyle(this.el, this.themeConfig);
   }
   //  设置主题
-  setTheme(theme, notRender = false) {
+  setTheme(theme2, notRender = false) {
     this.execCommand("CLEAR_ACTIVE_NODE");
-    this.opt.theme = theme;
+    this.opt.theme = theme2;
     if (!notRender) {
       this.render(null, CONSTANTS.CHANGE_THEME);
     }
-    this.emit("view_theme_change", theme);
+    this.emit("view_theme_change", theme2);
   }
   //  获取当前主题
   getTheme() {
@@ -17728,7 +20783,7 @@ var MindMap2 = class _MindMap {
     const lastOpt = {
       ...this.opt
     };
-    this.opt = this.handleOpt(es_default.all([defaultOpt, this.opt, opt]));
+    this.opt = this.handleOpt(deepmerge_1.all([defaultOpt, this.opt, opt]));
     this.emit("after_update_config", this.opt, lastOpt);
   }
   //  获取当前布局结构
@@ -18013,7 +21068,7 @@ var MindMap2 = class _MindMap {
     });
     this.event.unbind();
     this.svg.remove();
-    Style_default.removeBackgroundStyle(this.el);
+    Style2.removeBackgroundStyle(this.el);
     this.el.classList.remove("smm-mind-map-container");
     this.el.innerHTML = "";
     this.el = null;
@@ -18035,33 +21090,97 @@ MindMap2.hasPlugin = (plugin) => {
   });
 };
 MindMap2.instanceCount = 0;
-MindMap2.defineTheme = (name, config = {}) => {
-  if (theme_default[name]) {
+MindMap2.defineTheme = (name2, config = {}) => {
+  if (theme[name2]) {
     return new Error("该主题名称已存在");
   }
-  theme_default[name] = mergeTheme(default_default, config);
+  theme[name2] = mergeTheme(defaultTheme, config);
 };
-MindMap2.removeTheme = (name) => {
-  if (theme_default[name]) {
-    theme_default[name] = null;
+MindMap2.removeTheme = (name2) => {
+  if (theme[name2]) {
+    theme[name2] = null;
   }
 };
-var simple_mind_map_default = MindMap2;
+var __default__ = {
+  name: "ElMindmap"
+};
+var script = Object.assign(__default__, {
+  props: {
+    data: Object,
+    height: {
+      type: String,
+      default: 500
+    },
+    offsetLeft: {
+      type: Number,
+      default: 50
+    },
+    router: {
+      type: Object,
+      default: {}
+    }
+  },
+  setup(__props) {
+    const props = __props;
+    onMounted(() => {
+      init();
+    });
+    function init() {
+      const mindMap = new MindMap2({
+        el: document.getElementById("mindmap"),
+        data: props.data,
+        initRootNodePosition: [Number(props.offsetLeft), "center"]
+      });
+      mindMap.on("node_click", function(...args) {
+        var _a2, _b;
+        const { nodeData } = args[0];
+        const link = (_a2 = nodeData.data) == null ? void 0 : _a2.link;
+        if (link) {
+          (_b = props.router) == null ? void 0 : _b.go("/web" + link);
+        }
+      });
+    }
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock(
+        "div",
+        {
+          id: "mindmap",
+          style: normalizeStyle({ height: __props.height + "px" })
+        },
+        null,
+        4
+        /* STYLE */
+      );
+    };
+  }
+});
+script.__scopeId = "data-v-5fc999e5";
+script.__file = "src/components/MindMap/mindmap.vue";
+script.install = (app) => {
+  app.component(script.name, script);
+};
+var components = [script$1, script, ElImage, ElDialog];
+var install = (app) => {
+  components.forEach((component) => {
+    app.component(component.name, component);
+  });
+};
 export {
-  simple_mind_map_default as default
+  script$1 as ElBreadcrumb,
+  ElDialog,
+  ElImage,
+  script as ElMindmap,
+  install as default,
+  install
 };
 /*! Bundled license information:
 
-@svgdotjs/svg.js/dist/svg.esm.js:
-  (*!
-  * @svgdotjs/svg.js - A lightweight library for manipulating and animating SVG.
-  * @version 3.2.0
-  * https://svgjs.dev/
-  *
-  * @copyright Wout Fierens <wout@mick-wout.com>
+vitepress-vue3-components/dist/index.es.js:
+  (**
+  * @vue/shared v3.5.13
+  * (c) 2018-present Yuxi (Evan) You and Vue contributors
   * @license MIT
-  *
-  * BUILT: Mon Jun 12 2023 10:34:51 GMT+0200 (Central European Summer Time)
-  *)
+  **)
+  (*! Element Plus Icons Vue v2.3.1 *)
 */
-//# sourceMappingURL=simple-mind-map.js.map
+//# sourceMappingURL=vitepress-vue3-components.js.map
