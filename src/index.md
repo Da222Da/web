@@ -3,14 +3,17 @@ layout: home
 header: false
 ---
 
+<ClientOnly>
+  <ElMindmap :data="data" :height="height" :offsetLeft="offsetLeft" :router="router"  />
+</ClientOnly>
 
-<ElMindmap :data="data" :height="height" :offsetLeft="offsetLeft" :router="router"  />
 
 <script setup>
 import { onMounted, ref, computed } from "vue";
 import { useRouter } from "vitepress";
 const router = useRouter();
-const commonOptions = { fillColor: '#549688', shape: 'ellipse', color: '#fff', paddingY: 5, paddingY: 10 }
+const commonOptions = { fillColor: '#FF6347', shape: 'rectangle', color: '#fff' }
+const rectangleOptions = { borderColor: '#FF6347', borderDasharray: '5,5', borderWidth: 2, shape: 'rectangle' }
 const data = ref({
 	data: {
 		text: "Web 互联网",
@@ -30,20 +33,26 @@ const data = ref({
 			children: [
 				{ data: { text: "ES 语法约定", link: `/docs/es/`, ...commonOptions } },
 				{ data: { text: "Vue 组件化", link: `/docs/vue/`, ...commonOptions } },
-				{ data: { text: "工程化" },
+				{ 
+					data: { text: "工程化" },
+					children: [
+						{ data: { text: "Vite 构建工具", link: `/docs/vite/`, ...commonOptions }},
+						{ data: { text: "Webpack 构建工具", link: `/docs/webpack/`, ...rectangleOptions } },
+						{ data: { text: "Rollup 构建工具", link: `/docs/rollup/`, ...rectangleOptions } },
+					]
+				},
+				{ 
+					data: { text: "NodeJS 后端" },
 					children: [
 						{ data: { text: "npm 包管理器", link: `/docs/npm/`, ...commonOptions } },
-						{ data: { text: "Vite 构建工具", link: `/docs/vite/`, ...commonOptions } },
 					]
 				},
 			]
 		},
 	],
 })
-if(document) {
-	const height = computed(() => document.documentElement.scrollHeight - 64);
-	const offsetLeft = computed(() => document.documentElement.clientWidth / 4);
-}
+const height = computed(() => document?.documentElement.scrollHeight - 64);
+const offsetLeft = computed(() => document?.documentElement.clientWidth / 4);
 </script>
 
 <style>
