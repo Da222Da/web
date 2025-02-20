@@ -35,7 +35,7 @@ const data = ref({
 			data: { text: "组件" },
 			children: [
 				{ data: { text: "注册组件" } },
-				{ data: { text: "组件生命周期" } },
+				{ data: { text: "生命周期" } },
 				{ data: { text: "组件通信" } },
 				{ data: { text: "组件插槽" } },
 			]
@@ -49,7 +49,6 @@ const data = ref({
 ### 1. 在非编译模式下，如何使用 Vue？
 
 <!--@include: ./contents/uncompile.md-->
-
 
 ### 2. 在编译模式下，如何使用 Vue？
 

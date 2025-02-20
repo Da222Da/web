@@ -4,7 +4,7 @@ rollup 是一个简洁的 JavaScript 模块打包器，常用于构建 JavaScrip
 
 ## 思维导图
 
-<ElMindmap :data="data" height="650"  offsetLeft="20" />
+<ElMindmap :data="data" height="750"  offsetLeft="20" />
 
 <script setup>
 import {  ref } from "vue";
@@ -19,7 +19,7 @@ const data = ref({
         {
 			data: { text: "output 出口", note: "声明Rollup编译的出⼝⽂件，也就是编译结果要放在哪个⽬录下的哪个⽂件⾥，这⾥我就对应地把出⼝⽬录配置在 dist⽂件夹⾥。" },
             children: [
-                 {
+                {
                     data: { text: "file 输出路径", note: "指定输出文件的路径和名称" },
                 },
                 {
@@ -30,14 +30,30 @@ const data = ref({
                 },
                 {
                     data: { text: "globals 依赖别名", note: "指定外部依赖的名称，例如{ jquery: '$' }表示jquery模块的名称为$" },
+                }, 
+                {
+                    data: { text: "模块预设" }, 
+                    children: [
+                        {
+                            data: { text: "preserveModules 模块预设", note: "当设置为 true 时，这个选项会指示 Rollup 在打包过程中保留模块的原始结构，而不是将它们合并到一个单独的文件中。这对于需要按需加载模块或希望保持模块间清晰边界的项目非常有用。" },
+                        },
+                        {
+                            data: { text: "preserveModulesRoot 模块预设根路径", note: "当 preserveModules 设置为 true 时，Rollup 会根据这个根目录来组织输出文件的结构" },
+                        },
+                    ]
+
                 }
+                
             ]
 		},
         {
 			data: { text: "plugins 插件", note: "这个是 Rollup 的插件配置，主要是贯穿 Rollup 的整个打包的⽣命周期。" },
             children: [
                 {
-                    data: { text: "@rollup/plugin-node-resolve", note: "解析 node_modules ⾥的使⽤第三⽅ npm 模块" },
+                    data: { text: "@rollup/plugin-node-resolve", note: "它使用 Node 解析算法来定位模块，以便在 node_modules 中使用第三方模块" },
+                },
+                {
+                    data: { text: "@rollup/plugin-commonjs", note: "由于node_modules文件夹中的大多数包可能是遗留的CommonJS而不是JavaScript模块，因此您可能需要使用 @rollup/plugin-commonjs" },
                 },
                 {
                     data: { text: "rollup-plugin-vue", note: "解析 .vue 单⽂件" },
@@ -71,6 +87,10 @@ const data = ref({
 
 ## 思考过程
 
-### 如何搭建 Vue.js 3项⽬?
+### 如何搭建 Vue3 项⽬?
 
 <!--@include: ./contents/build-vue3.md-->
+
+### 如何搭建 Vue3 组件库?
+
+<!--@include: ./contents/build-vue3-components.md-->

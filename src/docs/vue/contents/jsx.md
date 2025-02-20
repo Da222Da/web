@@ -1,45 +1,5 @@
-1. 模板语法：直接理解为 **HTML 语法的⼀种扩展**，模板中的一切`节点声明、属性设置和事件注册等`都是按照HTML的语法来进⾏扩展设计的。
 
-```vue
-<template>
-  <div class="counter">
-    <div class="text">Count: {{ state.count }}</div>
-    <button class="btn" v-on:click="onClick">Add</button>
-  </div>
-</template>
-<script setup>
-import { reactive } from "vue";
-const state = reactive({
-  count: 0,
-});
-const onClick = () => {
-  state.count++;
-};
-</script>
-
-<style>
-.counter {
-  padding: 10px;
-  margin: 10px auto;
-  text-align: center;   
-}
-.counter .text {
-  font-size: 28px;
-  font-weight: bolder;
-  color: #666666;
-}
-.counter .btn {
-  font-size: 20px;
-  padding: 0 10px;
-  height: 32px;
-  min-width: 80px;
-  cursor: pointer;
-}
-</style>
-
-```
-
-2. JSX 语法，是 JavaScript语法的⼀种语法扩展，⽀持在 JavaScript 直接写类似 HTML 的模板代码，你可以直接理解为**HTML in JavaScript**。
+JSX 语法，是 JavaScript 语法的⼀种语法扩展，⽀持在 JavaScript 直接写类似 HTML 的模板代码，你可以直接理解为**HTML in JavaScript**。
 
 - a. 如果你也是使用 vite 构建工具，记得安装依赖`@vitejs/plugin-vue-jsx`
 
@@ -116,3 +76,51 @@ export default defineComponent({
 import Counter from "./components/counter.jsx";
 </script>
 ```
+
+
+::: danger Vue 模板语法
+
+模板语法：直接理解为 **HTML 语法的⼀种扩展**，模板中的一切`节点声明、属性设置和事件注册等`都是按照HTML的语法来进⾏扩展设计的。
+
+::: details 查看代码示例：
+```vue
+<template>
+  <div class="counter">
+    <div class="text">Count: {{ state.count }}</div>
+    <button class="btn" v-on:click="onClick">Add</button>
+  </div>
+</template>
+<script setup>
+import { reactive } from "vue";
+const state = reactive({
+  count: 0,
+});
+const onClick = () => {
+  state.count++;
+};
+</script>
+
+<style>
+.counter {
+  padding: 10px;
+  margin: 10px auto;
+  text-align: center;   
+}
+.counter .text {
+  font-size: 28px;
+  font-weight: bolder;
+  color: #666666;
+}
+.counter .btn {
+  font-size: 20px;
+  padding: 0 10px;
+  height: 32px;
+  min-width: 80px;
+  cursor: pointer;
+}
+</style>
+
+```
+
+:::
+
