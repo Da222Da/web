@@ -87,7 +87,7 @@ const data = ref({
 
 ## 思考过程
 
-### 如何搭建 Vue3 项⽬?
+
 
 <!--@include: ./contents/build-vue3.md-->
 

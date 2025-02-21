@@ -43,7 +43,7 @@ const data = ref({
 						{ 
 							data: { text: "VueJS 框架", link: `/docs/vue/`, ...commonOptions },
 							children: [
-								{ data: { text: "构建 Vue 组件库", link: `/docs/rollup/contents/build-vue3-components`, ...rectangleOptions } },
+								{ data: { text: "构建 Vue 组件库", link: `/docs/vue/children/build-vue3-components/`, ...rectangleOptions } },
 								{ data: { text: "Vue 组件编排系统", link: `/docs/vue/children/component-drag/`, ...rectangleOptions } },
 							]
 						},

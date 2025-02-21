@@ -1,3 +1,5 @@
+# 构建 Vue3 组件库
+
 > Target: 使用 rollup 打包 Vue3 组件库
 
 #### 1. Rollup 处理 JS 文件
@@ -145,6 +147,9 @@ app.mount("#app");
 
 :::
 
+
+
+
 #### 3. Rollup 输出 cjs 和 esm 格式
 
 如果想要将输入结果输出为两种格式（例如，ES Module 和 CommonJS），你可以在 Rollup 配置中添加多个输出对象。
@@ -177,6 +182,8 @@ export default {
 	external: ["vue"], // 如果需要使用vue，需要将vue作为外部依赖
 };
 ```
+
+#### 4. 集成开发测试环境 (Dev Server)
 
 
 <!--  -->

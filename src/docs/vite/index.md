@@ -15,8 +15,21 @@ const data = ref({
 		text: "Vite",
 	},
 	children: [
-		{ data: { text: "别名 alias" }, note: "配置文件夹别名可以简化模块导入路径，提高代码的可读性和可维护性。" },
-		{ data: { text: "服务器端口 port", note: "设置测试服务器的运行端口，方便在本地进行开发和调试。" } },
+		{ 
+			data: { text: "vite.config.js 默认配置项" },
+			children: [
+				{ data: { text: "alias 别名", note: "配置文件夹别名可以简化模块导入路径，提高代码的可读性和可维护性。"} },
+				{ data: { text: "port 服务器端口", note: "设置测试服务器的运行端口，方便在本地进行开发和调试。" } },
+			]
+		},
+		{ 
+			data: { text: "Javascript APIs" },
+			children: [
+				{ data: { text: "createServer 自定义 Dev 服务器", note: "创建自定义本地服务器，方便在本地进行开发和调试。"} },
+				{ data: { text: "configFile 指定配置文件", note: "指明要使用的配置文件。如果没有设置，Vite 将尝试从项目根目录自动解析。设置为 false 可以禁用自动解析功能" } },
+			]
+		},
+		
 	],
 })
 </script>
@@ -27,3 +40,7 @@ const data = ref({
 ### 如何构建 vue3 项目？
 
 <!--@include: ./contents/build-vue3.md-->
+
+### 如何自定义本地服务器？
+
+<!--@include: ./contents/create-server.md-->
