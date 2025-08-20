@@ -1,29 +1,13 @@
 {
-	"name": "web",
-	"version": "1.0.0",
-	"description": "Web",
-	"main": "index.js",
-	"private": true,
-	"scripts": {
-		"dev": "vitepress dev",
-		"build": "vitepress build",
-		"deploy": "git add . & git commit -m 'deploy' & git push",
-		"prepare": "husky install"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"devDependencies": {
-		"@vue/repl": "^4.4.3",
-		"husky": "^8.0.1",
-		"rollup": "^4.29.1",
-		"rollup-plugin-vue": "^6.0.0",
-		"vitepress": "^1.0.0-rc.25"
-	},
-	"dependencies": {
-		"@vue/compiler-sfc": "^3.5.13",
-		"simple-mind-map": "^0.13.0",
-		"vitepress-vue3-components": "^0.0.16",
-		"vue": "^3.5.13"
-	}
+  "name": "web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

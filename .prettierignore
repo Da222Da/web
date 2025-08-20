@@ -1,9 +1,0 @@
-# 忽略所有 Markdown 文件
-*.md
-
-# 忽略构建输出目录
-dist/
-build/
-
-# 忽略 node_modules
-node_modules/
