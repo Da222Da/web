@@ -12,7 +12,10 @@ export default defineConfig({
       { text: "常见问题", link: "/questions/01" },
     ],
 
-    sidebar: [{ text: "Javascript 系列", items: [{ text: "如何实现 Web 思维导图？", link: "/questions/01" }] }],
+    sidebar: [
+      { text: "如何实现 Web 思维导图？", link: "/questions/01" },
+      { text: "Python Django 如何快速开发 Web 应用？", link: "/questions/02" },
+    ],
 
     socialLinks: [{ icon: "github", link: "https://github.com/vuejs/vitepress" }],
   },
