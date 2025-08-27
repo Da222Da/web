@@ -1,53 +1,64 @@
-import { G, Text } from "@svgdotjs/svg.js";
+import * as d3 from "d3";
+import rough from "roughjs";
 
 // 节点类
 export default class Node {
-  constructor(opt = {}) {
-    this.draw = opt.draw; // 画布引用
-    this.nodeData = opt.data; // 节点真实数据，就是上述说的渲染树的节点
-    this.isRoot = opt.isRoot; // 是否是根节点
-    this.layerIndex = opt.layerIndex; // 节点层级
-    this.width = 0; // 节点宽
-    this.height = 0; // 节点高
-    this.left = opt.left || 0; // left
-    this.top = opt.top || 0; // top
-    this.parent = opt.parent || null; // 父节点
-    this.children = []; // 子节点
+  constructor(config = {}) {
+    // 基础配置
+    this.text = config.data.text || "新节点";
+    this.x = config.left || 0;
+    this.y = config.top || 0;
 
-    this.group = new G(); // 创建节点容器(Group)
-    this.getSize();
-    this.render();
-  }
-  // 计算节点宽高
-  getSize() {
-    let textData = this.createTextNode();
-    this.width = textData.width + 20; // 左右内边距各10
-    this.height = textData.height + 10; // 上下内边距各5
-  }
-  // 创建文本节点
-  createTextNode() {
-    let context = this.nodeData.text; // 节点文本内容
-    let fill = this.nodeData.color || "#fff"; // 文字颜色
-    let fontSize = this.nodeData.fontSize || 16; // 文字大小
-    let node = new Text().text(context).fill(fill).font({ size: fontSize });
-    let { width, height } = node.bbox(); // 获取文本节点的宽高
-    return {
-      node,
-      width,
-      height,
+    // 图形样式
+    this.style = {
+      width: 120, // 矩形宽度
+      height: 60, // 矩形高度
+      padding: 10, // 文字边距
+      fill: "#fff3e0", // 填充色
+      stroke: "#ff9800", // 描边色
+      roughness: 1.2, // 手绘粗糙度
+      bowing: 0.8, // 线条弯曲度
+      fontSize: 14, // 字体大小
+      ...config.style, // 允许自定义覆盖
     };
+
+    // 创建容器
+    this.group = d3
+      .select(config.container || "body") // 可指定父容器
+      .append("g")
+      .attr("transform", `translate(${this.x}, ${this.y})`);
+
+    this.draw();
   }
-  // 渲染节点
-  render() {
-    let textData = this.createTextNode();
-    textData.node.x(10).y(5); // 文字节点相对于容器偏移内边距的大小
-    // 创建一个矩形来作为边框
-    this.group.rect(this.width, this.height).x(0).y(0);
-    // 文本节点添加到节点容器里
-    this.group.add(textData.node);
-    // 在画布上定位该节点
-    this.group.translate(this.left, this.top);
-    // 容器添加到画布上
-    this.draw.add(this.group);
+  // 绘制方法
+  draw() {
+    this.group.selectAll("*").remove(); // 清空旧元素
+
+    // 用 Rough.js 绘制手绘矩形
+    const rc = rough.svg(this.group.node());
+    const roughRect = rc.rectangle(0, 0, this.style.width, this.style.height, {
+      fill: this.style.fill,
+      stroke: this.style.stroke,
+      roughness: this.style.roughness,
+      bowing: this.style.bowing,
+    });
+    this.group.node().appendChild(roughRect);
+
+    // 用 D3 添加文字
+    this.group
+      .append("text")
+      .text(this.text)
+      .attr("x", this.style.width / 2)
+      .attr("y", this.style.height / 2)
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle")
+      .style("font-size", `${this.style.fontSize}px`)
+      .style("fill", this.style.stroke);
+  }
+  // 更新位置
+  move(x, y) {
+    this.x = x;
+    this.y = y;
+    this.group.attr("transform", `translate(${x}, ${y})`);
   }
 }

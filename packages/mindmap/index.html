@@ -3,6 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <title>mindmap 思维导图</title>
+    <style>
+      /* 防止滚动条出现 */
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      /* 确保 SVG 填充视口 */
+      svg {
+        position: fixed;
+        top: 0;
+        left: 0;
+      }
+    </style>
   </head>
   <body></body>
   <script type="module" src="/src/main.js"></script>
