@@ -3,19 +3,10 @@ import path from "path";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: " ",
+  title: "石头记",
   description: "A VitePress Site",
   themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
-    nav: [
-      { text: "Home", link: "/" },
-      { text: "常见问题", link: "/questions/01" },
-    ],
-
-    sidebar: [
-      { text: "如何实现 Web 思维导图？", link: "/questions/01" },
-      { text: "Python Django 如何快速开发 Web 应用？", link: "/questions/02" },
-    ],
+    sidebar: [{ text: "大清", link: "/" }],
 
     socialLinks: [{ icon: "github", link: "https://github.com/vuejs/vitepress" }],
   },
