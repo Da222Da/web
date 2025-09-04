@@ -3,7 +3,7 @@ import path from "path";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Web 互联网技术",
+  title: "Web 网站搭建技术",
   description: "A VitePress Site",
   base: "/",
   themeConfig: {
