@@ -3,14 +3,11 @@ import path from "path";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Web 网站搭建技术",
+  title: "Web 互联网",
   description: "A VitePress Site",
   base: "/",
   themeConfig: {
-    sidebar: [
-      { text: "如何实现 Web 思维导图？", link: "/" },
-      { text: "Python Django 如何快速开发 Web 应用？", link: "/src/02" },
-    ],
+    sidebar: [{ text: "D3 图形库", link: "/" }],
 
     socialLinks: [{ icon: "github", link: "https://github.com/vuejs/vitepress" }],
   },
